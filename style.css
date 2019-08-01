@@ -1,0 +1,80 @@
+/* #505070 #4D3354*/
+
+html, body {
+    max-width: 100%;
+    max-height: 100%;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+}
+
+.loader-screen {
+    opacity: 1;
+    transition: opacity 0.25s ease-in-out;
+}
+
+.fadeToWhite {
+    opacity: 0;
+}
+
+.row {
+    min-width: 100%;
+    min-height: 100%;
+}
+
+.full-bg {
+    background-color: #4D3354;
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    background-size: cover;
+}
+
+.pokemon {
+    background: url('./gengar-ss.png') 0 0 no-repeat;
+    z-index: 10;
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    left: 54%;
+    top: 45%;
+    transform: translate(-50%, -50%);
+}
+
+.animate-gengar {
+    animation: gengarShift 2.2s steps(71) 2 alternate-reverse;
+}
+
+@keyframes gengarShift {
+    100% {
+        background-position: 0 -35500px;
+    }
+}
+
+@media (min-width: 768px) {
+    .pokemon {
+        left: 53%;
+        top: 40%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .pokemon {
+        left: 50%;
+        top: 40%;
+    }
+}
+
+@media (min-width: 1920px) {
+    .pokemon {
+        left: 52%;
+        top: 40%;
+    }
+}
+
+@media (min-width: 2250px) and (max-width: 2600px) {
+    .pokemon {
+        left: 42%;
+        top: 30%;
+    }
+}
