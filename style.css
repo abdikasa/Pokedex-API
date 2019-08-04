@@ -78,3 +78,98 @@ html, body {
         top: 30%;
     }
 }
+
+/******************************************************************************************/
+
+body {
+    padding: 50px 30px 60px 30px;
+    height: 100vh;
+}
+
+.container-height {
+    height: 100%;
+}
+
+.row {
+    height: 100%;
+}
+
+.column-one {
+    height: 100%;
+    color: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1em;
+}
+
+.name-container {
+    text-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
+}
+
+#poke-num {
+    font-size: 1.1em;
+    font-weight: 800;
+}
+
+#poke-name {
+    font-weight: 800;
+    font-size: 2.1875em;
+}
+
+.size-container {
+    margin: auto;
+    /* padding-top: 50px;  */
+}
+
+.size-container>span {
+    text-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
+    display: block;
+}
+
+/* Targets all the spans inside size-container */
+
+.size-container span {
+    font-size: 1.01em;
+    font-weight: 600;
+}
+
+/* Targets the number inside the ids*/
+
+#height, #weight {
+    font-size: 0.93em;
+    font-weight: 400;
+}
+
+#region-word {
+    font-size: 1.01em;
+    font-weight: 600;
+    transform: rotate(-90deg);
+    transform-origin: 0 0;
+    text-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
+}
+
+#loc {
+    font-weight: 400;
+    font-size: 0.94em;
+}
+
+.pkm-container {
+    position: relative;
+}
+
+#pkm-image {
+    height: auto;
+    max-width: 25em;
+}
+
+#kanji {
+    display: block;
+    position:absolute;
+    top:0;
+    font-size: 8.125em;
+    word-break: keep-all;
+    font-weight: 600;
+    transform: translateX(-45%);
+    opacity: 0.5;
+    color: rgba(0,0,0,0.66)
+}
+
