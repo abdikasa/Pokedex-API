@@ -6,7 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Gotta Catch 'Em All</title>
 
-    <link href="https://fonts.googleapis.com/css?family=Nunito&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,800&display=swap" rel="stylesheet">
+
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -21,7 +22,7 @@
             <div class="full-bg"></div>
             <div class="pokemon"></div>
         </div>
-    </div> -->
+    </div>  -->
 
     <div class="container-fluid container-height">
         <div class="row">
@@ -30,6 +31,12 @@
                 <div class="name-container my-0">
                     <h2 id="poke-num">#001</h2>
                     <h2 id="poke-name">Bulbasaur</h2>
+                    <!-- <button class="btn"
+                        style="background: linear-gradient(#78c850,#5ca935); border-color: #4A892B;color:#fff">
+                        Grass</button>
+                    <button class="btn"
+                        style="background: linear-gradient(#a040a0,#803380); border-color: #662966;color:#fff">
+                        Poison</button> -->
                 </div>
                 <div class="size-container">
                     <span>
@@ -45,10 +52,62 @@
             </div>
 
             <!-- Middle Column -->
-            <div class="column-two col-md-5 col-12 col-sm-12 d-flex pkm-img flex-column justify-content-center text-center text-md-left">
+            <div
+                class="column-two col-md-5 col-12 col-sm-12 d-flex pkm-img flex-column justify-content-center text-center text-md-left">
                 <div class="pkm-container">
                     <img src="./sugimori artwork/1.png" alt="" id="pkm-image">
                     <span id="kanji">フシギダネ</span>
+                </div>
+            </div>
+            <div class="column-three col-md-4 col-12 col-sm-12 text-md-left text-center d-flex align-items-center">
+                <div class="stats-box">
+                    <h2 id="base_stats">Base Stats:</h2>
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <th scope="row">HP:</th>
+                                <td class="stat-0">45</td>
+                                <td class="p-bar">
+                                    <div class="inner-bar rounded bar-0"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Attack:</th>
+                                <td class="stat-1">65</td>
+                                <td class="p-bar">
+                                    <div class="inner-bar rounded bar-1"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Defense:</th>
+                                <td class="stat-2">65</td>
+                                <td class="p-bar">
+                                    <div class="inner-bar rounded bar-2"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Sp.Atk:</th>
+                                <td class="stat-3">49</td>
+                                <td class="p-bar">
+                                    <div class="inner-bar rounded bar-3"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Sp.Def:</th>
+                                <td class="stat-4">49</td>
+                                <td class="p-bar">
+                                    <div class="inner-bar rounded bar-4"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Speed:</th>
+                                <td class="stat-5">45</td>
+                                <td class="p-bar">
+                                    <div class="inner-bar rounded bar-5"></div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
