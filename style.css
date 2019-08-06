@@ -212,8 +212,8 @@ body {
 .table-borderless .p-bar {
     width: 200px;
     height: 12px;
-    position:relative;
-    z-index:1;
+    position: relative;
+    z-index: 1;
 }
 
 .inner-bar {
@@ -221,4 +221,27 @@ body {
     height: 10px;
     z-index: 10;
     background-color: #378260;
+}
+
+.evolutions {
+    width: 35%;
+}
+
+.abilities li {
+    background-color: transparent;
+    border: 0;
+    text-shadow: 0 0 12px rgba(0, 0, 0, 0.56);
+    font-size: 1.3em;
+}
+
+.evol-1 {
+    width: 50%;
+}
+
+.evol-2, .evol-3 {
+    width: 50%;
+}
+
+.evolve-container {
+    width: 100%;
 }
