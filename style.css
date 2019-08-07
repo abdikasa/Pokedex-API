@@ -171,6 +171,7 @@ body {
     word-break: keep-all;
     font-weight: 600;
     transform: translateX(-45%);
+    transform: translateX(-25%);
     opacity: 0.5;
     color: rgba(0, 0, 0, 0.66)
 }
@@ -234,14 +235,28 @@ body {
     font-size: 1.3em;
 }
 
-.evol-1 {
-    width: 50%;
+.evolutionary-chain {
+    margin: 60px 0;
+    width: 80%;
+    color: #fff;
+    text-shadow: 0 0 12px rgba(0, 0, 0, 0.65);
+
 }
 
-.evol-2, .evol-3 {
-    width: 50%;
-}
-
-.evolve-container {
+.chain-row {
     width: 100%;
+}
+
+.evolutionary-chain h3 {
+    font-weight: 600;
+}
+
+.base-stage, .base-stage img {
+    width: 70%;
+    align-self: center;
+}
+
+.right-arrow img{
+    width: 100%;
+    height: 16px;
 }
