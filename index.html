@@ -41,9 +41,9 @@
                     </div>
 
                     <div class="evolutions d-flex justify-content-between">
-                        <img src="#" class="poke-A" alt="A">
-                        <img src="#" class="poke-B" alt="B">
-                        <img src="#" class="poke-C" alt="C">
+                        <img src="./sugimori artwork/1.png" class="poke-A" alt="A" width="32px">
+                        <img src="./sugimori artwork/1.png"  class="poke-B" alt="B" width="32px">
+                        <img src="./sugimori artwork/1.png"  class="poke-C" alt="C" width="32px">
                     </div>
 
                     <!-- <button class="btn"
@@ -75,9 +75,10 @@
                 </div>
 
 
-                <div class="conatiner d-flex flex-column text-md-center evolutionary-chain align-self-center align-items-center">
+                <div
+                    class="container d-flex flex-column text-md-center evolutionary-chain align-self-center align-items-center">
                     <h3>Evolution Chain</h3>
-                    <div class="row d-flex flex-row chain-row justify-content-center">
+                    <div class="d-flex flex-row chain-row justify-content-center">
                         <div class="col-3 base-stage">
                             <img src="./sugimori artwork/1.png" class="pb-3" alt="">
                             <p class="lead">Bulbasaur</p>
@@ -142,55 +143,80 @@
                 </div> -->
 
             </div>
-            <div class="column-three col-md-4 col-12 col-sm-12 text-md-left text-center d-flex align-items-center">
-                <div class="stats-box">
-                    <h2 id="base_stats">Base Stats:</h2>
-                    <table class="table table-borderless">
-                        <tbody>
-                            <tr>
-                                <th scope="row">HP:</th>
-                                <td class="stat-0">45</td>
-                                <td class="p-bar">
-                                    <div class="inner-bar rounded bar-0"></div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Attack:</th>
-                                <td class="stat-1">65</td>
-                                <td class="p-bar">
-                                    <div class="inner-bar rounded bar-1"></div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Defense:</th>
-                                <td class="stat-2">65</td>
-                                <td class="p-bar">
-                                    <div class="inner-bar rounded bar-2"></div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Sp.Atk:</th>
-                                <td class="stat-3">49</td>
-                                <td class="p-bar">
-                                    <div class="inner-bar rounded bar-3"></div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Sp.Def:</th>
-                                <td class="stat-4">49</td>
-                                <td class="p-bar">
-                                    <div class="inner-bar rounded bar-4"></div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Speed:</th>
-                                <td class="stat-5">45</td>
-                                <td class="p-bar">
-                                    <div class="inner-bar rounded bar-5"></div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div class="column-three col-md-4 col-12 col-sm-12 text-md-left text-center">
+
+                <div class="type-container d-flex flex-column">
+                    <h2 class="base_stats pb-4">Type(s):</h2>
+
+                    <div class="poke-type-container d-flex flex-row">
+                        <div class="poke-type">
+                            <img src="./types/grass.png" alt="Grass Type" class="border rounded-circle">
+                        </div>
+                        <div class="poke-type">
+                            <img src="./types/poison.png" alt="Grass Type" class="border rounded-circle">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-container d-flex flex-column">
+                    <div class="stats-box">
+                        <h2 class="base_stats">Base Stats:</h2>
+                        <table class="table table-borderless">
+                            <tbody>
+                                <tr>
+                                    <th scope="row">HP:</th>
+                                    <td class="stat-0">45</td>
+                                    <td class="p-bar">
+                                        <div class="inner-bar rounded bar-0"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Attack:</th>
+                                    <td class="stat-1">65</td>
+                                    <td class="p-bar">
+                                        <div class="inner-bar rounded bar-1"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Defense:</th>
+                                    <td class="stat-2">65</td>
+                                    <td class="p-bar">
+                                        <div class="inner-bar rounded bar-2"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Sp.Atk:</th>
+                                    <td class="stat-3">49</td>
+                                    <td class="p-bar">
+                                        <div class="inner-bar rounded bar-3"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Sp.Def:</th>
+                                    <td class="stat-4">49</td>
+                                    <td class="p-bar">
+                                        <div class="inner-bar rounded bar-4"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Speed:</th>
+                                    <td class="stat-5">45</td>
+                                    <td class="p-bar">
+                                        <div class="inner-bar rounded bar-5"></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="weakness d-flex flex-column">
+                    <h2 class="base_stats">Weakness:</h2>
+                    <div class="d-flex flex-wrap type-img">
+                        <img src="./types/Flying.png" alt="">
+                        <img src="./types/fire.png" alt="">
+                        <img src="./types/psychic.png" alt="">
+                        <img src="./types/ice.png" alt="">
+                    </div>
                 </div>
             </div>
         </div>
