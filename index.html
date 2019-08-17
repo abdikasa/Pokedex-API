@@ -40,11 +40,11 @@
                         <li class="list-inline-item">Chlorophyll</li>
                     </div>
 
-                    <div class="evolutions d-flex justify-content-between">
+                    <!-- <div class="evolutions d-flex justify-content-between">
                         <img src="./sugimori artwork/1.png" class="poke-A" alt="A" width="32px">
-                        <img src="./sugimori artwork/1.png"  class="poke-B" alt="B" width="32px">
-                        <img src="./sugimori artwork/1.png"  class="poke-C" alt="C" width="32px">
-                    </div>
+                        <img src="./sugimori artwork/1.png" class="poke-B" alt="B" width="32px">
+                        <img src="./sugimori artwork/1.png" class="poke-C" alt="C" width="32px">
+                    </div> -->
 
                     <!-- <button class="btn"
                         style="background: linear-gradient(#78c850,#5ca935); border-color: #4A892B;color:#fff">
@@ -73,158 +73,159 @@
                     <img src="./sugimori artwork/1.png" alt="" id="pkm-image">
                     <span id="kanji">フシギダネ</span>
                 </div>
-
-
-                <div
-                    class="container d-flex flex-column text-md-center evolutionary-chain align-self-center align-items-center">
+                <div class="container d-flex flex-column text-md-center evolutionary-chain align-items-center">
                     <h3>Evolution Chain</h3>
-                    <div class="d-flex flex-row chain-row justify-content-center">
-                        <div class="col-3 base-stage">
-                            <img src="./sugimori artwork/1.png" class="pb-3" alt="">
-                            <p class="lead">Bulbasaur</p>
+                    <div class="d-flex flex-row chain-row evolve-container">
+                        <div class="part-1">
+                            <img src="./sugimori artwork/1.png" alt="">
+                            <p class="lead artwork-lead" style="font-size:1.1em; font-weight:600;">Bulbasaur</p>
                         </div>
-                        <div class="col-1 right-arrow d-flex align-self-center">
+
+                        <div class="arr">
                             <img src="./right-arrow.png" alt="">
                         </div>
-                        <div class="col-3 base-stage">
-                            <img src="./sugimori artwork/2.png" class="pb-3" alt="">
-                            <p class="lead">Ivysaur</p>
+                        <div class="part-2">
+                            <img src="./sugimori artwork/2.png" alt="">
+                            <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">Ivysaur</p>
                         </div>
-                        <div class="col-1 right-arrow d-flex align-self-center">
+                        <div class="arr">
                             <img src="./right-arrow.png" alt="">
                         </div>
-                        <div class="col-3 base-stage">
-                            <img src="./sugimori artwork/3.png" alt="" class="pb-3">
-                            <p class="lead">Venasaur</p>
+                        <div class="part-3">
+                            <img src="./sugimori artwork/3.png" alt="">
+                            <p class="lead artwork-lead" style="font-size:1.1em; font-weight:600;">Venasaur</p>
                         </div>
                     </div>
                 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                <!-- <div class="evolve-chain d-flex flex-column text-center">
-                    <h5>Evolution Chain</h5>
-                    <div class="row stages">
-                        <div class="col-3 stage stage-1">
-                            <img src="./sugimori artwork/1.png" alt="Bulbasaur">
-                            <h6>Bulbasaur</h6>
-                        </div>
-                        <div class="col-1"><img src="./right-arrow.png" class="arrow-sep"alt="">
-                            <p>Level 12</p>
-                        </div>
-                        <div class="col-3 stage stage-2">
-                            <img src="./sugimori artwork/1.png" alt="Bulbasaur">
-                            <h6>Bulbasaur</h6>
-                        </div>
-                        <div class="col-1"><img src="./right-arrow.png" class="arrow-sep" alt="">
-                            <p>Level 36</p>
-                        </div>
-                        <div class="col-3 stage stage-3">
-                            <img src="./sugimori artwork/1.png" alt="Bulbasaur">
-                            <h6>Bulbasaur</h6>
-                        </div>
-                    </div>
-                </div> -->
-
             </div>
-            <div class="column-three col-md-4 col-12 col-sm-12 text-md-left text-center">
 
-                <div class="type-container d-flex flex-column">
-                    <h2 class="base_stats pb-4">Type(s):</h2>
-
-                    <div class="poke-type-container d-flex flex-row">
-                        <div class="poke-type">
-                            <img src="./types/grass.png" alt="Grass Type" class="border rounded-circle">
+            <!-- Right Column -->
+            <div class="container column-3 d-flex flex-row col-md-4 col-sm-12 col-12">
+                <!-- <div class="d-flex flex-row text-md-left types-container-r">
+                    <h2 id="type-id">Type:</h2>
+                    <img src="./types/grass.png" alt="" class="rounded-circle border">
+                    <img src="./types/poison.png" alt="" class="rounded-circle  border">
+                </div> -->
+                <div class="d-flex flex-column third-col-left">
+                    <div class="pkmn_w_type center">
+                        <img src="./sugimori artwork/1.png" alt="" class="artwork">
+                        <p class="lead artwork-lead pkmn-name">Bulbasaur</p>
+                        <div class="d-flex flex-row type-container-r">
+                            <div class="d-flex flex-column">
+                                <img src="./types/grass.png" alt="">
+                                <p class="lead artwork-lead center">Grass</p>
+                            </div>
+                            <div class="d-flex flex-column">
+                                <img src="./types/poison.png" alt="">
+                                <p class="lead artwork-lead center">Poison</p>
+                            </div>
                         </div>
-                        <div class="poke-type">
-                            <img src="./types/poison.png" alt="Grass Type" class="border rounded-circle">
+                    </div>
+                    <h3 id="stats_title">Base Stats</h3>
+
+                    <div class="pkmn_stats_ex">
+                        <div class="stat stat-hp d-flex flex-row">
+                            <div class="test">
+                                <h5 class="atr">HP</h5>
+                                <h5 class="atr-val">45</h5>
+                                <div class="outer">
+                                    <div class="inner">
+                                        &nbsp;
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="test">
+                                <h5 class="atr">Atk</h5>
+                                <h5 class="atr-val">45</h5>
+                                <div class="outer">
+                                    <div class="inner">
+                                        &nbsp;
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="test">
+                                <h5 class="atr">Def</h5>
+                                <h5 class="atr-val">45</h5>
+                                <div class="outer">
+                                    <div class="inner">
+                                        &nbsp;
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="test">
+                                <h5 class="atr">Sp.Atk</h5>
+                                <h5 class="atr-val">45</h5>
+                                <div class="outer">
+                                    <div class="inner">
+                                        &nbsp;
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="test">
+                                <h5 class="atr">SP.Def</h5>
+                                <h5 class="atr-val">45</h5>
+                                <div class="outer">
+                                    <div class="inner">
+                                        &nbsp;
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="test">
+                                <h5 class="atr">Speed</h5>
+                                <h5 class="atr-val">45</h5>
+                                <div class="outer">
+                                    <div class="inner">
+                                        &nbsp;
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h3 id="weakness-h3">Weaknesses</h3>
+                    <div class="weakness-box center">
+                        <div class="weakness-img-box">
+                            <div class="weakness-img">
+                                <img src="./types/fire.png" alt="">
+                                <p class="artwork-lead lead center">Fire</p>
+                            </div>
+                            <div class="weakness-img">
+                                <img src="./types/flying.png" alt="">
+                                <p class="artwork-lead lead center">Flying</p>
+                            </div>
+                            <div class="weakness-img">
+                                <img src="./types/ice.png" alt="">
+                                <p class="artwork-lead lead center">Ice</p>
+                            </div>
+                            <div class="weakness-img">
+                                <img src="./types/psychic.png" alt="">
+                                <p class="artwork-lead lead center">Psychic</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="stats-container d-flex flex-column">
-                    <div class="stats-box">
-                        <h2 class="base_stats">Base Stats:</h2>
-                        <table class="table table-borderless">
-                            <tbody>
-                                <tr>
-                                    <th scope="row">HP:</th>
-                                    <td class="stat-0">45</td>
-                                    <td class="p-bar">
-                                        <div class="inner-bar rounded bar-0"></div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Attack:</th>
-                                    <td class="stat-1">65</td>
-                                    <td class="p-bar">
-                                        <div class="inner-bar rounded bar-1"></div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Defense:</th>
-                                    <td class="stat-2">65</td>
-                                    <td class="p-bar">
-                                        <div class="inner-bar rounded bar-2"></div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Sp.Atk:</th>
-                                    <td class="stat-3">49</td>
-                                    <td class="p-bar">
-                                        <div class="inner-bar rounded bar-3"></div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Sp.Def:</th>
-                                    <td class="stat-4">49</td>
-                                    <td class="p-bar">
-                                        <div class="inner-bar rounded bar-4"></div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Speed:</th>
-                                    <td class="stat-5">45</td>
-                                    <td class="p-bar">
-                                        <div class="inner-bar rounded bar-5"></div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="weakness d-flex flex-column">
-                    <h2 class="base_stats">Weakness:</h2>
-                    <div class="d-flex flex-wrap type-img">
-                        <img src="./types/Flying.png" alt="">
-                        <img src="./types/fire.png" alt="">
-                        <img src="./types/psychic.png" alt="">
-                        <img src="./types/ice.png" alt="">
+                <div class="d-none d-sm-none d-md-none d-lg-flex right-btn-container">
+                    <div class="btn-group btn-group-vertical" role="group">
+                        <button type="button" id="prev-btn" class="btn rightm-sidebar shadow-none">
+                            <ion-icon name="arrow-dropup" class="icon-up"></ion-icon>
+                        </button>
+                        <button type="button" class="btn numbered-btn shadow-none">1</button>
+                        <button type="button" class="btn numbered-btn shadow-none">2</button>
+                        <button type="button" class="btn numbered-btn shadow-none">3</button>
+                        <button type="button" class="btn numbered-btn shadow-none">4</button>
+                        <button type="button" class="btn numbered-btn shadow-none">5</button>
+                        <button type="button" class="btn numbered-btn shadow-none">6</button>
+                        <button type="button" class="btn numbered-btn shadow-none">7</button>
+                        <button type="button" class="btn numbered-btn shadow-none">8</button>
+                        <button type="button" class="btn numbered-btn shadow-none">9</button>
+                        <button type="button" class="btn numbered-btn shadow-none">10</button>
+                        <button type="button" id="next-btn" class="btn rightm-sidebar shadow-none">
+                            <ion-icon name="arrow-dropdown" class="icon-down"></ion-icon>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-
-
-
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
@@ -234,10 +235,11 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+
     <script src="ui.js"></script>
     <script src="pokedata.js"></script>
     <script src="app.js"></script>
-</body>
 </body>
 
 </html>
