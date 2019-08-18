@@ -2,7 +2,7 @@ const interface = new UI();
 const poke = new Pokedata(1);
 
 document.addEventListener('DOMContentLoaded', function () {
-    // getPokemon();
+    getPokemon();
 
 
 
@@ -20,8 +20,12 @@ document.addEventListener('DOMContentLoaded', function () {
 })
 
 function getPokemon() {
+    let typeArr = [];
     poke.fetchPokemon()
-        .then(resolve => { console.log(resolve.pokePromise); console.log(resolve.speciesPromise);})
+        .then(resolve => {
+            console.log(resolve.pokePromise);
+            console.log(resolve.speciesPromise);
+        })
         .catch(reject => {
             console.warn(reject)
         })

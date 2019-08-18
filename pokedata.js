@@ -6,14 +6,17 @@ class Pokedata {
     async fetchPokemon() {
         // First we retreive the pokemon, then the species in order to see its evolutionary chain.
 
+        //pokePromise contains abilities, id, name, sprites, stats, type, height/weight.
         const pokeResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${this.id_name}/`);
+        const pokePromise = await pokeResponse.json();
+
+        //speciesPromise contains information about the color and kanji. 
         const speciesResponse = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${this.id_name}/`);
         const speciesPromise = await speciesResponse.json();
-        const pokePromise = await pokeResponse.json();
 
         return {
             pokePromise,
-            speciesPromise
+            speciesPromise,
         }
     }
 
