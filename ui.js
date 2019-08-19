@@ -95,29 +95,40 @@ class UI {
 
         this.stat.insertAdjacentHTML('beforend', statHTML);
 
-        let typeRegex = new RegExp('[/]{1}[0-9]{1,2}[/]');
+        let alltypes = [], dr_arr, typeRegex = new RegExp('[/]{1}[0-9]{1,2}[/]');
 
         fetch(`https://pokeapi.co/api/v2/type/`).then((response) => {
             return response.json();
         }).then((resolve) => {
-            for (let i = 0; i < typeArr.length; i++) {
-                for (let j = 0; j < resolve.results.length; j++) {
-                    if (resolve.results[j].name === typeArr[i]) {
-                        typeNum.push(typeRegex.exec(resolve.results[j].url)[0].split("/")[1]);
-                    }
+            // for (let i = 0; i < typeArr.length; i++) {
+            //     for (let j = 0; j < resolve.results.length; j++) {
+            //         if (resolve.results[j].name === typeArr[i]) {
+            //             typeNum.push(typeRegex.exec(resolve.results[j].url)[0].split("/")[1]);
+            //         }
+            //     }
+            // }
+
+            alltypes = resolve.results.filter((item) => {
+                if (item.name === typeArr[0] || item.name === typeArr[1]) {
+                    return typeRegex.exec(item.url)[0].split("/")[1];
                 }
-            }
+            })
+            alltypes.map((item) => {
+                fetch(item.url).then((re) => { return re.json()}).then((res) => {
+                    return dr_arr.push(res.damage_relations)
+                })
+            })
         })
 
-        setTimeout(() => {
-            for (let i = 0; i < typeNum.length; i++) {
-                fetch(`https://pokeapi.co/api/v2/type/${Number(typeNum[i])}/`).then((response) => {
-                    return response.json();
-                }).then((resolve) => {
-                    console.log(resolve);
-                })
-            }
-        }, 500)
+        // setTimeout(() => {
+        //     for (let i = 0; i < typeNum.length; i++) {
+        //         fetch(`https://pokeapi.co/api/v2/type/${Number(typeNum[i])}/`).then((response) => {
+        //             return response.json();
+        //         }).then((resolve) => {
+        //             console.log(resolve);
+        //         })
+        //     }
+        // }, 500)
 
 
 
