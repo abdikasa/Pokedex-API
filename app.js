@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-
     // //Add the animation to the pokemon div.
     // interface.pokemon.classList.toggle('animate-gengar');
 
@@ -20,11 +19,12 @@ document.addEventListener('DOMContentLoaded', function () {
 })
 
 function getPokemon() {
-    let typeArr = [];
     poke.fetchPokemon()
         .then(resolve => {
             console.log(resolve.pokePromise);
             console.log(resolve.speciesPromise);
+            interface.paintUI(resolve.pokePromise, resolve.speciesPromise);
+
         })
         .catch(reject => {
             console.warn(reject)
