@@ -146,12 +146,17 @@ body {
     font-weight: 400;
 }
 
+.padded-lr {
+    padding: 0 1rem;
+}
+
 #region-word {
     font-size: 1.05em;
     font-weight: 600;
     transform: rotate(-90deg);
     transform-origin: 0 0;
     text-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
+    text-transform: capitalize;
 }
 
 #loc {
@@ -215,7 +220,12 @@ body {
     width: 5.5rem;
 }
 
+.list-inline-item {
+    text-transform: capitalize;
+}
+
 .artwork-lead {
+    text-transform: capitalize;
     font-size: 1.2em;
     font-weight: 600;
     margin-top: 17px;
@@ -326,7 +336,6 @@ body {
 .atr, .atr-val {
     color: #fff;
     padding-bottom: 10px;
-    text-transform: uppercase;
 }
 
 .numbered-btn:hover {
