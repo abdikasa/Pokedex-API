@@ -22,3 +22,6 @@ class Pokedata {
 
 
 }
+
+// evol = chain.chain.evolves_to.map((item) => {return [item.species]}).reduce((acc, curr) => {return acc.concat(curr)}, [])
+// console.log(evol);
