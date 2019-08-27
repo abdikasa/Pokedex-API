@@ -147,7 +147,7 @@ body {
 }
 
 .padded-lr {
-    padding: 0 1rem;
+    padding: 0 0.3rem;
 }
 
 #region-word {
@@ -271,20 +271,60 @@ body {
 }
 
 .outer {
-    background-color: blue;
-    border: 2px solid blue;
     /* height: 10px; */
     height: 100px;
-    width: 20px;
+    width: 15px;
     margin: 0 auto;
 }
 
-.inner {
-    background-color: red;
-    height: 25%;
-    width: 100%;
-    /* height: 100%; */
-    /* width:25%; */
+.outer-0 {
+    border: 1px solid green;
+    background: linear-gradient(0deg, rgba(30, 99, 6, 0.5), rgba(65, 184, 32, 0.25));
+}
+
+.outer-1, .outer-5 {
+    background: linear-gradient(0deg, rgba(253, 7, 1, 1), rgba(253, 127, 127, 0.75));
+    border: 1px solid red;
+}
+
+.outer-2 {
+    background: linear-gradient(0deg, rgba(255, 165, 0, 1), rgba(255, 174, 25, 0.7));
+    border: 1px solid orange;
+}
+
+.outer-3 {
+    background: linear-gradient(0deg, rgba(198, 25, 255, 0.5), rgba(211, 75, 255, 0.25));
+    border: 1px solid purple;
+}
+
+.outer-4 {
+    background: linear-gradient(0deg, rgba(0, 0, 153, 0.5), rgba(0, 0, 178, 0.25));
+    border: 1px solid blue;
+}
+
+.inner-0 {
+    background-color: lightgreen;
+    border: 1px solid lightgreen;
+}
+
+.inner-1, .inner-5 {
+    background-color: lightcoral;
+    border: 1px solid lightcoral;
+}
+
+.inner-2 {
+    background-color: rgb(255, 198, 94);
+    border: 1px solid rgb(255, 198, 94);
+}
+
+.inner-3 {
+    background-color: rgb(204, 153, 204);
+    border: 1px solid rgb(204, 153, 204);
+}
+
+.inner-4 {
+    background-color: rgb(178, 178, 255);
+    border: 1px solid rgb(178, 178, 255);
 }
 
 .weakness-img img {
@@ -299,8 +339,6 @@ body {
 .center {
     text-align: center;
 }
-
-.padded {}
 
 .third-col-left {
     width: 90%;
@@ -336,6 +374,7 @@ body {
 .atr, .atr-val {
     color: #fff;
     padding-bottom: 10px;
+    text-shadow: 0 0 12px rgba(0, 0, 0, 0.56);
 }
 
 .numbered-btn:hover {
