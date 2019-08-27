@@ -14,7 +14,7 @@ class UI {
         this.pkmnType = document.querySelector('.type-container-r');
         this.stat = document.querySelector('.stat');
         this.weaknessSection = document.querySelector('.weakness-img-box');
-
+        this.evolve_container = document.querySelector('.evolve-container');
     }
 
     removeLoader() {
@@ -38,16 +38,26 @@ class UI {
 
     paintUI(resource, resource2) {
 
+        /** 
+        * Get pokemon ID/pokedex number, if pokeID is less than 100.
+        * Prepend 00 to the number.
+       */
+
         if (resource.id < 100 && resource.id != 100) {
             this.pokeId.textContent = '00' + resource.id;
         } else {
             this.pokeId.textContent = resource.id;
         }
 
-        this.pokeName.textContent = resource.name;
-        this.pkmnName.textContent = resource.name;
+        /** 
+        * Pokemon's name is stored here.
+       */
 
-        //Check how many abilities a pokemon had
+        this.pokeName.textContent = resource.name;
+
+        /** 
+        * Get Pokemon's abilities.
+       */
         let abilitiesCount = resource.abilities;
 
         let abilityHtml = '';
@@ -58,9 +68,11 @@ class UI {
                 abilityHtml += `<li class="list-inline-item">${abilitiesCount[i].ability.name},</li>`;
             }
         }
-
         this.abilities.insertAdjacentHTML('beforeend', abilityHtml);
 
+        /** 
+         * Pokemon Height, Weight, Region, Kanji, and Image are retreived here.
+        */
         this.height.textContent = '0.' + resource.height + 'm';
         this.weight.textContent = `${resource.weight / 10}kg`;
 
@@ -70,27 +82,42 @@ class UI {
 
         this.pkmImage.src = `./sugimori artwork/${resource.id}.png`
 
+
+        /** 
+        * Get the pokemon's type.
+        * First sort the type by alphabetical order.
+        * Get the pokemon's image, name and type stored in HTML format.
+       */
+
         let typeCount = resource.types.sort((a, b) => { return a.slot - b.slot });
 
         let typeHTML = ``, typeArr = [];
 
         for (let i = 0; i < typeCount.length; i++) {
-            // sortedTypes.push(typeCount[i].type.name);
-            // sortedTypes.sort();
+
             typeHTML += `<div class="d-flex flex-column padded-lr">
             <img src="./types/${typeCount[i].type.name}.png" alt="${typeCount[i].type.name}">
             <p class="lead artwork-lead center pkmn-type">${typeCount[i].type.name}</p>
         </div>`
             typeArr.push(typeCount[i].type.name);
         }
-        // console.log(sortedTypes);
         this.pkmnType.insertAdjacentHTML('beforeend', typeHTML);
+        this.pkmnType.insertAdjacentHTML('beforebegin', `<img src="./sugimori artwork/${resource.id}.png" alt="" class="artwork">
+        <p class="lead artwork-lead pkmn-name">${resource.name}</p>`)
+
+
+        /** 
+        * Get the 6 Pokemon stats: HP, Attack, Defense, Special Attack, Special Defense and Speed.
+        * Reverse order since the pokeAPI starts with speed instead of HP.
+        * Store the abbreviations instead of the long format for stat names. Switch statment used.
+        * Store data as HTML. Calculate the height for the bar graph's value, I used a ceiling of 150.
+        * Output the data.
+        */
 
         let statHTML = '', statName;
 
         for (let i = 5; i > -1; i--) {
             let abbrev = { ATK: 'Attack', DEF: 'Defense', SpA: 'Special-Attack', SpD: 'Special-Defense', Spe: 'Speed' }
-            //resource.stats[i].stat.name.toLowerCase()
             switch (resource.stats[i].stat.name.toLowerCase()) {
                 case abbrev[Object.keys(abbrev)[0]].toLowerCase():
                     statName = Object.keys(abbrev)[0];
@@ -115,8 +142,8 @@ class UI {
             statHTML += `<div class="test">
             <h5 class="atr">${statName}</h5>
             <h5 class="atr-val">${resource.stats[i].base_stat}</h5>
-            <div class="outer">
-                <div class="inner">
+            <div class="outer outer-${i}">
+                <div class="inner-${i}" style="height: calc(100% - ${(resource.stats[i].base_stat / 150) * 100}%);">
                     &nbsp;
                 </div>
             </div>
@@ -125,20 +152,19 @@ class UI {
 
         this.stat.insertAdjacentHTML('beforeend', statHTML);
 
+        /** 
+        * The goal is to get the pokemon's weaknesses by cross checking, removing any overlaps with their strengths, weaknesses, immunities.
+        * First we do a generic call to retrieve all types, cross checking to  see if our type is found in the API.
+        * Then we use Reg Expressions to cut the essential part of the data the id number from the url variable in the API.
+        * Then we perform another fetch call to get the type's weaknesses, strengths, etc.
+        * We push the data to an array and manipulate the data. 
+       */
+
         let alltypes = [], dr_arr = [], typeRegex = new RegExp('[/]{1}[0-9]{1,2}[/]');
 
         fetch(`https://pokeapi.co/api/v2/type/`).then((response) => {
             return response.json();
         }).then((resolve) => {
-
-            // old
-            // for (let i = 0; i < typeArr.length; i++) {
-            //     for (let j = 0; j < resolve.results.length; j++) {
-            //         if (resolve.results[j].name === typeArr[i]) {
-            //             typeNum.push(typeRegex.exec(resolve.results[j].url)[0].split("/")[1]);
-            //         }
-            //     }
-            // }
 
             alltypes = resolve.results.filter((item) => {
                 if (item.name === typeArr[0] || item.name === typeArr[1]) {
@@ -146,8 +172,6 @@ class UI {
                 }
             })
             console.log(alltypes);
-
-
 
             alltypes.map((item) => {
                 fetch(item.url).then((re) => { return re.json() }).then((res) => {
@@ -179,10 +203,60 @@ class UI {
                             <p class="artwork-lead lead center">${dr_arr[i].name}</p>
                             </div>`
                 }
-
                 this.weaknessSection.insertAdjacentHTML('beforeend', weaknessHTML);
 
-            }, 100)
+                fetch(`${resource2.evolution_chain.url}`).then((res) => { return res.json() }).then((response) => {
+
+                    let chain = response;
+                    console.log(chain);
+
+                    let evol = [];
+                    let index = 0;
+                    while (chain.chain.evolves_to[index]) {
+                        if (chain.chain.evolves_to.length > 1) {
+                            // evol.push(chain.chain.species, chain.chain.evolves_to[index].species);
+                            index++;
+                        } else if (chain.chain.evolves_to.length === 1) {
+                            //If there is only one object  returned, there are no branched evolutions.
+                            //So the object will first return the base pokemon evolution, the first form.
+                            evol.push(chain.chain.species);
+
+                            //Next check if the evolves_to.length != 0, pokemon with 2 evolutions
+                            if (chain.chain.evolves_to[index].species.name === resource.name &&         chain.chain.evolves_to[index].evolves_to.length === 0) {
+                                evol.push(chain.chain.evolves_to[index].species);
+                            } else {
+                                //Pokemon with three evolutions
+                                evol.push(chain.chain.evolves_to[index].species);
+                                evol.push(chain.chain.evolves_to[index].evolves_to[index].species);
+                            }
+
+                            break;
+                        }
+                    }
+                    console.log(evol);
+
+                    // let regex = /[/](\d)+[/]/.exec(`${string}`)[0].split("/")[1])
+                    let evolHTML = ``
+                    if (evol != []) {
+                        evol.forEach((item, index) => {
+                            evol[index].url = (/[/](\d)+[/]/.exec(item.url)[0].split("/")[1]);
+                            if (evol[index].url > 151) {
+                                return;
+                            }
+                            evolHTML +=
+                                `<div class="part-${index + 1}"><img src="./sugimori artwork/${item.url}.png" alt="">
+                                <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${item.name}</p>
+                                </div><div class="arr"><img src="./right-arrow.png" alt=""></div>`
+                        })
+                    }
+                    this.evolve_container.insertAdjacentHTML('beforeend', evolHTML);
+                    this.evolve_container.removeChild(this.evolve_container.lastChild);
+                })
+
+
+
+
+            }, 1000)
         })
 
 
@@ -223,8 +297,15 @@ class UI {
 
     separateWRI(arr) {
         let newArr = [];
-        newArr[0] = arr.slice(0, 1).concat(arr[3].slice(0)).reduce((acc, curr) => { return acc.concat(curr) }, []);
-        newArr[1] = arr.slice(1, 3).concat(arr.slice(4)).reduce((acc, curr) => { return acc.concat(curr) }, []);
+        if (arr.length === 3) {
+            newArr[0] = arr.slice(0, 1).reduce((acc, curr) => { return acc.concat(curr) }, []);
+            newArr[1] = arr.slice(1, 3).reduce((acc, curr) => { return acc.concat(curr) }, []);
+        } else {
+            newArr[0] = arr[0].slice(0).concat(arr[3].slice(0)).reduce((acc, curr) => { return acc.concat(curr) }, []);
+            console.log(newArr[0]);
+            newArr[1] = arr.slice(1, 3).concat(arr.slice(4)).reduce((acc, curr) => { return acc.concat(curr) }, []);
+            console.log("not 3")
+        }
         return newArr;
     }
 
