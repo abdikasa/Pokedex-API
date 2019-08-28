@@ -306,6 +306,23 @@ class UI {
             newArr[1] = arr.slice(1, 3).concat(arr.slice(4)).reduce((acc, curr) => { return acc.concat(curr) }, []);
             console.log("not 3")
         }
+
+        //Check for duplicates, pokemon can have different weakness ratios to certain types
+        //Like 4x effective, 4x not-effective, 2x, 1x, 0.5x, etc.
+        //First, sort the types in alphabetical order.
+        newArr.forEach((item, index) => {
+            newArr[index].sort((a, b) =>{return a.name > b.name ? 1: -1})
+        })
+
+        //Then, sort the objects by name and delete the duplicates.
+        for(let i = 0; i < newArr.length; i++){
+            for(let j = 0; j < newArr[i].length-1; j++){
+                if(newArr[i][j].name === newArr[i][j+1].name){
+                    newArr[i].splice(j, 1);
+                }         
+            }
+        }
+
         return newArr;
     }
 
