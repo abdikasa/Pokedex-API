@@ -8,6 +8,10 @@ html, body {
     margin: 0;
 }
 
+body {
+    transition: background-color 0.3s;
+}
+
 .loader-screen {
     opacity: 1;
     transition: opacity 0.25s ease-in-out;
@@ -190,7 +194,7 @@ body {
     background-color: transparent;
     border: 0;
     text-shadow: 0 0 12px rgba(0, 0, 0, 0.56);
-    font-size: 1.3em;
+    font-size: 1.2em;
 }
 
 .evolutionary-chain {
@@ -214,6 +218,19 @@ body {
     width: 70%;
     justify-content: space-between;
     align-items: center;
+}
+
+.pkmn-two-evols{
+    /* width: 100%; or smaller screens*/
+    width:45%;
+    margin: 0 auto;
+    justify-content: space-between;
+}
+
+.pkmn-one-evol {
+    width:40%;
+    justify-content: center;
+    margin:0 auto;
 }
 
 .part-1 img, .part-2 img, .part-3 img {

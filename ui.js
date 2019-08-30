@@ -43,10 +43,10 @@ class UI {
         * Prepend 00 to the number.
        */
 
-        if (resource.id < 100 && resource.id != 100) {
-            this.pokeId.textContent = '00' + resource.id;
+        if (resource.id < 10) {
+            this.pokeId.textContent = '#00' + resource.id;
         } else {
-            this.pokeId.textContent = resource.id;
+            this.pokeId.textContent = '#0' + resource.id;
         }
 
         /** 
@@ -80,8 +80,39 @@ class UI {
 
         this.kanji.textContent = `${resource2.names[10].name}`;
 
-        this.pkmImage.src = `./sugimori artwork/${resource.id}.png`
+        // this.pkmImage.src = `./sugimori artwork/${resource.id}.png`
 
+        //From Vibrant JS
+        //Provides a unique color pallette.
+
+        // this.pkmImage.setAttribute('src', `./sugimori artwork/${resource.id}.png`);
+
+        let pallette = [];
+
+        const checkImage = path =>
+            new Promise(resolve => {
+                this.pkmImage.onload = () => resolve({ path, status: 'ok' });
+                this.pkmImage.onerror = () => resolve({ path, status: 'error' });
+                this.pkmImage.src = path;
+            });
+
+
+        checkImage(`./sugimori artwork/${resource.id}.png`).then(() => {
+            var vibrant = new Vibrant(this.pkmImage);
+            var swatches = vibrant.swatches()
+            for (var swatch in swatches) {
+                if (swatches.hasOwnProperty(swatch) && swatches[swatch]) {
+                    console.log(swatch, swatches[swatch].getHex())
+                    pallette.push(swatches[swatch].getHex());
+                }
+            }
+            // document.body.style.backgroundColor=`${pallette[Math.floor(Math.random() * 5)
+            // ]}`;
+            document.body.style.backgroundColor = `${pallette[0]}`;
+            console.log(document.body.style.backgroundColor);
+        })
+
+        console.log("are you happy")
 
         /** 
         * Get the pokemon's type.
@@ -96,7 +127,7 @@ class UI {
         for (let i = 0; i < typeCount.length; i++) {
 
             typeHTML += `<div class="d-flex flex-column padded-lr">
-            <img src="./types/${typeCount[i].type.name}.png" alt="${typeCount[i].type.name}">
+            <img src="./types/${typeCount[i].type.name}.webp" alt="${typeCount[i].type.name}">
             <p class="lead artwork-lead center pkmn-type">${typeCount[i].type.name}</p>
         </div>`
             typeArr.push(typeCount[i].type.name);
@@ -160,6 +191,7 @@ class UI {
         * We push the data to an array and manipulate the data. 
        */
 
+
         let alltypes = [], dr_arr = [], typeRegex = new RegExp('[/]{1}[0-9]{1,2}[/]');
 
         fetch(`https://pokeapi.co/api/v2/type/`).then((response) => {
@@ -178,7 +210,9 @@ class UI {
                     return dr_arr.push([res.damage_relations.double_damage_from], [res.damage_relations.half_damage_from], [res.damage_relations.no_damage_from]);
                 })
             })
+
             setTimeout(() => {
+
                 console.log(dr_arr)
                 //Before: dr_arr === [Arr(1)...Arr(1)]
                 dr_arr = dr_arr.reduce((acc, curr) => { return acc.concat(curr) }, []);
@@ -190,6 +224,9 @@ class UI {
                 dr_arr = this.compareTypeWRI(dr_arr);
                 console.log(dr_arr, "final weakness");
 
+                dr_arr = this.doSomething(this.weaknessSection, 'weakness-img-box', dr_arr);
+                console.log(dr_arr);
+
                 //After: dr_arr === [Arr(2)...Arr(n)]
                 // dr_arr = this.clearEmpty(dr_arr);
                 let weaknessHTML = '';
@@ -199,9 +236,9 @@ class UI {
 
                 for (let i = 0; i < dr_arr.length; i++) {
                     weaknessHTML += `<div class="weakness-img">
-                        <img src="./types/${dr_arr[i].name}.png" alt="${dr_arr[i].name}">
-                            <p class="artwork-lead lead center">${dr_arr[i].name}</p>
-                            </div>`
+                            <img src="./types/${dr_arr[i].name}.webp" alt="${dr_arr[i].name}">
+                                <p class="artwork-lead lead center">${dr_arr[i].name}</p>
+                                </div>`
                 }
                 this.weaknessSection.insertAdjacentHTML('beforeend', weaknessHTML);
 
@@ -214,64 +251,74 @@ class UI {
                     let index = 0;
                     while (chain.chain.evolves_to[index]) {
                         if (chain.chain.evolves_to.length > 1) {
-                            // evol.push(chain.chain.species, chain.chain.evolves_to[index].species);
+                            if (index === chain.chain.evolves_to.length - 1) {
+                                this.branchedEvols(evol, chain.chain.species);
+                            }
+                            evol.push(chain.chain.evolves_to[index].species);
                             index++;
                         } else if (chain.chain.evolves_to.length === 1) {
                             //If there is only one object  returned, there are no branched evolutions.
                             //So the object will first return the base pokemon evolution, the first form.
                             evol.push(chain.chain.species);
 
-                            //Next check if the evolves_to.length != 0, pokemon with 2 evolutions
-                            if (chain.chain.evolves_to[index].species.name === resource.name &&         chain.chain.evolves_to[index].evolves_to.length === 0) {
+                            //Next check if the evolves_to.length === 1, pokemon with 2 evolutions
+                            if ((chain.chain.evolves_to[index].species.name === resource.name) && (chain.chain.evolves_to[index].evolves_to.length === 0)) {
+                                evol.push(chain.chain.evolves_to[index].species);
+                            } else if ((chain.chain.evolves_to[index].species.name != resource.name) && (chain.chain.evolves_to[index].evolves_to.length === 0)) {
                                 evol.push(chain.chain.evolves_to[index].species);
                             } else {
                                 //Pokemon with three evolutions
                                 evol.push(chain.chain.evolves_to[index].species);
                                 evol.push(chain.chain.evolves_to[index].evolves_to[index].species);
                             }
-
                             break;
                         }
                     }
+
                     console.log(evol);
 
-                    // let regex = /[/](\d)+[/]/.exec(`${string}`)[0].split("/")[1])
-                    let evolHTML = ``
-                    if (evol != []) {
+                    evol = this.doSomething(this.evolve_container, 'evolve-container', evol);
+
+                    let evolHTML = ``;
+                    // let regex = /[/](\d)+[/]/;
+                    if (evol.length != 0) {
                         evol.forEach((item, index) => {
-                            evol[index].url = (/[/](\d)+[/]/.exec(item.url)[0].split("/")[1]);
-                            if (evol[index].url > 151) {
-                                return;
-                            }
+                            // evol[index].url = (regex.exec(item.url)[0].split('/')[1]);
+                            // if (evol[index].url > 151) {
+                            //     return;
+                            // }
                             evolHTML +=
-                                `<div class="part-${index + 1}"><img src="./sugimori artwork/${item.url}.png" alt="">
-                                <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${item.name}</p>
-                                </div><div class="arr"><img src="./right-arrow.png" alt=""></div>`
+                                `<div class="part-1"><img src="./sugimori artwork/${item.url}.png" alt="">
+                                    <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${item.name}</p>
+                                    </div>`
+                            // <div class="arr"><img src="./right-arrow.png" alt=""></div>
                         })
+                    } else {
+                        evolHTML +=
+                            `<div class="part-1"><img src="./sugimori artwork/${resource.id}.png" alt=""><p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${resource.name}</p></div>`
+                        // <div class="arr"><img src="./right-arrow.png" alt=""></div>`
                     }
+
                     this.evolve_container.insertAdjacentHTML('beforeend', evolHTML);
-                    this.evolve_container.removeChild(this.evolve_container.lastChild);
+                    // this.evolve_container.removeChild(this.evolve_container.lastChild);
                 })
-
-
-
-
             }, 1000)
+
         })
 
 
-
-        // old
-        // setTimeout(() => {
-        //     for (let i = 0; i < typeNum.length; i++) {
-        //         fetch(`https://pokeapi.co/api/v2/type/${Number(typeNum[i])}/`).then((response) => {
-        //             return response.json();
-        //         }).then((resolve) => {
-        //             console.log(resolve);
-        //         })
-        //     }
-        // }, 500)
     }
+
+    // old
+    // setTimeout(() => {
+    //     for (let i = 0; i < typeNum.length; i++) {
+    //         fetch(`https://pokeapi.co/api/v2/type/${Number(typeNum[i])}/`).then((response) => {
+    //             return response.json();
+    //         }).then((resolve) => {
+    //             console.log(resolve);
+    //         })
+    //     }
+    // }, 500)
 
     //Replaced with reduce built in function.
     // clearEmpty(arr) {
@@ -311,19 +358,58 @@ class UI {
         //Like 4x effective, 4x not-effective, 2x, 1x, 0.5x, etc.
         //First, sort the types in alphabetical order.
         newArr.forEach((item, index) => {
-            newArr[index].sort((a, b) =>{return a.name > b.name ? 1: -1})
+            newArr[index].sort((a, b) => { return a.name > b.name ? 1 : -1 })
         })
 
         //Then, sort the objects by name and delete the duplicates.
-        for(let i = 0; i < newArr.length; i++){
-            for(let j = 0; j < newArr[i].length-1; j++){
-                if(newArr[i][j].name === newArr[i][j+1].name){
+        for (let i = 0; i < newArr.length; i++) {
+            for (let j = 0; j < newArr[i].length - 1; j++) {
+                if (newArr[i][j].name === newArr[i][j + 1].name) {
                     newArr[i].splice(j, 1);
-                }         
+                }
             }
         }
 
         return newArr;
     }
 
+    branchedEvols(arr, passed) {
+        return arr.unshift(passed);
+    }
+
+    removePokeFrom151Up(arr) {
+        let regex = /[/](\d)+[/]/;
+        // evol[index].url = (regex.exec(item.url)[0].split('/')[1]);
+        arr.forEach((item, index) => {
+            arr[index].url = (regex.exec(item.url)[0].split('/')[1]);
+        })
+
+        arr = arr.filter((item, index) => {
+            if (Number(item.url) < 152) {
+                return item;
+            }
+        })
+        console.log(arr);
+        return arr;
+    }
+
+    doSomething(domelem, classname, elem) {
+        if (domelem.classList.item(domelem.classList.length - 1) != `${classname}`) {
+            //Delete it
+            domelem.classList.remove(domelem.classList.item(domelem.classList.length - 1));
+        }
+
+        elem = this.removePokeFrom151Up(elem);
+
+        if (elem.length === 2) {
+            domelem.classList.add('pkmn-two-evols');
+        }
+        else if (elem.length === 0 || elem.length === 1) {
+            domelem.classList.add('pkmn-one-evol');
+        }
+        return elem;
+    }
+
+
 }
+

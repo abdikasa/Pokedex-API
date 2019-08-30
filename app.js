@@ -1,11 +1,8 @@
 const interface = new UI();
-const poke = new Pokedata(6);
+const poke = new Pokedata(9);
 
 document.addEventListener('DOMContentLoaded', function () {
-    getPokemon();
-
-
-
+    getPokemon()
 
     // //Add the animation to the pokemon div.
     // interface.pokemon.classList.toggle('animate-gengar');
@@ -17,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
     //     });
     // })
 })
+
 
 function getPokemon() {
     poke.fetchPokemon()
