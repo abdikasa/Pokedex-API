@@ -1,5 +1,5 @@
 const interface = new UI();
-const poke = new Pokedata(95);
+const poke = new Pokedata(125);
 
 document.addEventListener('DOMContentLoaded', function () {
     getPokemon()
