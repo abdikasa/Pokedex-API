@@ -9,7 +9,7 @@ html, body {
 }
 
 body {
-    transition: background-color 0.5s;
+    transition: background-color 0.2s;
 }
 
 .loader-screen {
@@ -296,7 +296,7 @@ body {
 
 .outer-0 {
     border: 1px solid green;
-    background: linear-gradient(0deg, rgba(30, 99, 6, 0.5), rgba(65, 184, 32, 0.25));
+    background: linear-gradient(0deg, #0f9b0f, rgba(65, 184, 32, 1));
 }
 
 .outer-1, .outer-5 {
@@ -321,7 +321,6 @@ body {
 
 .inner-0 {
     background-color: lightgreen;
-    border: 1px solid lightgreen;
 }
 
 .inner-1, .inner-5 {
@@ -331,7 +330,7 @@ body {
 
 .inner-2 {
     background-color: rgb(255, 198, 94);
-    border: 1px solid rgb(255, 198, 94);
+    border: 2px solid rgb(255, 198, 94);
 }
 
 .inner-3 {
@@ -397,4 +396,9 @@ body {
 .numbered-btn:hover {
     transform: scale(1.2);
     color: rgb(255, 255, 255);
+}
+
+.btn-numbered-class {
+    display: flex;
+    flex-direction: column;
 }
