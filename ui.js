@@ -15,6 +15,7 @@ class UI {
         this.stat = document.querySelector('.stat');
         this.weaknessSection = document.querySelector('.weakness-img-box');
         this.evolve_container = document.querySelector('.evolve-container');
+        this.pokedexIndex = document.querySelector('.btn-numbered-class');
     }
 
     removeLoader() {
@@ -99,7 +100,7 @@ class UI {
             });
 
 
-        checkImage(`./sugimori artwork/${resource.id}.png`).then(() => {
+        checkImage(`./sugimori artwork/test/${resource.id}.png.webp`).then(() => {
             var vibrant = new Vibrant(this.pkmImage);
             var swatches = vibrant.swatches()
             for (var swatch in swatches) {
@@ -138,7 +139,7 @@ class UI {
             typeArr.push(typeCount[i].type.name);
         }
         this.pkmnType.insertAdjacentHTML('beforeend', typeHTML);
-        this.pkmnType.insertAdjacentHTML('beforebegin', `<img src="./sugimori artwork/${resource.id}.png" alt="" class="artwork">
+        this.pkmnType.insertAdjacentHTML('beforebegin', `<img src="./sugimori artwork/test/${resource.id}.png.webp" alt="" class="artwork">
         <p class="lead artwork-lead pkmn-name">${resource.name}</p>`)
 
 
@@ -221,13 +222,14 @@ class UI {
                 }))
             })
             .then((dr_arr) => {
-
-                dr_arr = dr_arr.reduce((acc, curr) => { return acc.concat(curr) }, []);
-                console.log(dr_arr, "reduced array");
-
-                dr_arr = this.separateWRI(dr_arr);
-                console.log(dr_arr, "separated the strengths/weaknesses for clarity")
-
+                return dr_arr.reduce((acc, curr) => { return acc.concat(curr) }, []);
+            })
+            .then((dr_arr) => {
+                return this.separateWRI(dr_arr);
+            })
+            .then((dr_arr) => {
+                // dr_arr = this.separateWRI(dr_arr);
+                // console.log(dr_arr, "separated the strengths/weaknesses for clarity")
                 dr_arr = this.compareTypeWRI(dr_arr);
                 console.log(dr_arr, "Only the pokemon's weaknesses --- Data is to be outputted to the screen");
 
@@ -241,14 +243,15 @@ class UI {
 
                 for (let i = 0; i < dr_arr.length; i++) {
                     weaknessHTML += `<div class="weakness-img">
-                            <img src="./types/${dr_arr[i].name}.webp" alt="${dr_arr[i].name}">
-                                <p class="artwork-lead lead center">${dr_arr[i].name}</p>
-                                </div>`
+                        <img src="./types/${dr_arr[i].name}.webp" alt="${dr_arr[i].name}">
+                            <p class="artwork-lead lead center">${dr_arr[i].name}</p>
+                            </div>`
                 }
                 this.weaknessSection.insertAdjacentHTML('beforeend', weaknessHTML);
             })
-
-        //Broke out of the pokemon's type section and into the evolution chain. 
+            .catch((err) => {
+                console.log(err);
+            })
 
         fetch(`${resource2.evolution_chain.url}`).then((res) => { return res.json() }).then((response) => {
 
@@ -306,35 +309,67 @@ class UI {
                     //     return;
                     // }
                     evolHTML +=
-                        `<div class="part-1"><img src="./sugimori artwork/${item.url}.png" alt="">
-                                    <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${item.name}</p>
-                                    </div>`
+                        `<div class="part-1"><img src="./sugimori artwork/test/${item.url}.png.webp" alt="">
+                                            <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${item.name}</p>
+                                            </div>`
                     // <div class="arr"><img src="./right-arrow.png" alt=""></div>
                 })
             } else {
                 evolHTML +=
-                    `<div class="part-1"><img src="./sugimori artwork/${resource.id}.png" alt=""><p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${resource.name}</p></div>`
+                    `<div class="part-1"><img src="./sugimori artwork/test/${resource.id}.png.webp" alt=""><p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${resource.name}</p></div>`
                 // <div class="arr"><img src="./right-arrow.png" alt=""></div>`
             }
 
             this.evolve_container.insertAdjacentHTML('beforeend', evolHTML);
             // this.evolve_container.removeChild(this.evolve_container.lastChild);
         })
+
+        let numberedHTML = ``;
+        //get the pokemon id
+        let mined, maxed;
+        mined = maxed = resource.id;
+
+        //Check the length
+        if (String(resource.id).length != 1 && String(resource.id).charAt(String(resource.id).length - 1) != 0) {
+
+            console.log(`pokedex id, length = ${mined.toString().length}`)
+            mined = mined - Number(mined.toString().charAt(mined.toString().length - (mined.toString().length - 1))) + 1;
+            maxed = maxed - Number((maxed.toString()).charAt(maxed.toString().length - (maxed.toString().length - 1))) + 10;
+
+        } else if (String(resource.id).length != 1 && String(resource.id).charAt(String(resource.id).length - 1 === 0)) {
+            console.log("last digit is 0")
+            mined = mined - 10 + 1;
+            maxed = maxed - Number((maxed.toString()).charAt(maxed.toString().length - (maxed.toString().length))) + 1;
+        } else {
+
+            mined = mined - Number(mined.toString().charAt(mined.toString().length - (mined.toString().length))) + 1;
+            maxed = maxed - Number((maxed.toString()).charAt(maxed.toString().length - (maxed.toString().length))) + 10;
+
+        }
+
+        console.log(mined, maxed);
+        //iterate through the buttons
+        for (let i = mined; i < maxed + 1; i++) {
+            numberedHTML += `<button type="button" class="btn numbered-btn shadow-none">${i}</button>`
+        }
+
+        this.pokedexIndex.insertAdjacentHTML('beforeend', numberedHTML);
     }
 
     compareTypeWRI(arr) {
-        for (let i = 0; i < arr[0].length; i++) {
-            for (let j = 0; j < arr[1].length; j++) {
-                if (arr[0][i].name === arr[1][j].name) {
-                    arr[0].splice(i, 1);
-                }
-            }
-        }
-        return arr[0];
+        // for (let i = 0; i < arr[0].length; i++) {
+        //     for (let j = 0; j < arr[1].length; j++) {
+        //         if (arr[1][j].name === arr[0][i].name) {
+        //             arr[0].splice(i, 1);
+        //             i--;
+        //         }
+        //     }
+        // }
+        // return arr[0];
+        return arr[0].filter((code) => arr[1].every((coded) => code.name !== coded.name))
     }
 
     separateWRI(arr) {
-        console.log(arr[0])
         let newArr = [];
         if (arr.length === 3) {
             newArr[0] = arr.slice(0, 1).reduce((acc, curr) => { return acc.concat(curr) }, []);
