@@ -11,6 +11,7 @@ class UI {
         this.kanji = document.querySelector('#kanji');
         this.pkmImage = document.querySelector('#pkm-image');
         this.pkmnName = document.querySelector('.pkmn-name');
+        this.pkmnWType = document.querySelector('.pkmn_w_type');
         this.pkmnType = document.querySelector('.type-container-r');
         this.stat = document.querySelector('.stat');
         this.weaknessSection = document.querySelector('.weakness-img-box');
@@ -331,7 +332,6 @@ class UI {
 
         //Check the length
         if (String(resource.id).length != 1 && String(resource.id).charAt(String(resource.id).length - 1) != 0) {
-
             console.log(`pokedex id, length = ${mined.toString().length}`)
             mined = mined - Number(mined.toString().charAt(mined.toString().length - (mined.toString().length - 1))) + 1;
             maxed = maxed - Number((maxed.toString()).charAt(maxed.toString().length - (maxed.toString().length - 1))) + 10;
@@ -350,7 +350,11 @@ class UI {
         console.log(mined, maxed);
         //iterate through the buttons
         for (let i = mined; i < maxed + 1; i++) {
-            numberedHTML += `<button type="button" class="btn numbered-btn shadow-none">${i}</button>`
+            if(i === Number(resource.id)) {
+                numberedHTML += `<button type="button" class="btn numbered-btn selected-num shadow-none">${i}</button>`;
+            }else{
+                numberedHTML += `<button type="button" class="btn numbered-btn shadow-none">${i}</button>`;
+            }
         }
 
         this.pokedexIndex.insertAdjacentHTML('beforeend', numberedHTML);
@@ -435,6 +439,30 @@ class UI {
             domelem.classList.add('pkmn-one-evol');
         }
         return elem;
+    }
+
+    clearUI() {
+        // this.loading.textContent = ``;
+        // this.pokemon.textContent = ``;
+        this.pokeId.textContent = ``;
+        this.pokeName.textContent = ``;
+        this.abilities.textContent = ``;
+        this.height.textContent = ``;
+        this.weight.textContent= ``;
+        this.loc.textContent= ``;
+        this.kanji.textContent= ``;
+        this.pkmImage.src = ``;
+        // this.pkmnName.textContent= ``;
+        this.pkmnType.textContent = ``;
+        this.stat.textContent = ``;
+        this.weaknessSection.textContent = ``;
+        this.evolve_container.textContent = ``;
+        this.pokedexIndex.textContent = ``;
+
+        Array.from(this.pkmnWType.children).forEach((item) => {
+            if(item.src){return item.parentElement.removeChild(item);}
+            else{item.textContent = '';}
+        })
     }
 
 
