@@ -329,22 +329,25 @@ class UI {
         //get the pokemon id
         let mined, maxed;
         mined = maxed = resource.id;
-
         //Check the length
-        if (String(resource.id).length != 1 && String(resource.id).charAt(String(resource.id).length - 1) != 0) {
+        if ((String(resource.id).length != 1) && (String(resource.id).charAt(String(resource.id).length - 1) != ("0")) &&
+        (String(resource.id).charAt(String(resource.id).length - 1) != ("1"))) {
+            console.log("we out here", resource.id);
             console.log(`pokedex id, length = ${mined.toString().length}`)
-            mined = mined - Number(mined.toString().charAt(mined.toString().length - (mined.toString().length - 1))) + 1;
-            maxed = maxed - Number((maxed.toString()).charAt(maxed.toString().length - (maxed.toString().length - 1))) + 10;
+            
+            mined = mined - Number(mined.toString().charAt(String(mined).length-1)) + 1;
 
-        } else if (String(resource.id).length != 1 && String(resource.id).charAt(String(resource.id).length - 1 === 0)) {
+            maxed = mined + 9;
+
+        } else if (String(resource.id).length != 1 && String(resource.id).charAt(String(resource.id).length-1) === "0") {
             console.log("last digit is 0")
             mined = mined - 10 + 1;
-            maxed = maxed - Number((maxed.toString()).charAt(maxed.toString().length - (maxed.toString().length))) + 1;
+         } else if((String(resource.id).length != 1) && String(resource.id).charAt(String(resource.id).length -1 === "1")){
+            maxed += 9;
         } else {
-
-            mined = mined - Number(mined.toString().charAt(mined.toString().length - (mined.toString().length))) + 1;
-            maxed = maxed - Number((maxed.toString()).charAt(maxed.toString().length - (maxed.toString().length))) + 10;
-
+            console.log("else option")
+            mined = 1;
+            maxed = 10;
         }
 
         console.log(mined, maxed);
