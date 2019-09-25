@@ -140,7 +140,7 @@ class UI {
             typeArr.push(typeCount[i].type.name);
         }
         this.pkmnType.insertAdjacentHTML('beforeend', typeHTML);
-        this.pkmnType.insertAdjacentHTML('beforebegin', `<img src="./test/${resource.id.toLowerCase()}.png.webp" alt="" class="artwork">
+        this.pkmnType.insertAdjacentHTML('beforebegin', `<img src="./test/${resource.id}.png.webp" alt="" class="artwork">
         <p class="lead artwork-lead pkmn-name">${resource.name}</p>`)
 
 
