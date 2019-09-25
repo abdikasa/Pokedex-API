@@ -32,9 +32,6 @@ Array.from(document.querySelector('.pkmn-search').children).forEach((item) => {
     })
 })
 
-//test
-//Github pages won'tupdate my page after changes.
-
 document.querySelector('.vertical-pokedex').addEventListener('click', (e) => {
     let curr = document.querySelector('.selected-num');
     if (e.target.parentElement.id === "prev-btn") {
