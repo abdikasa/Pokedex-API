@@ -22,7 +22,7 @@ Array.from(document.querySelector('.pkmn-search').children).forEach((item) => {
             console.log(type);
             if (type === true || type === "string") {
                 interface.clearUI();
-                poke.changePokemon(item.value);
+                poke.changePokemon(Math.trunc(item.value));
                 getPokemon();
             }
             Array.from((document.querySelector('.pkmn-search').children)).forEach((item) => {
