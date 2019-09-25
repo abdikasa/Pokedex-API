@@ -134,13 +134,13 @@ class UI {
         for (let i = 0; i < typeCount.length; i++) {
 
             typeHTML += `<div class="d-flex flex-column padded-lr">
-            <img src="types/${typeCount[i].type.name.toLowerCase()}.webp" alt="${typeCount[i].type.name}">
+            <img src="./types/${typeCount[i].type.name}.webp" alt="${typeCount[i].type.name}">
             <p class="lead artwork-lead center pkmn-type">${typeCount[i].type.name}</p>
         </div>`
             typeArr.push(typeCount[i].type.name);
         }
         this.pkmnType.insertAdjacentHTML('beforeend', typeHTML);
-        this.pkmnType.insertAdjacentHTML('beforebegin', `<img src="test/${resource.id}.png.webp" alt="" class="artwork">
+        this.pkmnType.insertAdjacentHTML('beforebegin', `<img src="./test/${resource.id}.png.webp" alt="" class="artwork">
         <p class="lead artwork-lead pkmn-name">${resource.name}</p>`)
 
 
@@ -244,7 +244,7 @@ class UI {
 
                 for (let i = 0; i < dr_arr.length; i++) {
                     weaknessHTML += `<div class="weakness-img">
-                        <img src="/types/${dr_arr[i].name.toLowerCase()}.webp" alt="${dr_arr[i].name}">
+                        <img src="./types/${dr_arr[i].name}.webp" alt="${dr_arr[i].name}">
                             <p class="artwork-lead lead center">${dr_arr[i].name}</p>
                             </div>`
                 }
@@ -310,14 +310,14 @@ class UI {
                     //     return;
                     // }
                     evolHTML +=
-                        `<div class="part-1"><img src="test/${item.url}.png.webp" alt="">
+                        `<div class="part-1"><img src="./test/${item.url}.png.webp" alt="">
                                             <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${item.name}</p>
                                             </div>`
                     // <div class="arr"><img src="./right-arrow.png" alt=""></div>
                 })
             } else {
                 evolHTML +=
-                    `<div class="part-1"><img src="test/${resource.id}.png.webp" alt=""><p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${resource.name}</p></div>`
+                    `<div class="part-1"><img src="./test/${resource.id}.png.webp" alt=""><p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${resource.name}</p></div>`
                 // <div class="arr"><img src="./right-arrow.png" alt=""></div>`
             }
 
