@@ -9,7 +9,7 @@ html, body {
 }
 
 body {
-    transition: background-color 0.2s;
+    transition: background-color 0.4s;
 }
 
 .loader-screen {
@@ -188,6 +188,10 @@ body {
     transform: translateX(-25%);
     opacity: 0.5;
     color: rgba(0, 0, 0, 0.66)
+}
+
+.abilities {
+    width: 30rem;
 }
 
 .abilities li {
@@ -401,4 +405,13 @@ body {
 .btn-numbered-class {
     display: flex;
     flex-direction: column;
+}
+
+.poke-num-search {
+    transform: translateX(-25%);
+}
+
+.btn-group .numbered-btn.selected-num {
+    font-size: 1.3em;
+    font-weight: 700;
 }
