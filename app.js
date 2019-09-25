@@ -1,5 +1,5 @@
 const interface = new UI();
-const poke = new Pokedata("151");
+const poke = new Pokedata("1");
 
 document.addEventListener('DOMContentLoaded', function () {
     //Add the animation to the pokemon div.
@@ -44,7 +44,11 @@ document.querySelector('.vertical-pokedex').addEventListener('click', (e) => {
         poke.changePokemon(`${Number(curr.textContent) + Number("1")}`);
         getPokemon();
     } else {
-
+        if(e.target.classList.value.includes('numbered-btn')){
+            interface.clearUI();
+            poke.changePokemon(e.target.textContent);
+            getPokemon();
+        }
     }
 })
 
