@@ -20,8 +20,22 @@ class Pokedata {
         }
     }
 
+    checkPokemonIDLW151(obj){
+        if(typeof Number(obj) === "number"){
+            return Number(obj) < 152 && Number(obj) != 0;
+        }else if (typeof Number(obj) === NaN){
+            return "string";
+        }
+    }
 
+    changePokemon(poke) {
+        let type = this.checkPokemonIDLW151(poke);
+        console.log(type, poke);
+        if(type === true || type === "string"){
+            this.id_name = poke;
+        }else{
+            console.log("Pokemon entry is greater than 151");
+        }
+    }
 }
 
-// evol = chain.chain.evolves_to.map((item) => {return [item.species]}).reduce((acc, curr) => {return acc.concat(curr)}, [])
-// console.log(evol);
