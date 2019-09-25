@@ -140,7 +140,7 @@ class UI {
             typeArr.push(typeCount[i].type.name);
         }
         this.pkmnType.insertAdjacentHTML('beforeend', typeHTML);
-        this.pkmnType.insertAdjacentHTML('beforebegin', `<img src="./test/${resource.id}.png.webp" alt="" class="artwork">
+        this.pkmnType.insertAdjacentHTML('beforebegin', `<img src="./test/${resource.id.toLowerCase()}.png.webp" alt="" class="artwork">
         <p class="lead artwork-lead pkmn-name">${resource.name}</p>`)
 
 
@@ -244,7 +244,7 @@ class UI {
 
                 for (let i = 0; i < dr_arr.length; i++) {
                     weaknessHTML += `<div class="weakness-img">
-                        <img src="./types/${dr_arr[i].name}.webp" alt="${dr_arr[i].name}">
+                        <img src="./types/${dr_arr[i].name.toLowerCase()}.webp" alt="${dr_arr[i].name}">
                             <p class="artwork-lead lead center">${dr_arr[i].name}</p>
                             </div>`
                 }
