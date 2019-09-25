@@ -16,8 +16,15 @@
 </head>
 
 <body>
+<!-- 
+        <div class="container-fluid loader-screen d-flex justify-content-center align-items-center">
+        <div class="row">
+            <div class="full-bg"></div>
+            <div class="pokemon"></div>
+        </div>
+    </div>  -->
 
-  
+
 
     <div class="container-fluid container-height">
         <div class="row">
@@ -30,8 +37,6 @@
                     <!-- List ability and sprites of pokemon evolutiion if any -->
 
                     <div class="abilities d-flex list-inline mb-3">
-                        <li class="list-inline-item">Abilities:</li>
-                        
                     </div>
 
                 </div>
@@ -64,43 +69,35 @@
 
             <!-- Right Column -->
             <div class="container column-3 d-flex flex-row col-md-4 col-sm-12 col-12">
-              
+
                 <div class="d-flex flex-column third-col-left">
                     <div class="pkmn_w_type center">
-                        
+
                         <div class="d-flex flex-row type-container-r">
-                        
+
                         </div>
                     </div>
                     <h3 id="stats_title">Base Stats</h3>
 
                     <div class="pkmn_stats_ex">
                         <div class="stat d-flex flex-row">
-            
+
                         </div>
                     </div>
                     <h3 id="weakness-h3">Weaknesses</h3>
                     <div class="weakness-box center">
                         <div class="weakness-img-box">
-                            
+
                         </div>
                     </div>
                 </div>
                 <div class="d-none d-sm-none d-md-none d-lg-flex right-btn-container">
-                    <div class="btn-group btn-group-vertical" role="group">
+                    <div class="btn-group btn-group-vertical vertical-pokedex" role="group">
                         <button type="button" id="prev-btn" class="btn rightm-sidebar shadow-none">
                             <ion-icon name="arrow-dropup" class="icon-up"></ion-icon>
                         </button>
-                        <button type="button" class="btn numbered-btn shadow-none">1</button>
-                        <button type="button" class="btn numbered-btn shadow-none">2</button>
-                        <button type="button" class="btn numbered-btn shadow-none">3</button>
-                        <button type="button" class="btn numbered-btn shadow-none">4</button>
-                        <button type="button" class="btn numbered-btn shadow-none">5</button>
-                        <button type="button" class="btn numbered-btn shadow-none">6</button>
-                        <button type="button" class="btn numbered-btn shadow-none">7</button>
-                        <button type="button" class="btn numbered-btn shadow-none">8</button>
-                        <button type="button" class="btn numbered-btn shadow-none">9</button>
-                        <button type="button" class="btn numbered-btn shadow-none">10</button>
+                        <div class="btn-numbered-class">
+                        </div>
                         <button type="button" id="next-btn" class="btn rightm-sidebar shadow-none">
                             <ion-icon name="arrow-dropdown" class="icon-down"></ion-icon>
                         </button>
@@ -108,7 +105,11 @@
                 </div>
             </div>
         </div>
+        <div class="form-group d-flex py-2 justify-content-around pkmn-search">
+            <input class="form-control col-sm-none col-md-2 col-lg-2 col-xl-2 poke-num-search" type="text" placeholder="Pokedex Number">
+        </div>
     </div>
+
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
@@ -124,6 +125,7 @@
     <script src="ui.js"></script>
     <script src="pokedata.js"></script>
     <script src="app.js"></script>
+
 </body>
 
 </html>
