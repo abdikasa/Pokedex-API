@@ -101,7 +101,7 @@ class UI {
             });
 
 
-        checkImage(`./sugimori artwork/test/${resource.id}.png.webp`).then(() => {
+        checkImage(`./test/${resource.id}.png.webp`).then(() => {
             var vibrant = new Vibrant(this.pkmImage);
             var swatches = vibrant.swatches()
             for (var swatch in swatches) {
@@ -140,7 +140,7 @@ class UI {
             typeArr.push(typeCount[i].type.name);
         }
         this.pkmnType.insertAdjacentHTML('beforeend', typeHTML);
-        this.pkmnType.insertAdjacentHTML('beforebegin', `<img src="./sugimori artwork/test/${resource.id}.png.webp" alt="" class="artwork">
+        this.pkmnType.insertAdjacentHTML('beforebegin', `<img src="./test/${resource.id}.png.webp" alt="" class="artwork">
         <p class="lead artwork-lead pkmn-name">${resource.name}</p>`)
 
 
@@ -310,14 +310,14 @@ class UI {
                     //     return;
                     // }
                     evolHTML +=
-                        `<div class="part-1"><img src="./sugimori artwork/test/${item.url}.png.webp" alt="">
+                        `<div class="part-1"><img src="./test/${item.url}.png.webp" alt="">
                                             <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${item.name}</p>
                                             </div>`
                     // <div class="arr"><img src="./right-arrow.png" alt=""></div>
                 })
             } else {
                 evolHTML +=
-                    `<div class="part-1"><img src="./sugimori artwork/test/${resource.id}.png.webp" alt=""><p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${resource.name}</p></div>`
+                    `<div class="part-1"><img src="./test/${resource.id}.png.webp" alt=""><p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${resource.name}</p></div>`
                 // <div class="arr"><img src="./right-arrow.png" alt=""></div>`
             }
 
