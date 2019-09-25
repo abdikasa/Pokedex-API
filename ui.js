@@ -134,7 +134,7 @@ class UI {
         for (let i = 0; i < typeCount.length; i++) {
 
             typeHTML += `<div class="d-flex flex-column padded-lr">
-            <img src="./types/${typeCount[i].type.name}.webp" alt="${typeCount[i].type.name}">
+            <img src="./types/${typeCount[i].type.name.toLowerCase()}.webp" alt="${typeCount[i].type.name}">
             <p class="lead artwork-lead center pkmn-type">${typeCount[i].type.name}</p>
         </div>`
             typeArr.push(typeCount[i].type.name);
