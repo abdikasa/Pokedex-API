@@ -523,6 +523,7 @@ body {
 @media (max-width: 767px) {
     html, body {
         overflow: visible;
+        overflow-x: hidden;
         font-size: 100%;
     }
 
