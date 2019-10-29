@@ -224,17 +224,17 @@ body {
     align-items: center;
 }
 
-.pkmn-two-evols{
+.pkmn-two-evols {
     /* width: 100%; or smaller screens*/
-    width:45%;
+    width: 45%;
     margin: 0 auto;
     justify-content: space-between;
 }
 
 .pkmn-one-evol {
-    width:40%;
+    width: 40%;
     justify-content: center;
-    margin:0 auto;
+    margin: 0 auto;
 }
 
 .part-1 img, .part-2 img, .part-3 img {
@@ -363,7 +363,10 @@ body {
 .third-col-left {
     width: 90%;
     justify-content: space-between;
-    ;
+}
+
+.pkm-container {
+    text-align: center;
 }
 
 .right-btn-container {
@@ -415,3 +418,156 @@ body {
     font-size: 1.3em;
     font-weight: 700;
 }
+
+@media (max-width: 1300px) {
+    body {
+        font-size: 90%;
+    }
+
+    .container-height {
+        padding: 0;
+    }
+    .evolve-container.part-1 img {
+        width: 2.4rem;
+    }
+    .part-1 p.lead.artwork-lead {
+        font-size: 1.2em;
+    }
+}
+
+@media (max-width: 1200px) {
+    .part-1 img {
+        width: 4rem;
+    }
+    .part-1 p.lead.artwork-lead {
+        font-size: 1.2em;
+    }
+    .test h5 {
+        font-size: 1.1em;
+    }
+    .weakness-img .artwork-lead {
+        font-size: 1em;
+    }
+}
+
+@media (min-width: 1050px) and (max-width: 1100px) {
+    .part-1 img {
+        width: 4.2rem;
+    }
+    .part-1 p.lead.artwork-lead {
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 1100px) {
+    body {
+        font-size: 94%;
+    }
+
+    .pkm-container #pkm-image {
+        max-width: 22rem;
+    }
+    .weakness-img img {
+        width: 3rem;
+    }
+    .weakness-img {
+        padding: 0;
+        width: auto;
+    }
+    .weakness-img .artwork-lead {
+        display: none;
+    }
+    .weakness-img-box {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .pkmn-two-evols {
+        width: 70%;
+    }
+}
+
+@media (max-width: 1000px) {
+    body {
+        font-size: 90%;
+    }
+
+    .column-two {
+       padding-left: 0;
+       padding-right: 0; 
+    }
+
+    .container.column-3 {
+        width: 100%;
+        padding-left: 0;
+        padding-right:0;
+    }
+    .third-col-left {
+        width: 100%;
+    }
+    .pkm-container #pkm-image {
+        max-width: 20rem;
+    }
+    .pkm-container {
+        text-align: left;
+    }
+
+    .pkmn-two-evols {
+        width: 100%;
+    }
+
+    .evolve-container{
+        width: 100%;
+    }
+}
+
+@media (max-width: 767px) {
+    html, body {
+        overflow: visible;
+        overflow-x: hidden;
+        font-size: 100%;
+    }
+
+    .row {
+        height: auto;
+    }
+
+    .pkm-container {
+        text-align: center;
+    }
+
+    #region-word {
+        left: 50%;
+        top: 50%;
+        transform: rotate(-90deg) translate(-50%, -50%);
+    }
+
+    .evolutionary-chain {
+        margin: 0 auto;
+    }
+
+    .column-two  * {
+        padding-top: 2%;
+    }
+
+    .column-3  * {
+        padding-bottom: 2%;    
+    }
+
+    .pkmn-search .poke-num-search{
+        width: 200px;
+        transform: translateX(5px);
+    }
+
+    .weakness-img-box {
+        transform: translateY(15px);
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1100px) {
+    .weakness-img-box {
+        transform: translateY(-25px);
+    }
+}
+
+
+
