@@ -1,31 +1,63 @@
 const interface = new UI();
-const poke = new Pokedata("1");
+const poke = new Pokedata(`${Math.floor(Math.random() * 151) + 1}`);
 
-document.addEventListener('DOMContentLoaded', function () {
-    //Add the animation to the pokemon div.
-    // interface.pokemon.classList.toggle('animate-gengar');
-    getPokemon();
-    //When animation is finished, delete the container
-    // document.addEventListener('animationend', function () {
-    //     interface.removeLoader().then((resolve) => {
-    //         resolve.remove();
-    //         getPokemon();
-    //     });
-    // })
-})
+function promisify(func) {
+    document.getElementById("loader-screen").style.display = "block";
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(func);
+        }, 800)    
+    })
+}
 
-Array.from(document.querySelector('.pkmn-search').children).forEach((item) => {
+function hideShowBody(string) {
+    let body = Array.prototype.slice.call(interface.body.children)
+    body = body.filter((item) => {
+        return item.id != "loader-screen";
+    }).filter((scripts) => {
+        return scripts.nodeName != "SCRIPT";
+    })
+
+    body.forEach((item) => {
+        item.style.display = `${string}`;
+    })
+}
+
+const hideShowLoader = function (string){
+    document.getElementById("loader-screen").style.display = string;
+}
+
+async function runProgram() {
+    hideShowBody("none");
+    hideShowLoader("block");
+    interface.pkmnSearch.children[0].style.display = "none";
+    promisify(getPokemon).then((val) => {
+        return val();
+    })
+    .then(() => {
+            hideShowLoader("none");
+            interface.pkmnSearch.children[0].style.display = "block";
+            hideShowBody("block");
+    })
+
+}
+
+Array.from(interface.pkmnSearch.children).forEach((item) => {
     item.addEventListener("keypress", (e) => {
         if (e.which === 13 || e.keyCode === 13) {
             //Check to see if output is correct.
             let type = poke.checkPokemonIDLW151(item.value);
             console.log(type);
             if (type === true || type === "string") {
+                if (item.value == poke.id_name) {
+                    return;
+                }
                 interface.clearUI();
+                interface.body.style.backgroundColor = "white";
                 poke.changePokemon(Math.trunc(item.value));
-                getPokemon();
+                runProgram();
             }
-            Array.from((document.querySelector('.pkmn-search').children)).forEach((item) => {
+            Array.from(interface.pkmnSearch.children).forEach((item) => {
                 return clearInputs(item);
             });
         }
@@ -38,16 +70,16 @@ document.querySelector('.vertical-pokedex').addEventListener('click', (e) => {
         console.log("prev")
         interface.clearUI();
         poke.changePokemon(`${Number(curr.textContent) - Number("1")}`);
-        getPokemon();
+        runProgram();
     } else if (e.target.parentElement.id === "next-btn") {
         interface.clearUI();
         poke.changePokemon(`${Number(curr.textContent) + Number("1")}`);
-        getPokemon();
+        runProgram();
     } else {
-        if(e.target.classList.value.includes('numbered-btn')){
+        if (e.target.classList.value.includes('numbered-btn')) {
             interface.clearUI();
             poke.changePokemon(e.target.textContent);
-            getPokemon();
+            runProgram();
         }
     }
 })
@@ -57,13 +89,19 @@ function clearInputs(input) {
 }
 
 function getPokemon() {
+    let start, finish;
+    start = Date.now();
     poke.fetchPokemon()
         .then(resolve => {
             console.log(resolve.pokePromise);
             console.log(resolve.speciesPromise);
             interface.paintUI(resolve.pokePromise, resolve.speciesPromise);
+            finish = Date.now() - start;
+            console.log(`${finish}ms`)
         })
         .catch(reject => {
-            console.warn(reject)
+            console.warn(reject);
         })
 }
+
+runProgram();
