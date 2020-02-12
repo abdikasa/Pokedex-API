@@ -1,7 +1,7 @@
 /* #505070 #4D3354*/
 
 html, body {
-   font-size: 15.5px;
+   font-size: 15px;
    max-width: 100%;
    max-height: 100%;
    overflow: hidden;
@@ -16,6 +16,10 @@ html, body {
 }
 
 /******************************************************************************************/
+
+.column-one * {
+   font-size: 110%;
+}
 
 #loader-screen {
    position: absolute;
@@ -84,7 +88,7 @@ body {
 
 #height, #weight {
    font-size: 0.93em;
-   font-weight: 400;
+   font-weight: 600;
 }
 
 .padded-lr {
@@ -101,8 +105,8 @@ body {
 }
 
 #loc {
-   font-weight: 400;
-   font-size: 0.94em;
+   font-weight: 600;
+   font-size: 1.1em;
 }
 
 .pkm-container {
@@ -204,7 +208,7 @@ body {
 }
 
 .type-container-r img {
-   width: 4rem;
+   width: 3.6rem;
    margin: 0 10px;
 }
 
@@ -231,8 +235,8 @@ body {
 
 .outer {
    /* height: 10px; */
-   height: 100px;
-   width: 15px;
+   height: 80px;
+   width: 12px;
    margin: 0 auto;
 }
 
@@ -286,7 +290,7 @@ body {
 }
 
 .weakness-img img {
-   width: 40px;
+   width: 45px;
 }
 
 .weakness-img-box, .resistance-img-box, .immunity-img-box {
@@ -317,7 +321,7 @@ body {
    width: 30px;
    height: 40px;
    padding: 8px 4px;
-   font-weight: 400;
+   font-weight: 600;
    color: #fff;
    background: transparent;
 }
@@ -330,7 +334,8 @@ body {
    text-align: center;
    color: #fff;
    text-shadow: 0px 0px 3px #000;
-   font-weight: 600;
+   font-weight: 800;
+   text-transform: uppercase;
 }
 
 .atr, .atr-val {
@@ -364,16 +369,21 @@ body {
       flex-wrap: wrap;
    }
    .weakness-img {
-      flex-basis: 33.3333333%;
+      flex-basis: 33.33333%;
+      flex-basis: 25%;
+
    }
    .type-container-r img {
-      width: 2.5rem;
+      width: 3.5rem;
    }
    #stats_title, #weakness-h3 {
       font-size: 160%;
    }
    .stat * {
       font-size: 112%;
+   }
+   .outer {
+      height: 50px;
    }
 }
 
@@ -425,7 +435,7 @@ body {
    }
    .weakness-img img {
       margin: 1rem 1rem;
-      width: 2.4rem;
+      width: 2.9rem;
    }
    #weakness-h3, #stats_title {
       font-size: 170%;
@@ -480,9 +490,8 @@ body {
    .pkmn_stats_ex * {
       font-size: 100%;
    }
-
    #weakness-h3, #stats_title {
-      font-size: 140%;
+      font-size: 160%;
    }
 }
 
@@ -510,7 +519,7 @@ body {
       padding-top: 2%;
    }
    .column-3 * {
-      padding-bottom: 2%;
+      padding-bottom: 3%;
    }
    .pkmn-search .poke-num-search {
       width: 200px;
@@ -518,6 +527,15 @@ body {
    }
    .weakness-img-box, .resistance-img-box, .immunity-img-box {
       transform: translateY(15px);
+   }
+   .outer {
+      /* height: 10px; */
+      height: 120px;
+      width: 20px;
+      margin: 0 auto;
+   }
+   .weakness-img {
+      flex-basis: 33%;
    }
 }
 
