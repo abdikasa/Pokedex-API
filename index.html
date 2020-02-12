@@ -1,125 +1,136 @@
 <html lang="en">
- 
+
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-   <title>Gotta Catch 'Em All</title>
- 
-   <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,800" rel="stylesheet">
-   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-       integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"
-       defer>
-   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-       integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"
-       defer></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-       integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"
-       defer></script>
-   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"
-       defer></script>
- 
-   <script type="module" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.esm.js" defer></script>
-   <script nomodule="" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.js" defer></script>
-   <!-- <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script> -->
-   <script src="./Vibrant.min.js" defer></script>
-   <link rel="stylesheet" type="text/css" href="./style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Gotta Catch 'Em All</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,800&display=swap" rel="stylesheet" async>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script type="module" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.esm.js" defer></script>
+    <script nomodule="" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.js" defer></script>
+    <script src="./Vibrant.min.js" async></script>
+    <link rel="stylesheet" type="text/css" href="./style.css" async>
 </head>
- 
+
 <body>
-  
-   <img src="./loader1.gif" alt="Loader" id="loader-screen">
- 
- 
-   <div class="container-fluid container-height">
-       <div class="row">
-           <!-- Leftmost Column -->
-           <div class="column-one col-md-3 col-12 col-sm-12 d-flex flex-column h-100">
-               <div class="name-container my-0">
-                   <h2 id="poke-num"></h2>
-                   <h2 id="poke-name"></h2>
- 
-                   <!-- List ability and sprites of pokemon evolutiion if any -->
- 
-                   <div class="abilities d-flex list-inline mb-3">
-                   </div>
- 
-               </div>
-               <div class="size-container">
-                   <span>
-                       Height: <span id="height">0.7m</span>
-                   </span>
-                   <span>
-                       Weight: <span id="weight">6.9kg</span>
-                   </span>
-               </div>
-               <span id="region-word">
-                   Region: <span id="loc">Kanto</span>
-               </span>
-           </div>
- 
-           <!-- Middle Column -->
-           <div
-               class="column-two col-md-5 col-12 col-sm-12 d-flex pkm-img flex-column justify-content-end text-center text-md-left">
-               <div class="pkm-container">
-                   <img id="pkm-image">
-                   <span id="kanji">フシギダネ</span>
-               </div>
-               <div class="container d-flex flex-column text-md-center evolutionary-chain align-items-center">
-                   <h3>Evolution Chain</h3>
-                   <div class="d-flex flex-row chain-row evolve-container">
-                   </div>
-               </div>
-           </div>
- 
-           <!-- Right Column -->
-           <div class="container column-3 d-flex flex-row col-md-4 col-sm-12 col-12">
- 
-               <div class="d-flex flex-column third-col-left">
-                   <div class="pkmn_w_type center">
- 
-                       <div class="d-flex flex-row type-container-r">
- 
-                       </div>
-                   </div>
-                   <h3 id="stats_title">Base Stats</h3>
- 
-                   <div class="pkmn_stats_ex">
-                       <div class="stat d-flex flex-row">
- 
-                       </div>
-                   </div>
-                   <h3 id="weakness-h3">Weaknesses</h3>
-                   <div class="weakness-box center">
-                       <div class="weakness-img-box">
- 
-                       </div>
-                   </div>
-               </div>
-               <div class="d-none d-sm-none d-md-none d-lg-flex right-btn-container">
-                   <div class="btn-group btn-group-vertical vertical-pokedex" role="group">
-                       <button type="button" id="prev-btn" class="btn rightm-sidebar shadow-none">
-                           <ion-icon name="arrow-dropup" class="icon-up"></ion-icon>
-                       </button>
-                       <div class="btn-numbered-class">
-                       </div>
-                       <button type="button" id="next-btn" class="btn rightm-sidebar shadow-none">
-                           <ion-icon name="arrow-dropdown" class="icon-down"></ion-icon>
-                       </button>
-                   </div>
-               </div>
-           </div>
-       </div>
-       <div class="form-group d-flex py-2 justify-content-around pkmn-search">
-           <input class="form-control col-sm-none col-md-2 col-lg-2 col-xl-2 poke-num-search" type="number" min="1"
-               placeholder="Pokedex Number">
-       </div>
-   </div>
-   <script src="ui.js"></script>
-   <script src="pokedata.js"></script>
-   <script src="app.js"></script>
- 
+
+    <video autoplay loop muted playsinline id="loader-screen">
+        <source src="./loader1.webm" type="video/webm">
+    </video>
+
+
+    <div class="container-fluid container-height">
+        <div class="row">
+            <!-- Leftmost Column -->
+            <div class="column-one col-md-3 col-12 col-sm-12 d-flex flex-column h-100">
+                <div class="name-container my-0">
+                    <h2 id="poke-num"></h2>
+                    <h2 id="poke-name"></h2>
+
+                    <!-- List ability and sprites of pokemon evolutiion if any -->
+
+                    <div class="abilities d-flex list-inline mb-3">
+                    </div>
+
+                </div>
+                <div class="size-container">
+                    <span>
+                        Height: <span id="height">0.7m</span>
+                    </span>
+                    <span>
+                        Weight: <span id="weight">6.9kg</span>
+                    </span>
+                </div>
+                <span id="region-word">
+                    Region: <span id="loc">Kanto</span>
+                </span>
+            </div>
+
+            <!-- Middle Column -->
+            <div
+                class="column-two col-md-5 col-12 col-sm-12 d-flex pkm-img flex-column justify-content-end text-center text-md-left">
+                <div class="pkm-container">
+                    <img id="pkm-image">
+                    <span id="kanji"></span>
+                </div>
+                <div class="container d-flex flex-column text-md-center evolutionary-chain align-items-center">
+                    <h3>Evolution Chain</h3>
+                    <div class="d-flex flex-row chain-row evolve-container">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="container column-3 d-flex flex-row col-md-4 col-sm-12 col-12">
+
+                <div class="d-flex flex-column third-col-left">
+                    <h3 id="weakness-h3">Pokémon Type ( s )</h3>
+                    <div class="pkmn_w_type center">
+                        <div class="d-flex flex-row type-container-r">
+
+                        </div>
+                    </div>
+                    <h3 id="stats_title">Base Stats</h3>
+
+                    <div class="pkmn_stats_ex">
+                        <div class="stat d-flex flex-row">
+
+                        </div>
+                    </div>
+                    <h3 id="weakness-h3">Weaknesses</h3>
+                    <div class="weakness-box center">
+                        <div class="weakness-img-box">
+
+                        </div>
+                    </div>
+                    <h3 id="weakness-h3">Resistances</h3>
+                    <div class="weakness-box center">
+                        <div class="resistance-img-box">
+
+                        </div>
+                    </div>
+                    <h3 id="weakness-h3">Immunities</h3>
+                    <div class="weakness-box center">
+                        <div class="immunity-img-box">
+                        </div>
+                    </div>
+                </div>
+                        <div class="d-none d-sm-none d-md-none d-lg-flex right-btn-container">
+                            <div class="btn-group btn-group-vertical vertical-pokedex" role="group">
+                                <button type="button" id="prev-btn" class="btn rightm-sidebar shadow-none">
+                                    <ion-icon name="arrow-dropup" class="icon-up"></ion-icon>
+                                </button>
+                                <div class="btn-numbered-class">
+                                </div>
+                                <button type="button" id="next-btn" class="btn rightm-sidebar shadow-none">
+                                    <ion-icon name="arrow-dropdown" class="icon-down"></ion-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group d-flex py-2 justify-content-around pkmn-search">
+                    <input class="form-control col-sm-none col-md-2 col-lg-2 col-xl-2 poke-num-search" type="number"
+                        min="1" placeholder="Pokedex Number">
+                </div>
+            </div>
+
+            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+                integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+                crossorigin="anonymous" defer></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+                integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+                crossorigin="anonymous" defer></script>
+            <script src="ui.js"></script>
+            <script src="pokedata.js"></script>
+            <script src="app.js" rel="preload" as="script"></script>
+
 </body>
- 
+
 </html>
