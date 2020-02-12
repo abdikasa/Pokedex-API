@@ -11,11 +11,13 @@ class Pokedata {
         console.log(response);
         const prom = response.map((test) => {return test.json()});
   
-        return {
-            pokePromise: await prom[0],
-            speciesPromise: await prom[1]
-        }
-       
+        // return {
+        //     pokePromise: await prom[0],
+        //     speciesPromise: await prom[1]
+        // }
+        
+        return prom;
+      
         // const urls = [`https://pokeapi.co/api/v2/pokemon/${this.id_name}/`,
         // `https://pokeapi.co/api/v2/pokemon-species/${this.id_name}/`];
     }
@@ -39,5 +41,3 @@ class Pokedata {
     }
  }
   
-  
- 
