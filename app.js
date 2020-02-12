@@ -1,6 +1,6 @@
 const interface = new UI();
-const poke = new Pokedata(`${Math.floor(Math.random() * 151) + 1}`);
-//const poke = new Pokedata(6);
+//const poke = new Pokedata(`${Math.floor(Math.random() * 151) + 1}`);
+const poke = new Pokedata(103);
 
 function hideShowBody(string) {
     let body = Array.prototype.slice.call(interface.body.children)
@@ -89,14 +89,11 @@ function clearInputs(input) {
 }
 
 async function getPokemon() {
-    let start, finish;
-    start = Date.now();
+  
     poke.fetchPokemon()
         .then(async resolve => {
             let prom = await Promise.all(resolve);
             interface.paintUI(prom[0], prom[1]);
-            finish = Date.now() - start;
-            console.log(`${finish}ms`)
         })
         .catch(reject => {
             console.warn(reject);
