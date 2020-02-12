@@ -34,12 +34,35 @@ class UI {
         this.getPokeStats(stats);
         console.log(pkmnData);
         console.log(speciesData);
-        //Promise.all([fetchJSON(`https://pokeapi.co/api/v2/type/`), fetchJSON(`${speciesData.evolution_chain.url}`)])
+        // //Promise.all([fetchJSON(`https://pokeapi.co/api/v2/type/`), fetchJSON(`${speciesData.evolution_chain.url}`)])
 
         const typeAndEvol = Promise.all([this.fetchJSON(`https://pokeapi.co/api/v2/type/`), this.fetchJSON(`${speciesData.evolution_chain.url}`)]);
         this.getPokeWeaknesses(typeAndEvol, pokeType);
 
-        //getWeakOrEvol(xxx, 1).then(({ chain }) => { console.log(chain) })
+        this.getWeakOrEvol(typeAndEvol, 1).then(({ chain }) => {
+            console.log(chain)
+            const { evolves_to: evolve, species } = chain;
+            //determine at what stage the pokemon is in and check whether they have an evolution.
+
+            if (species.name == name) {
+                if (evolve.length) {
+                    console.log("has an evolution and is the first form");
+                    let index = 0;
+                    while(evolve[index] != undefined){
+                        //check to see for branching evolutions
+                        console.log(evolve);
+                        console.log(evolve[index]);
+                        if(evolve[index].length > 1){
+                            //branched or eevee case
+                        }
+                        index++;
+                    }
+                } else {
+                    console.log("has no evolution and thus in the first form or final form");
+                }
+            }
+
+        })
 
         //     fetch(`${speciesData.evolution_chain.url}`).then((res) => { return res.json() }).then((response) => {
 
@@ -305,7 +328,7 @@ class UI {
                              <h5 class="atr">${attr[index]}</h5>
                              <h5 class="atr-val">${stat}</h5>
                              <div class="outer outer-${index}">
-                                 <div class="inner-${index}" style="height: calc(100% - ${(stat / 150) * 100}%);">
+                                 <div class="inner-${index}" style="height: calc(100% - ${(stat / 130) * 100}%);">
                                      &nbsp;
                                 </div>
                              </div>
@@ -350,21 +373,13 @@ class UI {
                 immune = this.reduceArray(immune);
                 immune = Array.from(new Set(immune.map(({ name }) => name)));
 
-                console.log("immune", immune);
-                console.log("DEF", defWeakness);
-                console.log("weakness", weakness);
-
-                let resistances = defWeakness.filter((type) => immune.indexOf(type) < 0);
+                let resistances = defWeakness.filter((type) => immune.indexOf(type) < 0)
+                    .filter((res) => weakness.indexOf(res) < 0);
                 let immunities = defWeakness.filter((type) => immune.indexOf(type) > -1);
 
                 defWeakness = weakness.filter((test) => {
                     return defWeakness.indexOf(test) < 0
                 })
-
-                console.log("DEF", defWeakness);
-                console.log("R", resistances);
-                console.log("I", immunities);
-
 
                 function outputResults(array) {
                     let resistancesHTML = ``;
@@ -379,8 +394,8 @@ class UI {
 
                 let weaknessHTML = outputResults(defWeakness);
                 let resistancesHTML = outputResults(resistances);
-                let immunitiesHTML = outputResults(immunities);
 
+                let immunitiesHTML = outputResults(immunities);
                 this.weaknessSection.insertAdjacentHTML('beforeend', weaknessHTML);
                 this.resistanceSection.insertAdjacentHTML('beforeend', resistancesHTML);
                 document.querySelector(".immunity-img-box").insertAdjacentHTML('beforeend', immunitiesHTML);
@@ -438,11 +453,7 @@ class UI {
         this.evolve_container.textContent = ``;
         this.pokedexIndex.textContent = ``;
         this.resistanceSection.textContent = "";
-
-        if (document.querySelector('.immunity-img-box') != null) {
-            //document.querySelector('.immunity-img-box').parentElement.previousElementSibling.textContent=""
-            document.querySelector('.immunity-img-box').textContent = "";
-        };
+        document.querySelector('.immunity-img-box').textContent = "";
     }
 
 
