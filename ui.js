@@ -394,11 +394,25 @@ class UI {
 
                 let weaknessHTML = outputResults(defWeakness);
                 let resistancesHTML = outputResults(resistances);
-
-                let immunitiesHTML = outputResults(immunities);
                 this.weaknessSection.insertAdjacentHTML('beforeend', weaknessHTML);
                 this.resistanceSection.insertAdjacentHTML('beforeend', resistancesHTML);
+                if(!immunities.length){
+                    console.log("no immunities");
+                    return;
+                }
+
+                this.third_col.insertAdjacentHTML("beforeend", `<h3 id="weakness-h3">Immunities</h3>
+                <div class="weakness-box center">
+                <div class="immunity-img-box">
+
+                </div>
+            </div>`);
+
+
+
+                let immunitiesHTML = outputResults(immunities);
                 document.querySelector(".immunity-img-box").insertAdjacentHTML('beforeend', immunitiesHTML);
+
             })
             .catch((err) => {
                 console.log(err);
@@ -453,7 +467,18 @@ class UI {
         this.evolve_container.textContent = ``;
         this.pokedexIndex.textContent = ``;
         this.resistanceSection.textContent = "";
-        document.querySelector('.immunity-img-box').textContent = "";
+       
+      try {
+        if(typeof document.querySelector(".immunity-img-box") == null){
+            console.log("doesn't exist");
+        }else{
+            document.querySelector(".immunity-img-box").parentElement.previousElementSibling.remove();
+            document.querySelector(".immunity-img-box").parentElement.remove();
+        }
+      }catch(err){
+        console.log(err);
+      }
+
     }
 
 
