@@ -1,15 +1,6 @@
 const interface = new UI();
 const poke = new Pokedata(`${Math.floor(Math.random() * 151) + 1}`);
 
-function promisify(func) {
-    document.getElementById("loader-screen").style.display = "block";
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve(func);
-        }, 800)    
-    })
-}
-
 function hideShowBody(string) {
     let body = Array.prototype.slice.call(interface.body.children)
     body = body.filter((item) => {
@@ -23,23 +14,31 @@ function hideShowBody(string) {
     })
 }
 
-const hideShowLoader = function (string){
+const setTimeoutPromise = ms => {
+    return new Promise(resolve => 
+        setTimeout(resolve, ms))}
+
+const hideShowLoader = function (string) {
     document.getElementById("loader-screen").style.display = string;
 }
 
 async function runProgram() {
-    hideShowBody("none");
     hideShowLoader("block");
+    hideShowBody("none");
     interface.pkmnSearch.children[0].style.display = "none";
-    promisify(getPokemon).then((val) => {
-        return val();
-    })
+    
+    setTimeoutPromise(400).then(getPokemon)
     .then(() => {
-            hideShowLoader("none");
-            interface.pkmnSearch.children[0].style.display = "block";
-            hideShowBody("block");
+        hideShowBody("none")
+        console.log("ran")      
     })
-
+        .finally(() => {
+            setTimeout(() => {
+                hideShowLoader("none");
+                interface.pkmnSearch.children[0].style.display = "block";
+                hideShowBody("block");
+            }, 500)
+        })
 }
 
 Array.from(interface.pkmnSearch.children).forEach((item) => {
@@ -92,10 +91,9 @@ function getPokemon() {
     let start, finish;
     start = Date.now();
     poke.fetchPokemon()
-        .then(resolve => {
-            console.log(resolve.pokePromise);
-            console.log(resolve.speciesPromise);
-            interface.paintUI(resolve.pokePromise, resolve.speciesPromise);
+        .then(async resolve => {
+            let prom = await Promise.all(resolve);
+            interface.paintUI(prom[0], prom[1]);
             finish = Date.now() - start;
             console.log(`${finish}ms`)
         })
