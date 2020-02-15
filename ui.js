@@ -11,7 +11,6 @@ class UI {
         this.kanji = document.querySelector('#kanji');
         this.pkmImage = document.querySelector('#pkm-image');
         this.pkmnName = document.querySelector('.pkmn-name');
-        this.pkmnWType = document.querySelector('.pkmn_w_type');
         this.pkmnType = document.querySelector('.type-container-r');
         this.stat = document.querySelector('.stat');
         this.weaknessSection = document.querySelector('.weakness-img-box');
@@ -19,113 +18,61 @@ class UI {
         this.pokedexIndex = document.querySelector('.btn-numbered-class');
         this.body = document.body;
         this.pkmnSearch = document.querySelector(".pkmn-search");
+        this.resistanceSection = document.querySelector(".resistance-img-box");
+        this.third_col = document.querySelector('.third-col-left');
     }
-  
-  
+
+
     paintUI(pkmnData, speciesData) {
-  
         const { id, name, abilities, height, weight, types, stats } = pkmnData;
         const { pokedex_numbers: dex, names, evolution_chain: evolChain } = speciesData;
         this.assignBG(id);
         this.assignNameID(id, name);
         this.getAbilities(abilities);
         this.assignPokeBio(height, weight, { dex, names });
-        this.getPokemonType(pkmnData);
+        const pokeType = this.getPokemonType(pkmnData);
         this.getPokeStats(stats);
-        //Promise.all([fetchJSON(`https://pokeapi.co/api/v2/type/`), fetchJSON(`${speciesData.evolution_chain.url}`)])
-  
-        //     /**
-        //     * The goal is to get the pokemon's weaknesses by cross checking, removing any overlaps with their strengths, weaknesses, immunities.
-        //     * First we do a generic call to retrieve all types, cross checking to  see if our type is found in the API.
-        //     * Then we use Reg Expressions to cut the essential part of the data the id number from the url variable in the API.
-        //     * Then we perform another fetch call to get the type's weaknesses, strengths, etc.
-        //     * We push the data to an array and manipulate the data.
-        //    */
-  
-       function getWeakOrEvol(promise, i){
-        return promise.then((test) => {
-                return test[i];
-            })
-        }
-  
-        function getWeaknesses(){
-  
-        }
-  
-   
-        function fetchJSON(url) {
-            return fetch(url).then(function (response) {
-                return response.json().then(function (data) {
-                    return data;
-                })
-            })
-        }
-  
-        const xxx= Promise.all([fetchJSON(`https://pokeapi.co/api/v2/type/`), fetchJSON(`${speciesData.evolution_chain.url}`)]);
-        getWeakOrEvol(xxx, 0).then(({results}) => {console.log(results)})
-        getWeakOrEvol(xxx, 1).then(({chain}) => {console.log(chain)})
-  
-        //     let alltypes = [], dr_arr = [], typeRegex = new RegExp('[/]{1}[0-9]{1,2}[/]');
-        //     fetch(`https://pokeapi.co/api/v2/type/`).then((response) => {
-        //         return response.json();
-        //     })
-        //         .then((resolve) => {
-        //             return resolve.results.filter((item) => {
-        //                 if (item.name === typeArr[0] || item.name === typeArr[1]) {
-        //                     return typeRegex.exec(item.url)[0].split("/")[1];
-        //                 }
-        //             })
-        //         })
-        //         .then((res) => {
-        //             //Return the pokemon types
-        //             //Now we need to get the Weaknesses, Resistances, Immunities.
-        //             return Promise.all(res.map(async pokeType => {
-        //                 const count = await fetch(pokeType.url);
-        //                 const typee = await count.json();
-        //                 return [typee.damage_relations.double_damage_from, typee.damage_relations.half_damage_from, typee.damage_relations.no_damage_from]
-        //             }))
-        //         })
-        //         .then((dr_arr) => {
-        //             return dr_arr.reduce((acc, curr) => { return acc.concat(curr) }, []);
-        //         })
-        //         .then((dr_arr) => {
-        //             return this.separateWRI(dr_arr);
-        //         })
-        //         .then((dr_arr) => {
-        //             // dr_arr = this.separateWRI(dr_arr);
-        //             // console.log(dr_arr, "separated the strengths/weaknesses for clarity")
-        //             dr_arr = this.compareTypeWRI(dr_arr);
-        //             console.log(dr_arr, "Only the pokemon's weaknesses --- Data is to be outputted to the screen");
-  
-        //             dr_arr = this.doSomething(this.weaknessSection, 'weakness-img-box', dr_arr);
-        //             console.log(dr_arr);
-  
-        //             let weaknessHTML = '';
-  
-        //             //Sort the objects by their type name.
-        //             dr_arr = dr_arr.sort((a, b) => { return a.name > b.name ? 1 : -1 });
-  
-        //             for (let i = 0; i < dr_arr.length; i++) {
-        //                 weaknessHTML += `<div class="weakness-img">
-        //                     <img src="./types/${dr_arr[i].name}.webp" alt="${dr_arr[i].name}">
-        //                         <p class="artwork-lead lead center">${dr_arr[i].name}</p>
-        //                         </div>`
-        //             }
-        //             this.weaknessSection.insertAdjacentHTML('beforeend', weaknessHTML);
-        //         })
-        //         .catch((err) => {
-        //             console.log(err);
-        //         })
-  
+        console.log(pkmnData);
+        console.log(speciesData);
+        // //Promise.all([fetchJSON(`https://pokeapi.co/api/v2/type/`), fetchJSON(`${speciesData.evolution_chain.url}`)])
+
+        const typeAndEvol = Promise.all([this.fetchJSON(`https://pokeapi.co/api/v2/type/`), this.fetchJSON(`${speciesData.evolution_chain.url}`)]);
+        this.getPokeWeaknesses(typeAndEvol, pokeType);
+
+        this.getWeakOrEvol(typeAndEvol, 1).then(({ chain }) => {
+            console.log(chain)
+            const { evolves_to: evolve, species } = chain;
+            //determine at what stage the pokemon is in and check whether they have an evolution.
+
+            if (species.name == name) {
+                if (evolve.length) {
+                    console.log("has an evolution and is the first form");
+                    let index = 0;
+                    while(evolve[index] != undefined){
+                        //check to see for branching evolutions
+                        console.log(evolve);
+                        console.log(evolve[index]);
+                        if(evolve[index].length > 1){
+                            //branched or eevee case
+                        }
+                        index++;
+                    }
+                } else {
+                    console.log("has no evolution and thus in the first form or final form");
+                }
+            }
+
+        })
+
         //     fetch(`${speciesData.evolution_chain.url}`).then((res) => { return res.json() }).then((response) => {
-  
+
         //         let chain = response;
         //         console.log(chain);
-  
+
         //         let evol = [];
         //         let index = 0;
         //         while (chain.chain.evolves_to[index]) {
-  
+
         //             //Pokemon With Branched evolutions or Unique Pokemon like Pokemon (133) ===> 7 evolutions
         //             if (chain.chain.evolves_to.length > 1) {
         //                 if (index === chain.chain.evolves_to.length - 1) {
@@ -133,20 +80,20 @@ class UI {
         //                 }
         //                 evol.push(chain.chain.evolves_to[index].species);
         //                 index++;
-  
+
         //                 //Majority if not almost all pokemon will fall in this category.
         //                 //Returns an object with the whole pokemon evolution chain.
-  
+
         //             } else if (chain.chain.evolves_to.length === 1) {
         //                 //If there is only one object  returned, there are no branched evolutions.
         //                 //So the object will first return the base pokemon evolution, the first form.
         //                 evol.push(chain.chain.species);
-  
+
         //                 //Next check if the evolves_to.length === 1, pokemon with 2 evolutions.
         //                 //Example: Let A evolve into B.
         //                 if ((chain.chain.evolves_to[index].species.name === name) && (chain.chain.evolves_to[index].evolves_to.length === 0)) {
         //                     evol.push(chain.chain.evolves_to[index].species);
-  
+
         //                     //Next check if the evolves_to.length === 1, pokemon with 2 evolutions and it's in its final form
         //                     //Example: Let A evolve into B.
         //                 } else if ((chain.chain.evolves_to[index].species.name != name) && (chain.chain.evolves_to[index].evolves_to.length === 0)) {
@@ -159,11 +106,11 @@ class UI {
         //                 break;
         //             }
         //         }
-  
+
         //         console.log(evol);
-  
+
         //         evol = this.doSomething(this.evolve_container, 'evolve-container', evol);
-  
+
         //         let evolHTML = ``;
         //         // let regex = /[/](\d)+[/]/;
         //         if (evol.length != 0) {
@@ -183,11 +130,11 @@ class UI {
         //                 `<div class="part-1"><img src="./test/${id}.png.webp" alt=""><p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${name}</p></div>`
         //             // <div class="arr"><img src="./right-arrow.png" alt=""></div>`
         //         }
-  
+
         //         this.evolve_container.insertAdjacentHTML('beforeend', evolHTML);
         //         // this.evolve_container.removeChild(this.evolve_container.lastChild);
         //     })
-  
+
         //     let numberedHTML = ``;
         //     //get the pokemon id
         //     let mined, maxed;
@@ -197,11 +144,11 @@ class UI {
         //     (String(id).charAt(String(id).length - 1) != ("1"))) {
         //         console.log("we out here", id);
         //         console.log(`pokedex id, length = ${mined.toString().length}`)
-  
+
         //         mined = mined - Number(mined.toString().charAt(String(mined).length-1)) + 1;
-  
+
         //         maxed = mined + 9;
-  
+
         //     } else if (String(id).length != 1 && String(id).charAt(String(id).length-1) === "0") {
         //         console.log("last digit is 0")
         //         mined = mined - 10 + 1;
@@ -212,7 +159,7 @@ class UI {
         //         mined = 1;
         //         maxed = 10;
         //     }
-  
+
         //     console.log(mined, maxed);
         //     //iterate through the buttons
         //     for (let i = mined; i < maxed + 1; i++) {
@@ -222,18 +169,18 @@ class UI {
         //             numberedHTML += `<button type="button" class="btn numbered-btn shadow-none">${i}</button>`;
         //         }
         //     }
-  
+
         //     this.pokedexIndex.insertAdjacentHTML('beforeend', numberedHTML);
-  
+
     }
-  
+
     assignNameID(id, name) {
-  
+
         /**
         * Get pokemon ID/pokedex number, if pokeID is less than 100.
         * Prepend 00 to the number.
        */
-  
+
         if (id < 10) {
             this.pokeId.textContent = '#00' + id;
         } else if (id < 100) {
@@ -241,20 +188,20 @@ class UI {
         } else {
             this.pokeId.textContent = '#' + id;
         }
-  
+
         /**
         * Pokemon's name is stored here.
         */
-  
+
         this.pokeName.textContent = name;
     }
-  
+
     getAbilities(abilities) {
         /**
           * Get Pokemon's abilities.
          */
         let abilityHTML = ``;
-  
+
         abilities.forEach(({ ability }, i) => {
             if (i === abilities.length - 1) {
                 abilityHTML += `<li class="list-inline-item">${ability.name}.</li>`;
@@ -264,36 +211,36 @@ class UI {
         })
         this.abilitiesDOM.insertAdjacentHTML('beforeend', abilityHTML);
     }
-  
+
     assignPokeBio(height, weight, { dex, names }) {
         /**
          * Pokemon Height, Weight, Region, Kanji, and Image are retreived here.
         */
-  
+
         this.height.textContent = '0.' + height + 'm';
         this.weight.textContent = `${weight / 10}kg`;
         this.loc.textContent = `${dex[dex.length - 2].pokedex.name}`;
         this.kanji.textContent = `${names[10].name}`;
     }
-  
+
     assignBG(id) {
-  
+
         //Without this line, I would be "tainting" the canvas by loading from a cross origins domain.
         this.pkmImage.crossOrigin = "Anonymous";
         this.pkmImage.src = `./test/${id}.png.webp`;
-  
+
         //     //From Vibrant JS
         //     //Provides a unique color pallette.
-  
+
         //let pallette = [];
-  
+
         const checkImage = path => (
             new Promise((resolve, reject) => {
                 this.pkmImage.onload = () => resolve({ path, status: 'ok' });
                 this.pkmImage.onerror = () => reject({ path, status: 'error' });
                 this.pkmImage.src = path;
             }));
-  
+
         checkImage(this.pkmImage.src).then(() => {
             var vibrant = new Vibrant(this.pkmImage);
             var swatches = vibrant.swatches();
@@ -305,7 +252,7 @@ class UI {
                 console.log("Changed to a different color since default is undefined");
                 document.body.style.backgroundColor = swatches["Muted"].getHex();
             }
-  
+
             // document.body.style.backgroundColor = `${pallette[Math.floor(Math.random() * pallette.length)
             // ]}`;
         }).catch((err) => {
@@ -313,36 +260,54 @@ class UI {
             console.error(`Status: ${err.status}`);
         })
     }
-  
-    getPokemonType({ types, name, id }) {
-  
+
+    getWeakOrEvol(promise, i) {
+        return promise.then((test) => {
+            return test[i];
+        })
+    }
+
+    fetchJSON(url) {
+        return fetch(url).then(function (response) {
+            return response.json().then(function (data) {
+                return data;
+            })
+        })
+    }
+
+    reduceArray(passed) {
+        return passed.reduce((acc, curr) => acc.concat(curr), []);
+    }
+
+    getPokemonType({ types }) {
+
         //     /**
         //     * Get the pokemon's type.
         //     * First sort the type by alphabetical order.
         //     * Get the pokemon's image, name and type stored in HTML format.
         //    */
-  
+
         const pokeType = [];
         for (let { type } of types) {
             pokeType.push(type.name);
         }
-  
+
         pokeType.sort((a, b) => { return a - b });
-  
+
         let typeHTML = ``;
-  
+
         for (let i = 0; i < pokeType.length; i++) {
             typeHTML += `<div class="d-flex flex-column padded-lr">
                 <img src="./types/${pokeType[i]}.webp" alt="${pokeType[i]}">
                 <p class="lead artwork-lead center pkmn-type">${pokeType[i]}</p>
             </div>`
         }
-  
+
         this.pkmnType.insertAdjacentHTML('beforeend', typeHTML);
-        this.pkmnType.insertAdjacentHTML('beforebegin', `<img src="./test/${id}.png.webp" alt="" class="artwork">
-             <p class="lead artwork-lead pkmn-name">${name}</p>`)
+
+        return pokeType;
     }
-  
+
     getPokeStats(stats) {
         const attr = ['HP', 'ATK', 'DEF', 'SpA', 'SpD', 'Spe'];
         const pokeStats = [];
@@ -356,14 +321,14 @@ class UI {
              * Store data as HTML. Calculate the height for the bar graph's value, I used a ceiling of 150.
              * Output the data.
              */
-  
+
         let statHTML = '';
         for (let [index, stat] of pokeStats.reverse().entries()) {
             statHTML += `<div class="stat-container">
                              <h5 class="atr">${attr[index]}</h5>
                              <h5 class="atr-val">${stat}</h5>
                              <div class="outer outer-${index}">
-                                 <div class="inner-${index}" style="height: calc(100% - ${(stat / 150) * 100}%);">
+                                 <div class="inner-${index}" style="height: calc(100% - ${(stat / 130) * 100}%);">
                                      &nbsp;
                                 </div>
                              </div>
@@ -371,65 +336,96 @@ class UI {
         }
         this.stat.insertAdjacentHTML('beforeend', statHTML);
     }
-  
-    getPokeWeaknesses() { }
-  
-  
-    compareTypeWRI(arr) {
-        // for (let i = 0; i < arr[0].length; i++) {
-        //     for (let j = 0; j < arr[1].length; j++) {
-        //         if (arr[1][j].name === arr[0][i].name) {
-        //             arr[0].splice(i, 1);
-        //             i--;
-        //         }
-        //     }
-        // }
-        // return arr[0];
-        return arr[0].filter((code) => arr[1].every((coded) => code.name !== coded.name))
-    }
-  
-    separateWRI(arr) {
-        let newArr = [];
-        if (arr.length === 3) {
-            newArr[0] = arr.slice(0, 1).reduce((acc, curr) => { return acc.concat(curr) }, []);
-            newArr[1] = arr.slice(1, 3).reduce((acc, curr) => { return acc.concat(curr) }, []);
-        } else {
-            newArr[0] = arr[0].slice(0).concat(arr[3].slice(0)).reduce((acc, curr) => { return acc.concat(curr) }, []);
-            console.log(newArr[0]);
-            newArr[1] = arr.slice(1, 3).concat(arr.slice(4)).reduce((acc, curr) => { return acc.concat(curr) }, []);
-            console.log("not 3")
-        }
-  
-        //Check for duplicates, pokemon can have different weakness ratios to certain types
-        //Like 4x effective, 4x not-effective, 2x, 1x, 0.5x, etc.
-        //First, sort the types in alphabetical order.
-        newArr.forEach((item, index) => {
-            newArr[index].sort((a, b) => { return a.name > b.name ? 1 : -1 })
+
+    getPokeWeaknesses(passed, pokeType) {
+        this.getWeakOrEvol(passed, 0).then(({ results }) => {
+            let filtered = [];
+            filtered =
+                results.filter(({ name }) => {
+                    return pokeType.indexOf(name) > -1;
+                }).map((obj) => { return obj.url })
+
+            return (Promise.all(filtered.map((res) => {
+                return this.fetchJSON(res);
+            })))
         })
-  
-        //Then, sort the objects by name and delete the duplicates.
-        for (let i = 0; i < newArr.length; i++) {
-            for (let j = 0; j < newArr[i].length - 1; j++) {
-                if (newArr[i][j].name === newArr[i][j + 1].name) {
-                    newArr[i].splice(j, 1);
+            .then((damage_relations) => {
+                let damage = damage_relations.map((res) => { return res.damage_relations })
+                let weakness = [];
+                let dmgFrom = [];
+                let immune = [];
+                damage.forEach((val) => {
+                    for (let i in val) {
+                        if (i.indexOf("double_damage_from") > -1) {
+                            weakness.push(val[i]);
+                        } else if (i.indexOf("half_damage_from") > -1) {
+                            dmgFrom.push(val[i]);
+                        } else if (i.indexOf("no_damage_from") > -1 && (val[i].length)) {
+                            immune.push(val[i]);
+                        }
+                    }
+                })
+
+                let defWeakness = this.reduceArray(dmgFrom.concat(immune));
+                defWeakness = Array.from(new Set(defWeakness.map(({ name }) => { return name })));
+                weakness = this.reduceArray(weakness);
+                weakness = Array.from(new Set(weakness.map(({ name }) => name)));
+                immune = this.reduceArray(immune);
+                immune = Array.from(new Set(immune.map(({ name }) => name)));
+
+                let resistances = defWeakness.filter((type) => immune.indexOf(type) < 0)
+                    .filter((res) => weakness.indexOf(res) < 0);
+                let immunities = defWeakness.filter((type) => immune.indexOf(type) > -1);
+
+                defWeakness = weakness.filter((test) => {
+                    return defWeakness.indexOf(test) < 0
+                })
+
+                function outputResults(array) {
+                    let resistancesHTML = ``;
+                    for (let resist of array) {
+                        resistancesHTML += `<div class="weakness-img">
+                        <img src="./types/${resist}.webp" alt="${resist}">
+                            <p class="artwork-lead lead center">${resist}</p>
+                            </div>`
+                    }
+                    return resistancesHTML;
                 }
-            }
-        }
-  
-        return newArr;
+
+                let weaknessHTML = outputResults(defWeakness);
+                let resistancesHTML = outputResults(resistances);
+                this.weaknessSection.insertAdjacentHTML('beforeend', weaknessHTML);
+                this.resistanceSection.insertAdjacentHTML('beforeend', resistancesHTML);
+                if(!immunities.length){
+                    console.log("no immunities");
+                    return;
+                }
+
+                this.third_col.insertAdjacentHTML("beforeend", `<h3 id="weakness-h3">Immunities</h3>
+                <div class="weakness-box center">
+                <div class="immunity-img-box">
+
+                </div>
+            </div>`);
+
+
+
+                let immunitiesHTML = outputResults(immunities);
+                document.querySelector(".immunity-img-box").insertAdjacentHTML('beforeend', immunitiesHTML);
+
+            })
+            .catch((err) => {
+                console.log(err);
+            })
     }
-  
-    branchedEvols(arr, passed) {
-        return arr.unshift(passed);
-    }
-  
+
     removePokeFrom151Up(arr) {
         let regex = /[/](\d)+[/]/;
         // evol[index].url = (regex.exec(item.url)[0].split('/')[1]);
         arr.forEach((item, index) => {
             arr[index].url = (regex.exec(item.url)[0].split('/')[1]);
         })
-  
+
         arr = arr.filter((item, index) => {
             if (Number(item.url) < 152) {
                 return item;
@@ -438,15 +434,15 @@ class UI {
         console.log(arr);
         return arr;
     }
-  
+
     doSomething(domelem, classname, elem) {
         if (domelem.classList.item(domelem.classList.length - 1) != `${classname}`) {
             //Delete it
             domelem.classList.remove(domelem.classList.item(domelem.classList.length - 1));
         }
-  
+
         elem = this.removePokeFrom151Up(elem);
-  
+
         if (elem.length === 2) {
             domelem.classList.add('pkmn-two-evols');
         }
@@ -455,10 +451,8 @@ class UI {
         }
         return elem;
     }
-  
+
     clearUI() {
-        // this.loading.textContent = ``;
-        // this.pokemon.textContent = ``;
         this.pokeId.textContent = ``;
         this.pokeName.textContent = ``;
         this.abilitiesDOM.textContent = ``;
@@ -467,21 +461,28 @@ class UI {
         this.loc.textContent = ``;
         this.kanji.textContent = ``;
         this.pkmImage.src = ``;
-        // this.pkmnName.textContent= ``;
         this.pkmnType.textContent = ``;
         this.stat.textContent = ``;
         this.weaknessSection.textContent = ``;
         this.evolve_container.textContent = ``;
         this.pokedexIndex.textContent = ``;
-  
-        Array.from(this.pkmnWType.children).forEach((item) => {
-            if (item.src) { return item.parentElement.removeChild(item); }
-            else { item.textContent = ''; }
-        })
+        this.resistanceSection.textContent = "";
+       
+      try {
+        if(typeof document.querySelector(".immunity-img-box") == null){
+            console.log("doesn't exist");
+        }else{
+            document.querySelector(".immunity-img-box").parentElement.previousElementSibling.remove();
+            document.querySelector(".immunity-img-box").parentElement.remove();
+        }
+      }catch(err){
+        console.log(err);
+      }
+
     }
-  
-  
- }
-  
-  
- 
+
+
+}
+
+
+
