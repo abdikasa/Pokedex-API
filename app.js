@@ -1,5 +1,10 @@
 const interface = new UI();
+<<<<<<< HEAD
 const poke = new Pokedata(`${Math.floor(Math.random() * 151) + 1}`);
+=======
+//const poke = new Pokedata(`${Math.floor(Math.random() * 151) + 1}`);
+const poke = new Pokedata(103);
+>>>>>>> 2c17d02d5e55c9560dc19c116adf4410f2b17472
 
 function hideShowBody(string) {
     let body = Array.prototype.slice.call(interface.body.children)
@@ -15,8 +20,14 @@ function hideShowBody(string) {
 }
 
 const setTimeoutPromise = ms => {
+<<<<<<< HEAD
     return new Promise(resolve => 
         setTimeout(resolve, ms))}
+=======
+    return new Promise(resolve =>
+        setTimeout(resolve, ms))
+}
+>>>>>>> 2c17d02d5e55c9560dc19c116adf4410f2b17472
 
 const hideShowLoader = function (string) {
     document.getElementById("loader-screen").style.display = string;
@@ -26,18 +37,30 @@ async function runProgram() {
     hideShowLoader("block");
     hideShowBody("none");
     interface.pkmnSearch.children[0].style.display = "none";
+<<<<<<< HEAD
     
     setTimeoutPromise(400).then(getPokemon)
     .then(() => {
         hideShowBody("none")
         console.log("ran")      
     })
+=======
+
+    setTimeoutPromise(300).then(getPokemon)
+        .then(() => {
+            hideShowBody("none")
+        })
+>>>>>>> 2c17d02d5e55c9560dc19c116adf4410f2b17472
         .finally(() => {
             setTimeout(() => {
                 hideShowLoader("none");
                 interface.pkmnSearch.children[0].style.display = "block";
                 hideShowBody("block");
+<<<<<<< HEAD
             }, 500)
+=======
+            }, 700)
+>>>>>>> 2c17d02d5e55c9560dc19c116adf4410f2b17472
         })
 }
 
@@ -87,15 +110,17 @@ function clearInputs(input) {
     return input.value = '';
 }
 
-function getPokemon() {
-    let start, finish;
-    start = Date.now();
+async function getPokemon() {
+  
     poke.fetchPokemon()
         .then(async resolve => {
             let prom = await Promise.all(resolve);
             interface.paintUI(prom[0], prom[1]);
+<<<<<<< HEAD
             finish = Date.now() - start;
             console.log(`${finish}ms`)
+=======
+>>>>>>> 2c17d02d5e55c9560dc19c116adf4410f2b17472
         })
         .catch(reject => {
             console.warn(reject);
