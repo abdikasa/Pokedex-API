@@ -3,20 +3,15 @@ class Pokedata {
         this.id_name = id_name;
     }
   
-    async fetchPokemon() {
+    fetchPokemon() {
        
         const pokeResponse = fetch(`https://pokeapi.co/api/v2/pokemon/${this.id_name}/`);
         const speciesResponse = fetch(`https://pokeapi.co/api/v2/pokemon-species/${this.id_name}/`);
-        const response = await Promise.all([pokeResponse, speciesResponse])
-        console.log(response);
-        const prom = response.map((test) => {return test.json()});
-  
-        // return {
-        //     pokePromise: await prom[0],
-        //     speciesPromise: await prom[1]
-        // }
-        
-        return prom;
+        const response = Promise.all([pokeResponse, speciesResponse]).then((res) => {
+            return res.map((test) => {return test.json()});
+        })
+      
+        return response;
       
         // const urls = [`https://pokeapi.co/api/v2/pokemon/${this.id_name}/`,
         // `https://pokeapi.co/api/v2/pokemon-species/${this.id_name}/`];
