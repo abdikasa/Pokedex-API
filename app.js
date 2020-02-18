@@ -1,6 +1,6 @@
 const interface = new UI();
 //const poke = new Pokedata(`${Math.floor(Math.random() * 151) + 1}`);
-const poke = new Pokedata(103);
+const poke = new Pokedata(133);
 
 function hideShowBody(string) {
     let body = Array.prototype.slice.call(interface.body.children)
@@ -29,7 +29,7 @@ async function runProgram() {
     hideShowBody("none");
     interface.pkmnSearch.children[0].style.display = "none";
 
-    setTimeoutPromise(300).then(getPokemon)
+    setTimeoutPromise(400).then(getPokemon)
         .then(() => {
             hideShowBody("none")
         })
