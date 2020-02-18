@@ -27,41 +27,55 @@ class UI {
         const { id, name, abilities, height, weight, types, stats } = pkmnData;
         const { pokedex_numbers: dex, names, evolution_chain: evolChain } = speciesData;
         this.assignBG(id);
-        this.assignNameID(id, name);
-        this.getAbilities(abilities);
-        this.assignPokeBio(height, weight, { dex, names });
-        const pokeType = this.getPokemonType(pkmnData);
-        this.getPokeStats(stats);
-        console.log(pkmnData);
-        console.log(speciesData);
+        //this.assignNameID(id, name);
+        //this.getAbilities(abilities);
+        //this.assignPokeBio(height, weight, { dex, names });
+        //const pokeType = this.getPokemonType(pkmnData);
+        //this.getPokeStats(stats);
+        //console.log(pkmnData);
+        //console.log(speciesData);
         // //Promise.all([fetchJSON(`https://pokeapi.co/api/v2/type/`), fetchJSON(`${speciesData.evolution_chain.url}`)])
 
         const typeAndEvol = Promise.all([this.fetchJSON(`https://pokeapi.co/api/v2/type/`), this.fetchJSON(`${speciesData.evolution_chain.url}`)]);
-        this.getPokeWeaknesses(typeAndEvol, pokeType);
+        //this.getPokeWeaknesses(typeAndEvol, pokeType);
 
         this.getWeakOrEvol(typeAndEvol, 1).then(({ chain }) => {
             console.log(chain)
             const { evolves_to: evolve, species } = chain;
             //determine at what stage the pokemon is in and check whether they have an evolution.
 
+
+            function isObjEmpty(obj) {
+                for (let prop in obj) {
+                    if (obj.hasOwnProperty(prop))
+                        return false;
+                }
+                return true;
+            }
+
+            function evol1to2(obj){
+                let i = 0;
+                while (!isObjEmpty(obj[i])) {
+                    console.log(obj[i].species.name, obj[i].species.url);
+                    i++;
+                }
+            }
+
+
             if (species.name == name) {
                 if (evolve.length) {
                     console.log("has an evolution and is the first form");
                     let index = 0;
-                    while(evolve[index] != undefined){
-                        //check to see for branching evolutions
-                        console.log(evolve);
-                        console.log(evolve[index]);
-                        if(evolve[index].length > 1){
-                            //branched or eevee case
-                        }
-                        index++;
+                    let array = [];
+                    console.log(evolve);
+                    for (let i = 0; i < 1; i++) {
+                        evol1to2(evolve);
+                        evol1to2(evolve[0].evolves_to);
                     }
-                } else {
-                    console.log("has no evolution and thus in the first form or final form");
                 }
+            } else {
+                console.log("final form maybe?");
             }
-
         })
 
         //     fetch(`${speciesData.evolution_chain.url}`).then((res) => { return res.json() }).then((response) => {
@@ -314,13 +328,6 @@ class UI {
         for (let stat of stats) {
             pokeStats.push(stat.base_stat);
         }
-        /**
-             * Get the 6 Pokemon stats: HP, Attack, Defense, Special Attack, Special Defense and Speed.
-             * Reverse order since the pokeAPI starts with speed instead of HP.
-             * Store the abbreviations instead of the long format for stat names. Switch statment used.
-             * Store data as HTML. Calculate the height for the bar graph's value, I used a ceiling of 150.
-             * Output the data.
-             */
 
         let statHTML = '';
         for (let [index, stat] of pokeStats.reverse().entries()) {
@@ -396,7 +403,7 @@ class UI {
                 let resistancesHTML = outputResults(resistances);
                 this.weaknessSection.insertAdjacentHTML('beforeend', weaknessHTML);
                 this.resistanceSection.insertAdjacentHTML('beforeend', resistancesHTML);
-                if(!immunities.length){
+                if (!immunities.length) {
                     console.log("no immunities");
                     return;
                 }
@@ -408,10 +415,9 @@ class UI {
                 </div>
             </div>`);
 
-
-
                 let immunitiesHTML = outputResults(immunities);
                 document.querySelector(".immunity-img-box").insertAdjacentHTML('beforeend', immunitiesHTML);
+                console.log(document.querySelector(".immunity-img-box"));
 
             })
             .catch((err) => {
@@ -467,17 +473,18 @@ class UI {
         this.evolve_container.textContent = ``;
         this.pokedexIndex.textContent = ``;
         this.resistanceSection.textContent = "";
-       
-      try {
-        if(typeof document.querySelector(".immunity-img-box") == null){
-            console.log("doesn't exist");
-        }else{
-            document.querySelector(".immunity-img-box").parentElement.previousElementSibling.remove();
-            document.querySelector(".immunity-img-box").parentElement.remove();
+
+        try {
+            if (document.querySelector(".immunity-img-box") == null) {
+                console.log("doesn't exist");
+            } else {
+                document.querySelector(".immunity-img-box").parentElement.previousElementSibling.remove();
+                document.querySelector(".immunity-img-box").parentElement.remove();
+                console.log("removed successfully")
+            }
+        } catch (err) {
+            console.log(err, "removed failure operation");
         }
-      }catch(err){
-        console.log(err);
-      }
 
     }
 
