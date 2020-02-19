@@ -29,7 +29,7 @@ async function runProgram() {
     hideShowBody("none");
     interface.pkmnSearch.children[0].style.display = "none";
 
-    setTimeoutPromise(400).then(getPokemon)
+    setTimeoutPromise(300).then(getPokemon)
         .then(() => {
             hideShowBody("none")
         })
@@ -38,7 +38,7 @@ async function runProgram() {
                 hideShowLoader("none");
                 interface.pkmnSearch.children[0].style.display = "block";
                 hideShowBody("block");
-            }, 700)
+            }, 900)
         })
 }
 

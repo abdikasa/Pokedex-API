@@ -53,29 +53,34 @@ class UI {
                 return true;
             }
 
-            function evol1to2(obj){
+            function evol1to2(obj) {
                 let i = 0;
+                let object = {baby: "", next: [], final:[]};
                 while (!isObjEmpty(obj[i])) {
-                    console.log(obj[i].species.name, obj[i].species.url);
-                    i++;
-                }
-            }
-
-
-            if (species.name == name) {
-                if (evolve.length) {
-                    console.log("has an evolution and is the first form");
-                    let index = 0;
-                    let array = [];
-                    console.log(evolve);
-                    for (let i = 0; i < 1; i++) {
-                        evol1to2(evolve);
-                        evol1to2(evolve[0].evolves_to);
+                    object.next.push(obj[i].species.name);
+                    if (!isObjEmpty(obj[i].evolves_to)) {
+                        let j = 0;
+                        while (!isObjEmpty(obj[i].evolves_to[j])) {
+                            object["final"].push(obj[i].evolves_to[j].species.name);
+                            j++;
+                        }
                     }
+                    i++;
+                    return object;
                 }
-            } else {
-                console.log("final form maybe?");
             }
+
+
+
+
+
+
+            
+            let final = evol1to2(evolve);
+            final["baby"] = species.name;
+            console.log(final);
+            //evol1to2(evolve[0].evolves_to);
+
         })
 
         //     fetch(`${speciesData.evolution_chain.url}`).then((res) => { return res.json() }).then((response) => {
