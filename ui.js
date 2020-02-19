@@ -53,32 +53,39 @@ class UI {
                 return true;
             }
 
-            function evol1to2(obj) {
+            function evol1to2(obj, baby) {
                 let i = 0;
-                let object = {baby: "", next: [], final:[]};
+                let object = {chain:[]};
                 while (!isObjEmpty(obj[i])) {
-                    object.next.push(obj[i].species.name);
+                    let next = obj[i].species.name;
                     if (!isObjEmpty(obj[i].evolves_to)) {
                         let j = 0;
                         while (!isObjEmpty(obj[i].evolves_to[j])) {
-                            object["final"].push(obj[i].evolves_to[j].species.name);
+                            let final = obj[i].evolves_to[j].species.name;
+                            object.chain.push({baby:baby.name, next, final})
                             j++;
                         }
+                    }else{
+                        object.chain.push({baby:baby.name, next})
                     }
                     i++;
-                    return object;
                 }
+                return object.chain;
             }
 
-
-
-
-
-
-            
-            let final = evol1to2(evolve);
-            final["baby"] = species.name;
+            let final = evol1to2(evolve, species);
             console.log(final);
+
+            //test for vileplume
+            
+
+
+
+
+
+
+
+
             //evol1to2(evolve[0].evolves_to);
 
         })
