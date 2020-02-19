@@ -53,6 +53,16 @@ class UI {
                 return true;
             }
 
+            function babyEvol(obj){
+                let babyE = [];
+                let i = 0;
+                while(!isObjEmpty(obj[i])){
+                    babyE.push(obj[i].species.name);
+                    i++;
+                }
+                return babyE;
+            }
+
             function evol1to2(obj, baby) {
                 let i = 0;
                 let object = {chain:[]};
@@ -73,20 +83,40 @@ class UI {
                 return object.chain;
             }
 
-            let final = evol1to2(evolve, species);
-            console.log(final);
+            var groupBy = function(xs, key) {
+                return xs.reduce(function(rv, x) {
+                  (rv[x[key]] = rv[x[key]] || []).push(x);
+                  return rv;
+                }, {});
+              };
 
-            //test for vileplume
-            
-
-
-
-
-
-
+            //let final = evol1to2(evolve, species);
+            //console.log(final);
 
 
-            //evol1to2(evolve[0].evolves_to);
+            function getEvolution(pokeName, evolved, {species}){
+                const secondStage = evol1to2(evolved, species);
+                const basic = babyEvol(evolved).concat(babyEvol(evolved[0].evolves_to));
+                //Check for no evolutions, return the species name
+                if(basic.length == 0){
+                    //print the image of the baby here.
+                    console.log(pokeName);
+                }else if(pokeName == species.name){ //pokemon has a normal evo chain, no branches.
+                    if(secondStage.length > 1){
+                        console.log(basic)
+                    }
+                    else{
+                        console.log(secondStage)
+                    }
+                }else if(secondStage.length > 1){ //poke 2nd or third stage has more than one branch.
+                    //We must differentiate between the branches by speces.name
+                        let middle = groupBy(secondStage,"next")[pokeName];
+                        let final = groupBy(secondStage,"final")[pokeName]; 
+                        console.log(middle);
+                        console.log(final);
+                }
+            }
+            getEvolution(name, evolve, chain);
 
         })
 
