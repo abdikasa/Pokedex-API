@@ -42,8 +42,6 @@ class UI {
         this.getWeakOrEvol(typeAndEvol, 1).then(({ chain }) => {
             console.log(chain)
             const { evolves_to: evolve, species } = chain;
-            //determine at what stage the pokemon is in and check whether they have an evolution.
-
 
             function isObjEmpty(obj) {
                 for (let prop in obj) {
@@ -68,31 +66,25 @@ class UI {
                 return babyE;
             }
 
-            function evol1to2(obj, baby) {
+            function evol1to2(obj, baby, key) {
                 let i = 0;
                 let object = { chain: [] };
                 while (!isObjEmpty(obj[i])) {
-                    let next = obj[i].species.url;
+                    let next = obj[i].species[key];
                     if (!isObjEmpty(obj[i].evolves_to)) {
                         let j = 0;
                         while (!isObjEmpty(obj[i].evolves_to[j])) {
-                            let final = obj[i].evolves_to[j].species.url;
-                            object.chain.push({ baby: baby.url, next, final })
+                            let final = obj[i].evolves_to[j].species[key];;
+                            object.chain.push({ baby: baby[key], next, final })
                             j++;
                         }
                     } else {
-                        object.chain.push({ baby: baby.url, next })
+                        object.chain.push({ baby: baby[key], next })
                     }
                     i++;
                 }
 
-                object.chain.forEach((url) => {
-                    for (let key in url) {
-                        url[key] = convertURLTOID(url[key]);
-                    }
-                })
-
-
+                console.log(object.chain)
                 return object.chain;
             }
 
@@ -103,55 +95,65 @@ class UI {
                 }, {});
             };
 
-            //let final = evol1to2(evolve, species);
-            //console.log(final);
-
             function convertURLTOID(url) {
                 let regex = /[/](\d)+[/]/;
-                return regex.exec(url)[0].split('/')[1]
+
+                if (typeof url == "string") {
+                    return regex.exec(url)[0].split('/')[1]
+                } else {
+                    url.forEach((url) => {
+                        for (let key in url) {
+                            url[key] = convertURLTOID(url[key]);
+                        }
+                    })
+                    return url;
+                }
             }
 
-
-
-
             function getEvolution(pokeName, evolved, { species }) {
-                const secondStage = evol1to2(evolved, species);
+                const secondStageName = evol1to2(evolved, species, "name");
+                const secondStageID = convertURLTOID(evol1to2(evolved, species, "url"));
                 let evolHTML = ``;
                 const basic = babyEvol(evolved);
                 //Check for no evolutions, return the species name
                 if (basic.length == 0) {
                     //print the image of the baby here.
-                    console.log(pokeName);
                     evolHTML += `<div class="part-1"><img src="./test/${pokeName}.png.webp" alt=""><p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${pokeName}</p></div>`
-                } else if (pokeName == convertURLTOID(species.url) || secondStage.length == 1) { //pokemon has a normal evo chain, no branches.
-                    if (secondStage.length > 1) {
+                } else if (pokeName == convertURLTOID(species.url) || secondStageID.length == 1) { //pokemon has a normal evo chain, no branches.
+                    if (secondStageID.length > 1) {
                         basic.unshift(convertURLTOID(species.url));
-                        basic.forEach((ids) => {
+                        basic.forEach((ids, index) => {
                             evolHTML += `<div class="part-1"><img src="./test/${ids}.png.webp" alt="">
-                                <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${pokeName}</p></div>`
-                           //<div class="arr"><img src="./right-arrow.png" alt=""></div>`    
+                                <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${secondStageName[index]}</p></div>`
+                            //<div class="arr"><img src="./right-arrow.png" alt=""></div>`    
                         })
                     }
                     else {
-                        console.log(secondStage)
-                        secondStage.forEach((id) => {
+                        secondStageID.forEach((id) => {
                             for (let key in id) {
                                 evolHTML += `<div class="part-1"><img src="./test/${id[key]}.png.webp" alt="">
-                                <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${pokeName}</p></div>`
+                                <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${secondStageName[0][key]}</p></div>`
                                 //<div class="arr"><img src="./right-arrow.png" alt=""></div>`    
                             }
                         })
                     }
-                } else if (secondStage.length > 1) { //poke 2nd or third stage has more than one branch.
+                } else if (secondStageID.length > 1) { //poke 2nd or third stage has more than one branch.
                     //We must differentiate between the branches by speces.name
-                    let middle = groupBy(secondStage, "next")[pokeName];
-                    let final = groupBy(secondStage, "final")[pokeName];
+                    let middle = groupBy(secondStageID, "next")[pokeName];
+                    let final = groupBy(secondStageID, "final")[pokeName];
                     middle = middle || final;
-                    console.log(middle);
+                    let index = secondStageID.findIndex((obj, index) => {
+                        if (obj.final == undefined) {
+                            return obj.next == middle[0].next;
+                        } else {
+                            return obj.final == middle[0].final;
+                        }
+                    })
+
                     middle.forEach((id) => {
                         for (let key in id) {
                             evolHTML += `<div class="part-1"><img src="./test/${id[key]}.png.webp" alt="">
-                                <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${pokeName}</p>
+                                <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${secondStageName[index][key]}</p>
                             </div>`
                             //<div class="arr"><img src="./right-arrow.png" alt=""></div>`    
                         }
@@ -159,48 +161,47 @@ class UI {
                 }
 
                 return evolHTML;
-                //this.evolve_container.removeChild(this.evolve_container.lastChild);
             }
             const evolutionComplete = getEvolution(id, evolve, chain);
             this.evolve_container.insertAdjacentHTML('beforeend', evolutionComplete);
         })
 
-            let numberedHTML = ``;
-            //get the pokemon id
-            let mined, maxed;
-            mined = maxed = id;
-            //Check the length
-            if ((String(id).length != 1) && (String(id).charAt(String(id).length - 1) != ("0")) &&
+        let numberedHTML = ``;
+        //get the pokemon id
+        let mined, maxed;
+        mined = maxed = id;
+        //Check the length
+        if ((String(id).length != 1) && (String(id).charAt(String(id).length - 1) != ("0")) &&
             (String(id).charAt(String(id).length - 1) != ("1"))) {
-                console.log("we out here", id);
-                console.log(`pokedex id, length = ${mined.toString().length}`)
+            console.log("we out here", id);
+            console.log(`pokedex id, length = ${mined.toString().length}`)
 
-                mined = mined - Number(mined.toString().charAt(String(mined).length-1)) + 1;
+            mined = mined - Number(mined.toString().charAt(String(mined).length - 1)) + 1;
 
-                maxed = mined + 9;
+            maxed = mined + 9;
 
-            } else if (String(id).length != 1 && String(id).charAt(String(id).length-1) === "0") {
-                console.log("last digit is 0")
-                mined = mined - 10 + 1;
-             } else if((String(id).length != 1) && String(id).charAt(String(id).length -1 === "1")){
-                maxed += 9;
+        } else if (String(id).length != 1 && String(id).charAt(String(id).length - 1) === "0") {
+            console.log("last digit is 0")
+            mined = mined - 10 + 1;
+        } else if ((String(id).length != 1) && String(id).charAt(String(id).length - 1 === "1")) {
+            maxed += 9;
+        } else {
+            console.log("else option")
+            mined = 1;
+            maxed = 10;
+        }
+
+        console.log(mined, maxed);
+        //iterate through the buttons
+        for (let i = mined; i < maxed + 1; i++) {
+            if (i === Number(id)) {
+                numberedHTML += `<button type="button" class="btn numbered-btn selected-num shadow-none">${i}</button>`;
             } else {
-                console.log("else option")
-                mined = 1;
-                maxed = 10;
+                numberedHTML += `<button type="button" class="btn numbered-btn shadow-none">${i}</button>`;
             }
+        }
 
-            console.log(mined, maxed);
-            //iterate through the buttons
-            for (let i = mined; i < maxed + 1; i++) {
-                if(i === Number(id)) {
-                    numberedHTML += `<button type="button" class="btn numbered-btn selected-num shadow-none">${i}</button>`;
-                }else{
-                    numberedHTML += `<button type="button" class="btn numbered-btn shadow-none">${i}</button>`;
-                }
-            }
-
-            this.pokedexIndex.insertAdjacentHTML('beforeend', numberedHTML);
+        this.pokedexIndex.insertAdjacentHTML('beforeend', numberedHTML);
 
     }
 
@@ -415,63 +416,55 @@ class UI {
                     return resistancesHTML;
                 }
 
-                let weaknessHTML = outputResults(defWeakness);
-                let resistancesHTML = outputResults(resistances);
-                this.weaknessSection.insertAdjacentHTML('beforeend', weaknessHTML);
-                this.resistanceSection.insertAdjacentHTML('beforeend', resistancesHTML);
-                if (!immunities.length) {
-                    console.log("no immunities");
-                    return;
+                function testImmuneResist(resist, immune){
+                    console.log(resist)
+                    console.log(immune)
+                    if(!resist.length){
+                        return outputResults(immune);
+                    }else if(!immune.length){
+                        return outputResults(resist);
+                    }else {
+                        return [outputResults(resist), outputResults(immune)];
+                    }
                 }
 
-                this.third_col.insertAdjacentHTML("beforeend", `<h3 id="weakness-h3">Immunities</h3>
-                <div class="weakness-box center">
-                <div class="immunity-img-box">
+                const indicators = [resistances, immunities];
+                let weaknessHTML = outputResults(defWeakness);
+                //let resistancesHTML = outputResults(resistances);
+                this.weaknessSection.insertAdjacentHTML('beforeend', weaknessHTML);
 
-                </div>
-            </div>`);
+                const printIR = testImmuneResist(indicators[0], indicators[1]);
+                console.log(printIR[1])
 
-                let immunitiesHTML = outputResults(immunities);
-                document.querySelector(".immunity-img-box").insertAdjacentHTML('beforeend', immunitiesHTML);
-                console.log(document.querySelector(".immunity-img-box"));
+                if(printIR.length > 1){
+                    this.third_col.insertAdjacentHTML("beforeend", `<h3 id="weakness-h3">Resistances</h3>
+                    <div class="weakness-box center">
+                    <div class="resistance-img-box">
+    
+                    </div>
+                </div>`)
+    
+                    this.third_col.insertAdjacentHTML("beforeend", `<h3 id="weakness-h3">Immunities</h3>
+                    <div class="weakness-box center">
+                    <div class="immunity-img-box">
+    
+                    </div>
+                </div>`);
+
+                document.querySelector(".resistance-img-box").insertAdjacentHTML('beforeend', printIR[0]);
+                document.querySelector(".immunity-img-box").insertAdjacentHTML('beforeend', printIR[1]);
+                }else if(printIR[0].indexOf("resistance") > -1){
+                document.querySelector(".resistance-img-box").insertAdjacentHTML('beforeend', printIR[0]);
+                }else{
+                    document.querySelector(".immunity-img-box").insertAdjacentHTML('beforeend', printIR[1]);
+                }
+
+                
 
             })
             .catch((err) => {
                 console.log(err);
             })
-    }
-
-    removePokeFrom151Up(arr) {
-        let regex = /[/](\d)+[/]/;
-        // evol[index].url = (regex.exec(item.url)[0].split('/')[1]);
-        arr.forEach((item, index) => {
-            arr[index].url = (regex.exec(item.url)[0].split('/')[1]);
-        })
-
-        arr = arr.filter((item, index) => {
-            if (Number(item.url) < 152) {
-                return item;
-            }
-        })
-        console.log(arr);
-        return arr;
-    }
-
-    doSomething(domelem, classname, elem) {
-        if (domelem.classList.item(domelem.classList.length - 1) != `${classname}`) {
-            //Delete it
-            domelem.classList.remove(domelem.classList.item(domelem.classList.length - 1));
-        }
-
-        elem = this.removePokeFrom151Up(elem);
-
-        if (elem.length === 2) {
-            domelem.classList.add('pkmn-two-evols');
-        }
-        else if (elem.length === 0 || elem.length === 1) {
-            domelem.classList.add('pkmn-one-evol');
-        }
-        return elem;
     }
 
     clearUI() {
@@ -491,17 +484,20 @@ class UI {
         this.resistanceSection.textContent = "";
 
         try {
-            if (document.querySelector(".immunity-img-box") == null) {
-                console.log("doesn't exist");
-            } else {
-                document.querySelector(".immunity-img-box").parentElement.previousElementSibling.remove();
-                document.querySelector(".immunity-img-box").parentElement.remove();
-                console.log("removed successfully")
-            }
+            checkIfClassExists(".immunity-img-box");
+            checkIfClassExists(".resistance-img-box");
+
         } catch (err) {
             console.log(err, "removed failure operation");
         }
 
+    }
+
+    checkIfClassExists(string) {
+        if (document.querySelector(string) != null) {
+            document.querySelector(string).parentElement.previousElementSibling.remove();
+            document.querySelector(string).parentElement.remove();
+        }
     }
 
 
