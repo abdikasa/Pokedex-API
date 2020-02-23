@@ -416,51 +416,40 @@ class UI {
                     return resistancesHTML;
                 }
 
-                function testImmuneResist(resist, immune){
-                    console.log(resist)
-                    console.log(immune)
-                    if(!resist.length){
-                        return outputResults(immune);
-                    }else if(!immune.length){
-                        return outputResults(resist);
-                    }else {
-                        return [outputResults(resist), outputResults(immune)];
+                function testImmuneResist(resist, immune) {
+                    if (!resist.length) {
+                        console.log("no resistances")
+                        let immunities = outputResults(immune);
+                        that.third_col.insertAdjacentHTML("beforeend", `<h3 id="weakness-h3">Immunities</h3>
+                        <div class="weakness-box center">
+                        <div class="immunity-img-box"></div>`);
+                        document.querySelector(".immunity-img-box").insertAdjacentHTML('beforeend', immunities);
+
+                    } else if (!immune.length) {
+                        console.log("no immmunities")
+                        let resistances = outputResults(resist);
+                        that.third_col.insertAdjacentHTML("beforeend", `<h3 id="weakness-h3">Resistances</h3>
+                        <div class="weakness-box center">
+                        <div class="resistance-img-box"></div>`)
+                        document.querySelector(".resistance-img-box").insertAdjacentHTML('beforeend', resistances);
+                    } else {
+                        console.log("Has both")
+                        const arr = [outputResults(resist), outputResults(immune)];
+                        that.third_col.insertAdjacentHTML("beforeend", `<h3 id="weakness-h3">Resistances</h3>
+                        <div class="weakness-box center">
+                        <div class="resistance-img-box"></div>`)
+                        document.querySelector(".resistance-img-box").insertAdjacentHTML('beforeend', arr[0]);
+                        that.third_col.insertAdjacentHTML("beforeend", `<h3 id="weakness-h3">Immunities</h3>
+                        <div class="weakness-box center">
+                        <div class="immunity-img-box"></div>`);
+                        document.querySelector(".immunity-img-box").insertAdjacentHTML('beforeend', arr[1]);
                     }
                 }
-
-                const indicators = [resistances, immunities];
+                const that = this;
                 let weaknessHTML = outputResults(defWeakness);
                 //let resistancesHTML = outputResults(resistances);
                 this.weaknessSection.insertAdjacentHTML('beforeend', weaknessHTML);
-
-                const printIR = testImmuneResist(indicators[0], indicators[1]);
-                console.log(printIR[1])
-
-                if(printIR.length > 1){
-                    this.third_col.insertAdjacentHTML("beforeend", `<h3 id="weakness-h3">Resistances</h3>
-                    <div class="weakness-box center">
-                    <div class="resistance-img-box">
-    
-                    </div>
-                </div>`)
-    
-                    this.third_col.insertAdjacentHTML("beforeend", `<h3 id="weakness-h3">Immunities</h3>
-                    <div class="weakness-box center">
-                    <div class="immunity-img-box">
-    
-                    </div>
-                </div>`);
-
-                document.querySelector(".resistance-img-box").insertAdjacentHTML('beforeend', printIR[0]);
-                document.querySelector(".immunity-img-box").insertAdjacentHTML('beforeend', printIR[1]);
-                }else if(printIR[0].indexOf("resistance") > -1){
-                document.querySelector(".resistance-img-box").insertAdjacentHTML('beforeend', printIR[0]);
-                }else{
-                    document.querySelector(".immunity-img-box").insertAdjacentHTML('beforeend', printIR[1]);
-                }
-
-                
-
+                testImmuneResist(resistances, immunities)
             })
             .catch((err) => {
                 console.log(err);
@@ -481,11 +470,10 @@ class UI {
         this.weaknessSection.textContent = ``;
         this.evolve_container.textContent = ``;
         this.pokedexIndex.textContent = ``;
-        this.resistanceSection.textContent = "";
 
         try {
-            checkIfClassExists(".immunity-img-box");
-            checkIfClassExists(".resistance-img-box");
+            this.checkIfClassExists(".immunity-img-box");
+            this.checkIfClassExists(".resistance-img-box");
 
         } catch (err) {
             console.log(err, "removed failure operation");
