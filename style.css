@@ -519,7 +519,7 @@ body {
       padding-top: 2%;
    }
    .column-3 * {
-      padding-bottom: 3%;
+      padding: 2% 0;
    }
    .pkmn-search .poke-num-search {
       width: 200px;

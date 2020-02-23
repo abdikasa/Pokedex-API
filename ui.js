@@ -27,23 +27,21 @@ class UI {
         const { id, name, abilities, height, weight, types, stats } = pkmnData;
         const { pokedex_numbers: dex, names, evolution_chain: evolChain } = speciesData;
         this.assignBG(id);
-        //this.assignNameID(id, name);
-        //this.getAbilities(abilities);
-        //this.assignPokeBio(height, weight, { dex, names });
-        //const pokeType = this.getPokemonType(pkmnData);
-        //this.getPokeStats(stats);
+        this.assignNameID(id, name);
+        this.getAbilities(abilities);
+        this.assignPokeBio(height, weight, { dex, names });
+        const pokeType = this.getPokemonType(pkmnData);
+        this.getPokeStats(stats);
         //console.log(pkmnData);
         //console.log(speciesData);
         // //Promise.all([fetchJSON(`https://pokeapi.co/api/v2/type/`), fetchJSON(`${speciesData.evolution_chain.url}`)])
 
         const typeAndEvol = Promise.all([this.fetchJSON(`https://pokeapi.co/api/v2/type/`), this.fetchJSON(`${speciesData.evolution_chain.url}`)]);
-        //this.getPokeWeaknesses(typeAndEvol, pokeType);
+        this.getPokeWeaknesses(typeAndEvol, pokeType);
 
         this.getWeakOrEvol(typeAndEvol, 1).then(({ chain }) => {
             console.log(chain)
             const { evolves_to: evolve, species } = chain;
-            //determine at what stage the pokemon is in and check whether they have an evolution.
-
 
             function isObjEmpty(obj) {
                 for (let prop in obj) {
@@ -53,150 +51,157 @@ class UI {
                 return true;
             }
 
-            function evol1to2(obj, baby) {
+            function babyEvol(obj) {
+                let babyE = [];
                 let i = 0;
-                let object = {chain:[]};
                 while (!isObjEmpty(obj[i])) {
-                    let next = obj[i].species.name;
+                    babyE.push(obj[i].species.url);
+                    i++;
+                }
+
+                babyE = babyE.map((url) => {
+                    return convertURLTOID(url);
+                })
+
+                return babyE;
+            }
+
+            function evol1to2(obj, baby, key) {
+                let i = 0;
+                let object = { chain: [] };
+                while (!isObjEmpty(obj[i])) {
+                    let next = obj[i].species[key];
                     if (!isObjEmpty(obj[i].evolves_to)) {
                         let j = 0;
                         while (!isObjEmpty(obj[i].evolves_to[j])) {
-                            let final = obj[i].evolves_to[j].species.name;
-                            object.chain.push({baby:baby.name, next, final})
+                            let final = obj[i].evolves_to[j].species[key];;
+                            object.chain.push({ baby: baby[key], next, final })
                             j++;
                         }
-                    }else{
-                        object.chain.push({baby:baby.name, next})
+                    } else {
+                        object.chain.push({ baby: baby[key], next })
                     }
                     i++;
                 }
+
+                console.log(object.chain)
                 return object.chain;
             }
 
-            let final = evol1to2(evolve, species);
-            console.log(final);
+            var groupBy = function (xs, key) {
+                return xs.reduce(function (rv, x) {
+                    (rv[x[key]] = rv[x[key]] || []).push(x);
+                    return rv;
+                }, {});
+            };
 
-            //test for vileplume
-            
+            function convertURLTOID(url) {
+                let regex = /[/](\d)+[/]/;
 
+                if (typeof url == "string") {
+                    return regex.exec(url)[0].split('/')[1]
+                } else {
+                    url.forEach((url) => {
+                        for (let key in url) {
+                            url[key] = convertURLTOID(url[key]);
+                        }
+                    })
+                    return url;
+                }
+            }
 
+            function getEvolution(pokeName, evolved, { species }) {
+                const secondStageName = evol1to2(evolved, species, "name");
+                const secondStageID = convertURLTOID(evol1to2(evolved, species, "url"));
+                let evolHTML = ``;
+                const basic = babyEvol(evolved);
+                //Check for no evolutions, return the species name
+                if (basic.length == 0) {
+                    //print the image of the baby here.
+                    evolHTML += `<div class="part-1"><img src="./test/${pokeName}.png.webp" alt=""><p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${pokeName}</p></div>`
+                } else if (pokeName == convertURLTOID(species.url) || secondStageID.length == 1) { //pokemon has a normal evo chain, no branches.
+                    if (secondStageID.length > 1) {
+                        basic.unshift(convertURLTOID(species.url));
+                        basic.forEach((ids, index) => {
+                            evolHTML += `<div class="part-1"><img src="./test/${ids}.png.webp" alt="">
+                                <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${secondStageName[index]}</p></div>`
+                            //<div class="arr"><img src="./right-arrow.png" alt=""></div>`    
+                        })
+                    }
+                    else {
+                        secondStageID.forEach((id) => {
+                            for (let key in id) {
+                                evolHTML += `<div class="part-1"><img src="./test/${id[key]}.png.webp" alt="">
+                                <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${secondStageName[0][key]}</p></div>`
+                                //<div class="arr"><img src="./right-arrow.png" alt=""></div>`    
+                            }
+                        })
+                    }
+                } else if (secondStageID.length > 1) { //poke 2nd or third stage has more than one branch.
+                    //We must differentiate between the branches by speces.name
+                    let middle = groupBy(secondStageID, "next")[pokeName];
+                    let final = groupBy(secondStageID, "final")[pokeName];
+                    middle = middle || final;
+                    let index = secondStageID.findIndex((obj, index) => {
+                        if (obj.final == undefined) {
+                            return obj.next == middle[0].next;
+                        } else {
+                            return obj.final == middle[0].final;
+                        }
+                    })
 
+                    middle.forEach((id) => {
+                        for (let key in id) {
+                            evolHTML += `<div class="part-1"><img src="./test/${id[key]}.png.webp" alt="">
+                                <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${secondStageName[index][key]}</p>
+                            </div>`
+                            //<div class="arr"><img src="./right-arrow.png" alt=""></div>`    
+                        }
+                    })
+                }
 
-
-
-
-
-            //evol1to2(evolve[0].evolves_to);
-
+                return evolHTML;
+            }
+            const evolutionComplete = getEvolution(id, evolve, chain);
+            this.evolve_container.insertAdjacentHTML('beforeend', evolutionComplete);
         })
 
-        //     fetch(`${speciesData.evolution_chain.url}`).then((res) => { return res.json() }).then((response) => {
+        let numberedHTML = ``;
+        //get the pokemon id
+        let mined, maxed;
+        mined = maxed = id;
+        //Check the length
+        if ((String(id).length != 1) && (String(id).charAt(String(id).length - 1) != ("0")) &&
+            (String(id).charAt(String(id).length - 1) != ("1"))) {
+            console.log("we out here", id);
+            console.log(`pokedex id, length = ${mined.toString().length}`)
 
-        //         let chain = response;
-        //         console.log(chain);
+            mined = mined - Number(mined.toString().charAt(String(mined).length - 1)) + 1;
 
-        //         let evol = [];
-        //         let index = 0;
-        //         while (chain.chain.evolves_to[index]) {
+            maxed = mined + 9;
 
-        //             //Pokemon With Branched evolutions or Unique Pokemon like Pokemon (133) ===> 7 evolutions
-        //             if (chain.chain.evolves_to.length > 1) {
-        //                 if (index === chain.chain.evolves_to.length - 1) {
-        //                     this.branchedEvols(evol, chain.chain.species);
-        //                 }
-        //                 evol.push(chain.chain.evolves_to[index].species);
-        //                 index++;
+        } else if (String(id).length != 1 && String(id).charAt(String(id).length - 1) === "0") {
+            console.log("last digit is 0")
+            mined = mined - 10 + 1;
+        } else if ((String(id).length != 1) && String(id).charAt(String(id).length - 1 === "1")) {
+            maxed += 9;
+        } else {
+            console.log("else option")
+            mined = 1;
+            maxed = 10;
+        }
 
-        //                 //Majority if not almost all pokemon will fall in this category.
-        //                 //Returns an object with the whole pokemon evolution chain.
+        console.log(mined, maxed);
+        //iterate through the buttons
+        for (let i = mined; i < maxed + 1; i++) {
+            if (i === Number(id)) {
+                numberedHTML += `<button type="button" class="btn numbered-btn selected-num shadow-none">${i}</button>`;
+            } else {
+                numberedHTML += `<button type="button" class="btn numbered-btn shadow-none">${i}</button>`;
+            }
+        }
 
-        //             } else if (chain.chain.evolves_to.length === 1) {
-        //                 //If there is only one object  returned, there are no branched evolutions.
-        //                 //So the object will first return the base pokemon evolution, the first form.
-        //                 evol.push(chain.chain.species);
-
-        //                 //Next check if the evolves_to.length === 1, pokemon with 2 evolutions.
-        //                 //Example: Let A evolve into B.
-        //                 if ((chain.chain.evolves_to[index].species.name === name) && (chain.chain.evolves_to[index].evolves_to.length === 0)) {
-        //                     evol.push(chain.chain.evolves_to[index].species);
-
-        //                     //Next check if the evolves_to.length === 1, pokemon with 2 evolutions and it's in its final form
-        //                     //Example: Let A evolve into B.
-        //                 } else if ((chain.chain.evolves_to[index].species.name != name) && (chain.chain.evolves_to[index].evolves_to.length === 0)) {
-        //                     evol.push(chain.chain.evolves_to[index].species);
-        //                 } else {
-        //                     //Pokemon with three evolutions
-        //                     evol.push(chain.chain.evolves_to[index].species); //2nd form
-        //                     evol.push(chain.chain.evolves_to[index].evolves_to[index].species); //3rd form
-        //                 }
-        //                 break;
-        //             }
-        //         }
-
-        //         console.log(evol);
-
-        //         evol = this.doSomething(this.evolve_container, 'evolve-container', evol);
-
-        //         let evolHTML = ``;
-        //         // let regex = /[/](\d)+[/]/;
-        //         if (evol.length != 0) {
-        //             evol.forEach((item, index) => {
-        //                 // evol[index].url = (regex.exec(item.url)[0].split('/')[1]);
-        //                 // if (evol[index].url > 151) {
-        //                 //     return;
-        //                 // }
-        //                 evolHTML +=
-        //                     `<div class="part-1"><img src="./test/${item.url}.png.webp" alt="">
-        //                                         <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${item.name}</p>
-        //                                         </div>`
-        //                 // <div class="arr"><img src="./right-arrow.png" alt=""></div>
-        //             })
-        //         } else {
-        //             evolHTML +=
-        //                 `<div class="part-1"><img src="./test/${id}.png.webp" alt=""><p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${name}</p></div>`
-        //             // <div class="arr"><img src="./right-arrow.png" alt=""></div>`
-        //         }
-
-        //         this.evolve_container.insertAdjacentHTML('beforeend', evolHTML);
-        //         // this.evolve_container.removeChild(this.evolve_container.lastChild);
-        //     })
-
-        //     let numberedHTML = ``;
-        //     //get the pokemon id
-        //     let mined, maxed;
-        //     mined = maxed = id;
-        //     //Check the length
-        //     if ((String(id).length != 1) && (String(id).charAt(String(id).length - 1) != ("0")) &&
-        //     (String(id).charAt(String(id).length - 1) != ("1"))) {
-        //         console.log("we out here", id);
-        //         console.log(`pokedex id, length = ${mined.toString().length}`)
-
-        //         mined = mined - Number(mined.toString().charAt(String(mined).length-1)) + 1;
-
-        //         maxed = mined + 9;
-
-        //     } else if (String(id).length != 1 && String(id).charAt(String(id).length-1) === "0") {
-        //         console.log("last digit is 0")
-        //         mined = mined - 10 + 1;
-        //      } else if((String(id).length != 1) && String(id).charAt(String(id).length -1 === "1")){
-        //         maxed += 9;
-        //     } else {
-        //         console.log("else option")
-        //         mined = 1;
-        //         maxed = 10;
-        //     }
-
-        //     console.log(mined, maxed);
-        //     //iterate through the buttons
-        //     for (let i = mined; i < maxed + 1; i++) {
-        //         if(i === Number(id)) {
-        //             numberedHTML += `<button type="button" class="btn numbered-btn selected-num shadow-none">${i}</button>`;
-        //         }else{
-        //             numberedHTML += `<button type="button" class="btn numbered-btn shadow-none">${i}</button>`;
-        //         }
-        //     }
-
-        //     this.pokedexIndex.insertAdjacentHTML('beforeend', numberedHTML);
+        this.pokedexIndex.insertAdjacentHTML('beforeend', numberedHTML);
 
     }
 
@@ -411,63 +416,44 @@ class UI {
                     return resistancesHTML;
                 }
 
-                let weaknessHTML = outputResults(defWeakness);
-                let resistancesHTML = outputResults(resistances);
-                this.weaknessSection.insertAdjacentHTML('beforeend', weaknessHTML);
-                this.resistanceSection.insertAdjacentHTML('beforeend', resistancesHTML);
-                if (!immunities.length) {
-                    console.log("no immunities");
-                    return;
+                function testImmuneResist(resist, immune) {
+                    if (!resist.length) {
+                        console.log("no resistances")
+                        let immunities = outputResults(immune);
+                        that.third_col.insertAdjacentHTML("beforeend", `<h3 id="weakness-h3">Immunities</h3>
+                        <div class="weakness-box center">
+                        <div class="immunity-img-box"></div>`);
+                        document.querySelector(".immunity-img-box").insertAdjacentHTML('beforeend', immunities);
+
+                    } else if (!immune.length) {
+                        console.log("no immmunities")
+                        let resistances = outputResults(resist);
+                        that.third_col.insertAdjacentHTML("beforeend", `<h3 id="weakness-h3">Resistances</h3>
+                        <div class="weakness-box center">
+                        <div class="resistance-img-box"></div>`)
+                        document.querySelector(".resistance-img-box").insertAdjacentHTML('beforeend', resistances);
+                    } else {
+                        console.log("Has both")
+                        const arr = [outputResults(resist), outputResults(immune)];
+                        that.third_col.insertAdjacentHTML("beforeend", `<h3 id="weakness-h3">Resistances</h3>
+                        <div class="weakness-box center">
+                        <div class="resistance-img-box"></div>`)
+                        document.querySelector(".resistance-img-box").insertAdjacentHTML('beforeend', arr[0]);
+                        that.third_col.insertAdjacentHTML("beforeend", `<h3 id="weakness-h3">Immunities</h3>
+                        <div class="weakness-box center">
+                        <div class="immunity-img-box"></div>`);
+                        document.querySelector(".immunity-img-box").insertAdjacentHTML('beforeend', arr[1]);
+                    }
                 }
-
-                this.third_col.insertAdjacentHTML("beforeend", `<h3 id="weakness-h3">Immunities</h3>
-                <div class="weakness-box center">
-                <div class="immunity-img-box">
-
-                </div>
-            </div>`);
-
-                let immunitiesHTML = outputResults(immunities);
-                document.querySelector(".immunity-img-box").insertAdjacentHTML('beforeend', immunitiesHTML);
-                console.log(document.querySelector(".immunity-img-box"));
-
+                const that = this;
+                let weaknessHTML = outputResults(defWeakness);
+                //let resistancesHTML = outputResults(resistances);
+                this.weaknessSection.insertAdjacentHTML('beforeend', weaknessHTML);
+                testImmuneResist(resistances, immunities)
             })
             .catch((err) => {
                 console.log(err);
             })
-    }
-
-    removePokeFrom151Up(arr) {
-        let regex = /[/](\d)+[/]/;
-        // evol[index].url = (regex.exec(item.url)[0].split('/')[1]);
-        arr.forEach((item, index) => {
-            arr[index].url = (regex.exec(item.url)[0].split('/')[1]);
-        })
-
-        arr = arr.filter((item, index) => {
-            if (Number(item.url) < 152) {
-                return item;
-            }
-        })
-        console.log(arr);
-        return arr;
-    }
-
-    doSomething(domelem, classname, elem) {
-        if (domelem.classList.item(domelem.classList.length - 1) != `${classname}`) {
-            //Delete it
-            domelem.classList.remove(domelem.classList.item(domelem.classList.length - 1));
-        }
-
-        elem = this.removePokeFrom151Up(elem);
-
-        if (elem.length === 2) {
-            domelem.classList.add('pkmn-two-evols');
-        }
-        else if (elem.length === 0 || elem.length === 1) {
-            domelem.classList.add('pkmn-one-evol');
-        }
-        return elem;
     }
 
     clearUI() {
@@ -484,20 +470,22 @@ class UI {
         this.weaknessSection.textContent = ``;
         this.evolve_container.textContent = ``;
         this.pokedexIndex.textContent = ``;
-        this.resistanceSection.textContent = "";
 
         try {
-            if (document.querySelector(".immunity-img-box") == null) {
-                console.log("doesn't exist");
-            } else {
-                document.querySelector(".immunity-img-box").parentElement.previousElementSibling.remove();
-                document.querySelector(".immunity-img-box").parentElement.remove();
-                console.log("removed successfully")
-            }
+            this.checkIfClassExists(".immunity-img-box");
+            this.checkIfClassExists(".resistance-img-box");
+
         } catch (err) {
             console.log(err, "removed failure operation");
         }
 
+    }
+
+    checkIfClassExists(string) {
+        if (document.querySelector(string) != null) {
+            document.querySelector(string).parentElement.previousElementSibling.remove();
+            document.querySelector(string).parentElement.remove();
+        }
     }
 
 
