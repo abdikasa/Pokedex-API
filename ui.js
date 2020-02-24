@@ -64,6 +64,8 @@ class UI {
                     return convertURLTOID(url);
                 })
 
+                console.log(babyE);
+
                 return babyE;
             }
 
@@ -119,48 +121,62 @@ class UI {
                 //Check for no evolutions, return the species name
                 if (basic.length == 0) {
                     //print the image of the baby here.
-                    evolHTML += `<div class="part-1"><img src="./test/${pokeName}.png" alt=""><p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${pokeName}</p></div>`
-                } else if (pokeName == convertURLTOID(species.url) || secondStageID.length == 1) { //pokemon has a normal evo chain, no branches.
-                    if (secondStageID.length > 1) {
-                        basic.unshift(convertURLTOID(species.url));
-                        basic.forEach((ids, index) => {
-                            evolHTML += `<div class="part-1"><img src="./test/${ids}.png" alt="">
-                                <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${secondStageName[index]}</p></div>`
+                    evolHTML += `<div class=pkmn-one-evol><div class="part-1"><img src="./test/${pokeName}.png" alt=""><p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${pokeName}</p></div></div>`
+                } else if (secondStageID.length == 1) { //pokemon has a normal evo chain, no branches.
+                    secondStageID.forEach((id) => {
+                        for (let key in id) {
+                            evolHTML += `<div class="part-1"><img src="./test/${id[key]}.png" alt="">
+                                <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${secondStageName[0][key]}</p></div>`
                             //<div class="arr"><img src="./right-arrow.png" alt=""></div>`    
+                        }
+                    })
+                } else if (secondStageID.length > 1) { //poke 2nd or third stage has more than one branch.
+                    //We must differentiate between the branches by speces.name
+                    if (pokeName == convertURLTOID(species.url) || (secondStageID[0]["next"] == pokeName && secondStageName[0]["final"])) {
+                        let array = [];
+                        [...secondStageID, ...secondStageName].forEach((acc, index) => {
+                            console.log(acc, index)
+                            array[index] = [];
+                            for (let key in acc) {
+                                if (array[index].indexOf(acc[key]) < 0) {
+                                    array[index].push(acc[key])
+                                }
+                            }
                         })
-                    }
-                    else {
-                        secondStageID.forEach((id) => {
+
+                        array = Array.from(new Set(array.reduce((acc, curr) => {return acc.concat(curr)}, [])));
+
+                        array = [array.splice(0, array.length/2), array.splice(0, array.length)];
+                        console.log(array)
+                        
+                        array[0].forEach((val, index) => {
+                            evolHTML += `<div class="part-1"><img src="./test/${val}.png" alt="">
+                                <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${array[1][index]}</p></div>`
+                        })
+
+                    } else {
+                        let middle = groupBy(secondStageID, "next")[pokeName];
+                        let final = groupBy(secondStageID, "final")[pokeName];
+                        middle = middle || final;
+                        let index = secondStageID.findIndex((obj, index) => {
+                            if (obj.final == undefined) {
+                                return obj.next == middle[0].next;
+                            } else {
+                                return obj.final == middle[0].final;
+                            }
+                        })
+
+                        middle.forEach((id) => {
                             for (let key in id) {
                                 evolHTML += `<div class="part-1"><img src="./test/${id[key]}.png" alt="">
-                                <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${secondStageName[0][key]}</p></div>`
+                                    <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${secondStageName[index][key]}</p>
+                                </div>`
                                 //<div class="arr"><img src="./right-arrow.png" alt=""></div>`    
                             }
                         })
                     }
-                } else if (secondStageID.length > 1) { //poke 2nd or third stage has more than one branch.
-                    //We must differentiate between the branches by speces.name
-                    let middle = groupBy(secondStageID, "next")[pokeName];
-                    let final = groupBy(secondStageID, "final")[pokeName];
-                    middle = middle || final;
-                    let index = secondStageID.findIndex((obj, index) => {
-                        if (obj.final == undefined) {
-                            return obj.next == middle[0].next;
-                        } else {
-                            return obj.final == middle[0].final;
-                        }
-                    })
-
-                    middle.forEach((id) => {
-                        for (let key in id) {
-                            evolHTML += `<div class="part-1"><img src="./test/${id[key]}.png" alt="">
-                                <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${secondStageName[index][key]}</p>
-                            </div>`
-                            //<div class="arr"><img src="./right-arrow.png" alt=""></div>`    
-                        }
-                    })
                 }
-
+                console.log(evolHTML)
                 return evolHTML;
             }
             const evolutionComplete = getEvolution(id, evolve, chain);
@@ -251,7 +267,7 @@ class UI {
 
         this.height.textContent = '0.' + height + 'm';
         this.weight.textContent = `${weight / 10}kg`;
-        const locationData = dex[dex.length -2] || dex[0];
+        const locationData = dex[dex.length - 2] || dex[0];
         console.log(locationData);
         this.loc.textContent = `${locationData["pokedex"]["name"]}`;
         const kanji = `${names[10]}` || `${names[9]}`;
@@ -283,11 +299,12 @@ class UI {
             var swatches = vibrant.swatches();
             console.log(swatches);
             try {
+                console.log("Attempting to chnage background color to defult")
                 document.body.style.backgroundColor = swatches["DarkVibrant"].getHex();
             }
             catch (err) {
                 console.log("Changed to a different color since default is undefined");
-                document.body.style.backgroundColor = swatches["Vibrant"].getHex();
+                document.body.style.backgroundColor = swatches["Muted"].getHex();
             }
 
             // document.body.style.backgroundColor = `${pallette[Math.floor(Math.random() * pallette.length)
@@ -424,7 +441,6 @@ class UI {
 
                 function testImmuneResist(resist, immune) {
                     if (!resist.length) {
-                        console.log("no resistances")
                         let immunities = outputResults(immune);
                         that.third_col.insertAdjacentHTML("beforeend", `<h3 id="weakness-h3">Immunities</h3>
                         <div class="weakness-box center">
@@ -432,14 +448,12 @@ class UI {
                         document.querySelector(".immunity-img-box").insertAdjacentHTML('beforeend', immunities);
 
                     } else if (!immune.length) {
-                        console.log("no immmunities")
                         let resistances = outputResults(resist);
                         that.third_col.insertAdjacentHTML("beforeend", `<h3 id="weakness-h3">Resistances</h3>
                         <div class="weakness-box center">
                         <div class="resistance-img-box"></div>`)
                         document.querySelector(".resistance-img-box").insertAdjacentHTML('beforeend', resistances);
                     } else {
-                        console.log("Has both")
                         const arr = [outputResults(resist), outputResults(immune)];
                         that.third_col.insertAdjacentHTML("beforeend", `<h3 id="weakness-h3">Resistances</h3>
                         <div class="weakness-box center">
