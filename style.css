@@ -95,6 +95,8 @@ body {
    padding: 0 0.3rem;
 }
 
+
+
 #region-word {
    font-size: 1.05em;
    font-weight: 600;
@@ -189,7 +191,7 @@ body {
 
 .artwork-lead {
    text-transform: capitalize;
-   font-size: 1.2em;
+   font-size: 1.1em;
    font-weight: 600;
    margin-top: 17px;
    color: #fff;
@@ -208,16 +210,22 @@ body {
 }
 
 .type-container-r img {
-   width: 3.6rem;
+   width: 2rem;
    margin: 0 10px;
 }
 
 .type-container-r {
-   justify-content: center;
+   /* justify-content: center; */
+   transform: translate(-15px, 0)
 }
 
-.pkmn_w_type .artwork {
-   width: 10rem;
+/* .pkmn_w_type .artwork {
+   width: 2rem;
+   font-size: 90%;
+} */
+
+.type-container-r .artwork-lead {
+   font-size: 0.9em;
 }
 
 .stat {
@@ -235,8 +243,8 @@ body {
 
 .outer {
    /* height: 10px; */
-   height: 80px;
-   width: 12px;
+   height: 50px;
+   width: 20px;
    margin: 0 auto;
 }
 
@@ -289,13 +297,19 @@ body {
    border: 1px solid rgb(178, 178, 255);
 }
 
-.weakness-img img {
-   width: 45px;
-}
 
 .weakness-img-box, .resistance-img-box, .immunity-img-box {
    display: flex;
    justify-content: space-around;
+   flex-wrap: wrap;
+}
+
+.weakness-img img {
+   width: 2.6em;
+}
+
+.weakness-img {
+   flex-basis: 16.666667%;
 }
 
 .center {
@@ -306,6 +320,7 @@ body {
    width: 95%;
    justify-content: space-between;
 }
+
 
 .pkm-container {
    text-align: center;
@@ -321,7 +336,7 @@ body {
 
 .btn-group .numbered-btn, .btn-group .rightm-sidebar {
    border: 0 none transparent;
-   font-size: 1.1em;
+   font-size: 1em;
    width: 30px;
    height: 40px;
    padding: 8px 4px;
@@ -340,6 +355,7 @@ body {
    text-shadow: 0px 0px 3px #000;
    font-weight: 800;
    text-transform: uppercase;
+   font-size: 150%;
 }
 
 .atr, .atr-val {
@@ -347,6 +363,7 @@ body {
    padding-bottom: 10px;
    text-shadow: 0px 0px 3px #000;
    font-weight: 600;
+   font-size: 110%;
 }
 
 .numbered-btn:hover {
