@@ -24,6 +24,7 @@ class UI {
 
 
     paintUI(pkmnData, speciesData) {
+        console.log(pkmnData, speciesData);
         const { id, name, abilities, height, weight, types, stats } = pkmnData;
         const { pokedex_numbers: dex, names, evolution_chain: evolChain } = speciesData;
         this.assignBG(id);
@@ -118,12 +119,12 @@ class UI {
                 //Check for no evolutions, return the species name
                 if (basic.length == 0) {
                     //print the image of the baby here.
-                    evolHTML += `<div class="part-1"><img src="./test/${pokeName}.png.webp" alt=""><p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${pokeName}</p></div>`
+                    evolHTML += `<div class="part-1"><img src="./test/${pokeName}.png" alt=""><p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${pokeName}</p></div>`
                 } else if (pokeName == convertURLTOID(species.url) || secondStageID.length == 1) { //pokemon has a normal evo chain, no branches.
                     if (secondStageID.length > 1) {
                         basic.unshift(convertURLTOID(species.url));
                         basic.forEach((ids, index) => {
-                            evolHTML += `<div class="part-1"><img src="./test/${ids}.png.webp" alt="">
+                            evolHTML += `<div class="part-1"><img src="./test/${ids}.png" alt="">
                                 <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${secondStageName[index]}</p></div>`
                             //<div class="arr"><img src="./right-arrow.png" alt=""></div>`    
                         })
@@ -131,7 +132,7 @@ class UI {
                     else {
                         secondStageID.forEach((id) => {
                             for (let key in id) {
-                                evolHTML += `<div class="part-1"><img src="./test/${id[key]}.png.webp" alt="">
+                                evolHTML += `<div class="part-1"><img src="./test/${id[key]}.png" alt="">
                                 <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${secondStageName[0][key]}</p></div>`
                                 //<div class="arr"><img src="./right-arrow.png" alt=""></div>`    
                             }
@@ -152,7 +153,7 @@ class UI {
 
                     middle.forEach((id) => {
                         for (let key in id) {
-                            evolHTML += `<div class="part-1"><img src="./test/${id[key]}.png.webp" alt="">
+                            evolHTML += `<div class="part-1"><img src="./test/${id[key]}.png" alt="">
                                 <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${secondStageName[index][key]}</p>
                             </div>`
                             //<div class="arr"><img src="./right-arrow.png" alt=""></div>`    
@@ -250,15 +251,20 @@ class UI {
 
         this.height.textContent = '0.' + height + 'm';
         this.weight.textContent = `${weight / 10}kg`;
-        this.loc.textContent = `${dex[dex.length - 2].pokedex.name}`;
-        this.kanji.textContent = `${names[10].name}`;
+        const locationData = dex[dex.length -2] || dex[0];
+        console.log(locationData);
+        this.loc.textContent = `${locationData["pokedex"]["name"]}`;
+        const kanji = `${names[10]}` || `${names[9]}`;
+
+        this.kanji.textContent = kanji["name"];
     }
 
     assignBG(id) {
 
         //Without this line, I would be "tainting" the canvas by loading from a cross origins domain.
         this.pkmImage.crossOrigin = "Anonymous";
-        this.pkmImage.src = `./test/${id}.png.webp`;
+        this.pkmImage.src = `./test/${id}.png`;
+
 
         //     //From Vibrant JS
         //     //Provides a unique color pallette.
@@ -277,11 +283,11 @@ class UI {
             var swatches = vibrant.swatches();
             console.log(swatches);
             try {
-                document.body.style.backgroundColor = swatches["Vibrant"].getHex();
+                document.body.style.backgroundColor = swatches["DarkVibrant"].getHex();
             }
             catch (err) {
                 console.log("Changed to a different color since default is undefined");
-                document.body.style.backgroundColor = swatches["Muted"].getHex();
+                document.body.style.backgroundColor = swatches["Vibrant"].getHex();
             }
 
             // document.body.style.backgroundColor = `${pallette[Math.floor(Math.random() * pallette.length)

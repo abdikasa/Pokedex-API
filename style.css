@@ -303,7 +303,7 @@ body {
 }
 
 .third-col-left {
-   width: 90%;
+   width: 95%;
    justify-content: space-between;
 }
 
@@ -313,6 +313,10 @@ body {
 
 .right-btn-container {
    display: flex;
+   position: absolute;
+   right: 0;
+   top: 50%;
+   transform: translate(0, -50%);
 }
 
 .btn-group .numbered-btn, .btn-group .rightm-sidebar {

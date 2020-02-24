@@ -19,7 +19,7 @@ class Pokedata {
   
     checkPokemonIDLW151(obj) {
         if (typeof Number(obj) === "number") {
-            return Number(obj) < 152 && Number(obj) != 0;
+            return Number(obj) < 722 && Number(obj) != 0;
         } else if (typeof Number(obj) === NaN) {
             return "string";
         }
