@@ -121,11 +121,11 @@ class UI {
                 //Check for no evolutions, return the species name
                 if (basic.length == 0) {
                     //print the image of the baby here.
-                    evolHTML += `<div class=pkmn-one-evol><div class="part-1"><img src="./test/${pokeName}.png" alt=""><p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${pokeName}</p></div></div>`
+                    evolHTML += `<div class=pkmn-one-evol><div class="part-1"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokeName}.png" alt=""><p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${pokeName}</p></div></div>`
                 } else if (secondStageID.length == 1) { //pokemon has a normal evo chain, no branches.
                     secondStageID.forEach((id) => {
                         for (let key in id) {
-                            evolHTML += `<div class="part-1"><img src="./test/${id[key]}.png" alt="">
+                            evolHTML += `<div class="part-1"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id[key]}.png" alt="">
                                 <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${secondStageName[0][key]}</p></div>`
                             //<div class="arr"><img src="./right-arrow.png" alt=""></div>`    
                         }
@@ -150,7 +150,7 @@ class UI {
                         console.log(array)
                         
                         array[0].forEach((val, index) => {
-                            evolHTML += `<div class="part-1"><img src="./test/${val}.png" alt="">
+                            evolHTML += `<div class="part-1"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${val}.png" alt="">
                                 <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${array[1][index]}</p></div>`
                         })
 
@@ -168,7 +168,7 @@ class UI {
 
                         middle.forEach((id) => {
                             for (let key in id) {
-                                evolHTML += `<div class="part-1"><img src="./test/${id[key]}.png" alt="">
+                                evolHTML += `<div class="part-1"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id[key]}.png" alt="">
                                     <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${secondStageName[index][key]}</p>
                                 </div>`
                                 //<div class="arr"><img src="./right-arrow.png" alt=""></div>`    
@@ -248,7 +248,7 @@ class UI {
         /**
           * Get Pokemon's abilities.
          */
-        let abilityHTML = ``;
+        let abilityHTML = `<ul id=ul-ability>`;
 
         abilities.forEach(({ ability }, i) => {
             if (i === abilities.length - 1) {
@@ -257,6 +257,7 @@ class UI {
                 abilityHTML += `<li class="list-inline-item">${ability.name},</li>`;
             }
         })
+        abilityHTML+="</ul>"
         this.abilitiesDOM.insertAdjacentHTML('beforeend', abilityHTML);
     }
 
