@@ -37,7 +37,7 @@ async function runProgram() {
         })
         .finally(() => {
             setTimeout(() => {
-                window.scrollTop(0, 0);
+                window.scrollTo(0, 0);
                 hideShowLoader("none");
                 interface.pkmnSearch.children[0].style.display = "block";
                 hideShowBody("block");
