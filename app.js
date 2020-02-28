@@ -1,6 +1,6 @@
 const interface = new UI();
 //const poke = new Pokedata(`${Math.floor(Math.random() * 151) + 1}`);
-const poke = new Pokedata(25);
+const poke = new Pokedata(462);
 
 function hideShowBody(string) {
     let body = Array.prototype.slice.call(interface.body.children)
@@ -23,6 +23,10 @@ const setTimeoutPromise = ms => {
 const hideShowLoader = function (string) {
     document.getElementById("loader-screen").style.display = string;
 }
+
+window.onbeforeunload = function () {
+    window.scrollTo(0, 0);
+  }
 
 async function runProgram() {
     hideShowLoader("block");
