@@ -269,10 +269,24 @@ class UI {
         this.height.textContent = '0.' + height + 'm';
         this.weight.textContent = `${weight / 10}kg`;
         const locationData = dex[dex.length - 2] || dex[0];
-        console.log(locationData);
+        console.log(locationData["pokedex"]["name"]);
+        
+        if(locationData["pokedex"]["name"].indexOf("extended-") > -1 || locationData["pokedex"]["name"].indexOf("original-") > -1){
+            let temp = ``;
+            let index = 0;
+            if(locationData["pokedex"]["name"].indexOf("extended-") > -1){
+                temp = "extended-";
+                index = locationData["pokedex"]["name"].indexOf("extended-");
+            }else{
+                index = locationData["pokedex"]["name"].indexOf("original-");
+                temp = "original-"
+            }
+            console.log(index, locationData["pokedex"]["name"]);
+            temp = locationData["pokedex"]["name"].split("").splice(9);
+            locationData["pokedex"]["name"] = temp.join("");
+        }
         this.loc.textContent = `${locationData["pokedex"]["name"]}`;
         const kanji = `${names[10]}` || `${names[9]}`;
-
         this.kanji.textContent = kanji["name"];
     }
 
@@ -353,7 +367,7 @@ class UI {
 
         for (let i = 0; i < pokeType.length; i++) {
             typeHTML += `<div class="d-flex flex-column padded-lr">
-                <img src="./types/${pokeType[i]}.webp" alt="${pokeType[i]}">
+                <img src="./types-url/${pokeType[i].toLowerCase()}.png" alt="${pokeType[i]}">
                 <p class="lead artwork-lead center pkmn-type">${pokeType[i]}</p>
             </div>`
         }
@@ -433,7 +447,7 @@ class UI {
                     let resistancesHTML = ``;
                     for (let resist of array) {
                         resistancesHTML += `<div class="weakness-img">
-                        <img src="./types/${resist}.webp" alt="${resist}">
+                        <img src="./types-url/${resist.toLowerCase()}.png" alt="${resist}">
                             <p class="artwork-lead lead center">${resist}</p>
                             </div>`
                     }
