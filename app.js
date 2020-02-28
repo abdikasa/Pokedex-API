@@ -24,10 +24,6 @@ const hideShowLoader = function (string) {
     document.getElementById("loader-screen").style.display = string;
 }
 
-window.onbeforeunload = function () {
-    window.scrollTo(0, 0);
-  }
-
 async function runProgram() {
     hideShowLoader("block");
     hideShowBody("none");
@@ -35,6 +31,7 @@ async function runProgram() {
 
     setTimeoutPromise(200).then(getPokemon)
         .then(() => {
+            window.scrollTo(0, 0);
             hideShowBody("none")
         })
         .finally(() => {
