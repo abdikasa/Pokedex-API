@@ -31,19 +31,17 @@ async function runProgram() {
 
     setTimeoutPromise(200).then(getPokemon)
         .then(() => {
-            window.scrollTo(0, 0);
-            console.log(window);
             hideShowBody("none")
         })
         .finally(() => {
             setTimeout(() => {
-                window.scrollTo(0, 0);
                 hideShowLoader("none");
                 interface.pkmnSearch.children[0].style.display = "block";
                 hideShowBody("block");
             }, 800)
         })
 }
+
 
 Array.from(interface.pkmnSearch.children).forEach((item) => {
     item.addEventListener("keypress", (e) => {
@@ -55,10 +53,13 @@ Array.from(interface.pkmnSearch.children).forEach((item) => {
                 if (item.value == poke.id_name) {
                     return;
                 }
+                console.log(item);
+                $(item).blur()
                 interface.clearUI();
                 interface.body.style.backgroundColor = "white";
                 poke.changePokemon(Math.trunc(item.value));
                 runProgram();
+                this.scrollTo(0, 0);
             }
             Array.from(interface.pkmnSearch.children).forEach((item) => {
                 return clearInputs(item);
