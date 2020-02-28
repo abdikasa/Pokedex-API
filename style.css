@@ -477,9 +477,9 @@ body {
       font-size: 180%;
    }
 
-   /* #ul-ability {
-      width: rem;
-   } */
+   #ul-ability {
+      width: 20rem;
+   }
 
    .evolve-container{
       justify-content: space-around;
@@ -490,7 +490,7 @@ body {
   }
 
   .part-1 img {
-     width: 4.6rem;
+     width: 3rem;
   }
  
   .weakness-img img {	
@@ -594,8 +594,89 @@ body {
       flex-basis: 33%;	
    }	
 }	
-@media (min-width: 768px) and (max-width: 1100px) {	
+@media (max-width: 768px) and (max-height: 1024px) {	
    .weakness-img-box, .resistance-img-box, .immunity-img-box {	
       transform: translateY(-25px);	
    }	
+
+   #weakness-h3, #stats_title {
+      font-size:1.7rem;
+      font-weight:400;
+   }
+
+   .evolutionary-chain h3 {
+      font-size: 1.8rem;
+   }
+
+
+   .weakness-img img {
+      width:2.6rem;
+   }
+
+}
+
+
+@media (max-width: 767px) {	
+.column-one{
+   font-size: 0.8rem;
+}
+#stats_title, #weakness-h3 {
+   font-weight:400;
+}
+.weakness-img-box, .resistance-img-box, .immunity-img-box {
+   transform: translateY(-2rem);
+}
+}
+
+@media (max-width: 768px){
+   #stats_title, #weakness-h3, .evolutionary-chain h3 {
+      margin: 1rem 0;
+   }
+}
+
+@media (max-width: 375px){
+   #ul-ability {
+      width: 20rem;
+   font-size: 90%;   
+   }
+
+      h3 {
+         margin:1rem 0;
+      }
+
+      .column-one{
+         font-size: 1rem;
+      }
+
+      .part-1 img {	
+         width: 5rem;	
+      }	
+
+}
+
+
+@media (max-width: 360px){
+
+   .column-one{
+      font-size: 0.78rem;
+   }
+
+   #stats_title, #weakness-h3 {
+      font-weight:400;
+      font-size: 1.7rem;
+      margin: 1rem 0;
+   }
+
+   .weakness-img-box, .resistance-img-box, .immunity-img-box {
+      transform: translateY(-2rem);
+   }
+
+   .weakness-img img {
+      width:2.2rem;
+   }
+   
+   .type-container-r {
+      transform:translateX(-0.6rem);
+   }
+   
 }
