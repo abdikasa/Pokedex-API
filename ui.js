@@ -349,7 +349,6 @@ class UI {
     }
 
     getPokemonType({ types }) {
-
         //     /**
         //     * Get the pokemon's type.
         //     * First sort the type by alphabetical order.
@@ -367,7 +366,7 @@ class UI {
 
         for (let i = 0; i < pokeType.length; i++) {
             typeHTML += `<div class="d-flex flex-column padded-lr">
-                <img src="./types-url/${pokeType[i].toLowerCase()}.png" alt="${pokeType[i]}">
+                <img src="./types-url/${this.capitalize(pokeType[i])}.png" alt="${pokeType[i]}">
                 <p class="lead artwork-lead center pkmn-type">${pokeType[i]}</p>
             </div>`
         }
@@ -443,11 +442,13 @@ class UI {
                     return defWeakness.indexOf(test) < 0
                 })
 
+                const that = this;
+
                 function outputResults(array) {
                     let resistancesHTML = ``;
                     for (let resist of array) {
                         resistancesHTML += `<div class="weakness-img">
-                        <img src="./types-url/${resist.toLowerCase()}.png" alt="${resist}">
+                        <img src="./types-url/${that.capitalize(resist)}.png" alt="${resist}">
                             <p class="artwork-lead lead center">${resist}</p>
                             </div>`
                     }
@@ -480,7 +481,6 @@ class UI {
                         document.querySelector(".immunity-img-box").insertAdjacentHTML('beforeend', arr[1]);
                     }
                 }
-                const that = this;
                 let weaknessHTML = outputResults(defWeakness);
                 //let resistancesHTML = outputResults(resistances);
                 this.weaknessSection.insertAdjacentHTML('beforeend', weaknessHTML);
@@ -489,6 +489,10 @@ class UI {
             .catch((err) => {
                 console.log(err);
             })
+    }
+
+    capitalize(str) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
     }
 
     clearUI() {
