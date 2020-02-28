@@ -31,11 +31,13 @@ async function runProgram() {
 
     setTimeoutPromise(200).then(getPokemon)
         .then(() => {
-            window.scrollTo(0, 0);
+            window.scrollTop(0);
+            console.log(window);
             hideShowBody("none")
         })
         .finally(() => {
             setTimeout(() => {
+                window.scrollTop(0);
                 hideShowLoader("none");
                 interface.pkmnSearch.children[0].style.display = "block";
                 hideShowBody("block");
