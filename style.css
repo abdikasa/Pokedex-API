@@ -717,11 +717,12 @@ body {
          } */
          .column-one {
             height: 0 !important;
-         }    
+         } 
+         
+         .column-two {
+            height: 0 !important;
+         }   
 
-         .size-container {
-            margin: 0;
-         }
     }
 
     @media only screen 
