@@ -712,7 +712,14 @@ body {
     and (device-height : 896px) 
     and (-webkit-device-pixel-ratio : 2)
     and (orientation: portrait) { 
-    
+      .size-container{
+         margin: 0;
+      }
+
+      .column-two {
+         padding-top: 0;
+      }
+
          
     }
 
