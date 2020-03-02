@@ -717,7 +717,7 @@ body {
    }
    .column-two {
       padding-top: 0;
-      transform: translateY(-100px);
+      transform: translateY(-250px);
       margin-top:0;
    }
 
