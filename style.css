@@ -713,8 +713,8 @@ body {
 @media only screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait) {
    .column-one {
       margin-bottom: 0;
-      height: 50%;
-      font-size: 1.12rem;
+      height: 55%;
+      font-size: 1.11rem;
    }
 
    .type-container-r {
@@ -731,8 +731,8 @@ body {
     and (orientation: portrait) {
       .column-one {
          margin-bottom: 0;
-         height: 50%;
-         font-size: 1.12rem;
+         height: 55%;
+         font-size: 1.11rem;
       }
    
       .type-container-r {
@@ -749,8 +749,8 @@ body {
     and (orientation: portrait) { 
       .column-one {
          margin-bottom: 0;
-         height: 50%;
-         font-size: 1.12rem;
+         height: 55%;
+         font-size: 1.11rem;
       }
    
       .type-container-r {
