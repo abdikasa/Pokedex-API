@@ -705,7 +705,7 @@ body {
    .weakness-img img {
       width: 2.2rem;
    }
-   .type-container-r {
+   .type-contain er-r {
       transform: translateX(-0.6rem);
    }
 }
@@ -713,24 +713,15 @@ body {
 @media only screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait) {
    .column-one {
       margin-bottom: 0;
-      height: 50% !important;
+      height: 50%;
    }
    .size-container {
       margin: 0;
    }
-
-   .size-container {
-      margin: 0;
-   }
-
    .column-two {
       padding-top: 0;
       margin-top:0;
       justify-content: flex-start;
-   }
-
-   .column-two, .column-3 {
-
    }
 
    .column-two * {
@@ -742,25 +733,29 @@ body {
    }
 }
 
-/* 
-    /* @media only screen 
+
+     @media only screen 
     and (device-width : 414px) 
     and (device-height : 896px) 
     and (-webkit-device-pixel-ratio : 3)
     and (orientation: portrait) {
-      .container-height {
-         height: 0;
-      }
-      .row{
-         height: 0;
-         min-height: 0;
-      }
       .column-one {
-         height: 0 !important;
-      }    
-
-      .size-container {
-         margin: 0;
+         margin-bottom: 0;
+         height: 50%;
+      }
+   
+      .column-two {
+         padding-top: 0;
+         margin-top:0;
+         justify-content: flex-start;
+      }
+   
+      .column-two * {
+         padding-top: 0;
+      }
+      .type-container-r {
+         /* justify-content: center; */
+         transform: translate(-8px);
       }
      }
 
@@ -770,18 +765,22 @@ body {
     and (device-height : 812px) 
     and (-webkit-device-pixel-ratio : 3) 
     and (orientation: portrait) { 
-      .container-height {
-         height: 0;
-      }
-      .row{
-         height: 0;
-         min-height: 0;
-      }
       .column-one {
-         height: 0 !important;
-      }    
-
-      .size-container {
-         margin: 0;
+         margin-bottom: 0;
+         height: 50%;
       }
-    } */
+   
+      .column-two {
+         padding-top: 0;
+         margin-top:0;
+         justify-content: flex-start;
+      }
+   
+      .column-two * {
+         padding-top: 0;
+      }
+      .type-container-r {
+         /* justify-content: center; */
+         transform: translate(-8px);
+      }
+    }
