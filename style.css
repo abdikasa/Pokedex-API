@@ -720,6 +720,10 @@ body {
          padding-top: 0;
       }
 
+      .column-two * {
+         padding-top: 0;
+     }
+
          
     }
 
