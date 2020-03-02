@@ -720,7 +720,8 @@ body {
          } 
          
          .column-two {
-            transform: translateY(-1px);
+            margin-top: 0;
+            padding-top: 0;
          }
     }
 
