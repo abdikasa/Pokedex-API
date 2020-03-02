@@ -725,6 +725,8 @@ body {
    .type-container-r {
       /* justify-content: center; */
       transform: translateX(-12px);
+      font-size: 1rem;
+
    }
 }
 
@@ -747,6 +749,7 @@ body {
       .type-container-r {
          /* justify-content: center; */
          transform: translateX(-12px);
+         font-size: 1rem;
       }
      }
 
@@ -770,5 +773,7 @@ body {
       .type-container-r {
          /* justify-content: center; */
          transform: translateX(-12px);
+         font-size: 1rem;
+
       }
     }
