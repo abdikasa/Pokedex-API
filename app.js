@@ -57,7 +57,7 @@ Array.from(interface.pkmnSearch.children).forEach((item) => {
                 $(item).blur()
                 interface.clearUI();
                 interface.body.style.backgroundColor = "white";
-                poke.changePokemon(Math.trunc(item.value));
+                poke.changePokemon(Math.abs(Math.trunc(item.value)));
                 runProgram();
                 this.scrollTo(0, 0);
             }
