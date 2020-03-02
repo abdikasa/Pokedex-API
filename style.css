@@ -711,9 +711,6 @@ body {
     and (device-height : 896px) 
     and (-webkit-device-pixel-ratio : 2)
     and (orientation: portrait) { 
-         .container-height {
-            height: 0;
-         }
          .row{
             height: 0;
             min-height: 0;
