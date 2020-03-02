@@ -707,12 +707,18 @@ body {
 }
 
 @media only screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait) {
+  
+   .column-one{
+      margin-bottom: 0;
+   }
+  
    .size-container {
       margin: 0;
    }
    .column-two {
       padding-top: 0;
       transform: translateY(-100px);
+      margin-top:0;
    }
 
    .column-two * {
