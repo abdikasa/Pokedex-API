@@ -720,7 +720,7 @@ body {
          } 
          
          .column-two {
-            transform: translateY(-100px);
+            transform: translateY(-10px);
          }
     }
 
