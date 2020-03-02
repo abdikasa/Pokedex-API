@@ -720,9 +720,8 @@ body {
          } 
          
          .column-two {
-            height: 0 !important;
-         }   
-
+            transform: translateY(-100px);
+         }
     }
 
     @media only screen 
