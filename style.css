@@ -711,13 +711,13 @@ body {
     and (device-height : 896px) 
     and (-webkit-device-pixel-ratio : 2)
     and (orientation: portrait) { 
-         .row{
+         /* .row{
             height: 0;
             min-height: 0;
-         }
-         .column-one {
+         } */
+         /* .column-one {
             height: 0 !important;
-         }    
+         }     */
 
          .size-container {
             margin: 0;
