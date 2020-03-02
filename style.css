@@ -713,7 +713,7 @@ body {
 @media only screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait) {
    .column-one {
       margin-bottom: 0;
-      height: 0 !important;
+      height: 50% !important;
    }
    .size-container {
       margin: 0;
