@@ -712,7 +712,7 @@ body {
    }
    .column-two {
       padding-top: 0;
-      transform: translateY(-10px);
+      transform: translateY(-100px);
    }
 
    .column-two * {
@@ -720,7 +720,7 @@ body {
    }
    .type-container-r {
       /* justify-content: center; */
-      transform: translate(0);
+      transform: translate(-5px);
    }
 }
 
