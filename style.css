@@ -718,8 +718,15 @@ body {
       margin: 0;
    }
    .column-two {
+      padding-top: 0;
+      margin-top:0;
       justify-content: flex-start;
    }
+
+   .column-two, .column-3 {
+      
+   }
+
    .column-two * {
       padding-top: 0;
    }
