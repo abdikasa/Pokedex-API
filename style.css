@@ -705,7 +705,7 @@ body {
    .weakness-img img {
       width: 2.2rem;
    }
-   .type-contain er-r {
+   .type-container-r {
       transform: translateX(-0.6rem);
    }
 }
@@ -723,10 +723,6 @@ body {
       margin-top:0;
       justify-content: flex-start;
    } */
-
-   .column-two * {
-      padding-top: 0;
-   }
 
    .type-container-r {
       /* justify-content: center; */
