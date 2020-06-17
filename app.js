@@ -1,6 +1,7 @@
+
 const interface = new UI();
-//const poke = new Pokedata(`${Math.floor(Math.random() * 151) + 1}`);
-const poke = new Pokedata(462);
+const poke = new Pokedata(`${Math.floor(Math.random() * 151) + 1}`);
+//const poke = new Pokedata(462);
 
 function hideShowBody(string) {
     let body = Array.prototype.slice.call(interface.body.children)

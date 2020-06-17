@@ -1,3 +1,4 @@
+
 class UI {
     constructor() {
         this.loading = document.querySelector('.loader-screen');
@@ -31,18 +32,135 @@ class UI {
         this.assignNameID(id, name);
         this.getAbilities(abilities);
         this.assignPokeBio(height, weight, { dex, names });
-        const pokeType = this.getPokemonType(pkmnData);
+        const pokeType = this.pkmnTWS();
         this.getPokeStats(stats);
-        //console.log(pkmnData);
-        //console.log(speciesData);
-        // //Promise.all([fetchJSON(`https://pokeapi.co/api/v2/type/`), fetchJSON(`${speciesData.evolution_chain.url}`)])
 
-        const typeAndEvol = Promise.all([this.fetchJSON(`https://pokeapi.co/api/v2/type/`), this.fetchJSON(`${speciesData.evolution_chain.url}`)]);
-        this.getPokeWeaknesses(typeAndEvol, pokeType);
+        const that = this;
 
-        this.getWeakOrEvol(typeAndEvol, 1).then(({ chain }) => {
-            console.log(chain)
+        function something() {
+            let getTypes = types.map(({ type }) => {
+                return pokeType.find(({ name }) => {
+                    return type.name.toLowerCase() == name.toLowerCase();
+                })
+            })
+            console.log(getTypes);
+
+            getTypes.sort((a, b) => { return a - b });
+
+            let typeHTML = ``;
+            for (let i = 0; i < getTypes.length; i++) {
+                typeHTML += `<div class="d-flex flex-column padded-lr">
+                <img src="./types-url/${(getTypes[i].name)}.png" alt="${getTypes[i].name}">
+                <p class="lead artwork-lead center pkmn-type">${getTypes[i].name}</p>
+            </div>`
+            }
+
+            that.pkmnType.insertAdjacentHTML('beforeend', typeHTML);
+
+
+            let pokeS, pokeR, pokeI;
+
+            pokeR = getTypes.map((pokemonType) => {
+                return pokemonType["strengths"];
+            })
+
+
+            //             let damage = damage_relations.map((res) => { return res.damage_relations })
+            //             let weakness = [];
+            //             let dmgFrom = [];
+            //             let immune = [];
+            //             damage.forEach((val) => {
+            //                 for (let i in val) {
+            //                     if (i.indexOf("double_damage_from") > -1) {
+            //                         weakness.push(val[i]);
+            //                     } else if (i.indexOf("half_damage_from") > -1) {
+            //                         dmgFrom.push(val[i]);
+            //                     } else if (i.indexOf("no_damage_from") > -1 && (val[i].length)) {
+            //                         immune.push(val[i]);
+            //                     }
+            //                 }
+            //             })
+
+            //             let defWeakness = this.reduceArray(dmgFrom.concat(immune));
+            //             defWeakness = Array.from(new Set(defWeakness.map(({ name }) => { return name })));
+            //             weakness = this.reduceArray(weakness);
+            //             weakness = Array.from(new Set(weakness.map(({ name }) => name)));
+            //             immune = this.reduceArray(immune);
+            //             immune = Array.from(new Set(immune.map(({ name }) => name)));
+
+            //             let resistances = defWeakness.filter((type) => immune.indexOf(type) < 0)
+            //                 .filter((res) => weakness.indexOf(res) < 0);
+            //             let immunities = defWeakness.filter((type) => immune.indexOf(type) > -1);
+
+            //             defWeakness = weakness.filter((test) => {
+            //                 return defWeakness.indexOf(test) < 0
+            //             })
+
+            //             const that = this;
+
+            //             function outputResults(array) {
+            //                 let resistancesHTML = ``;
+            //                 for (let resist of array) {
+            //                     resistancesHTML += `<div class="weakness-img">
+            //                     <img src="./types-url/${that.capitalize(resist)}.png" alt="${resist}">
+            //                         <p class="artwork-lead lead center">${resist}</p>
+            //                         </div>`
+            //                 }
+            //                 return resistancesHTML;
+            //             }
+
+            //             function testImmuneResist(resist, immune) {
+            //                 if (!resist.length) {
+            //                     let immunities = outputResults(immune);
+            //                     that.third_col.insertAdjacentHTML("beforeend", `<h3 id="weakness-h3">Immunities</h3>
+            //                     <div class="weakness-box center">
+            //                     <div class="immunity-img-box"></div>`);
+            //                     document.querySelector(".immunity-img-box").insertAdjacentHTML('beforeend', immunities);
+
+            //                 } else if (!immune.length) {
+            //                     let resistances = outputResults(resist);
+            //                     that.third_col.insertAdjacentHTML("beforeend", `<h3 id="weakness-h3">Resistances</h3>
+            //                     <div class="weakness-box center">
+            //                     <div class="resistance-img-box"></div>`)
+            //                     document.querySelector(".resistance-img-box").insertAdjacentHTML('beforeend', resistances);
+            //                 } else {
+            //                     const arr = [outputResults(resist), outputResults(immune)];
+            //                     that.third_col.insertAdjacentHTML("beforeend", `<h3 id="weakness-h3">Resistances</h3>
+            //                     <div class="weakness-box center">
+            //                     <div class="resistance-img-box"></div>`)
+            //                     document.querySelector(".resistance-img-box").insertAdjacentHTML('beforeend', arr[0]);
+            //                     that.third_col.insertAdjacentHTML("beforeend", `<h3 id="weakness-h3">Immunities</h3>
+            //                     <div class="weakness-box center">
+            //                     <div class="immunity-img-box"></div>`);
+            //                     document.querySelector(".immunity-img-box").insertAdjacentHTML('beforeend', arr[1]);
+            //                 }
+            //             }
+            //             let weaknessHTML = outputResults(defWeakness);
+            //             //let resistancesHTML = outputResults(resistances);
+            //             this.weaknessSection.insertAdjacentHTML('beforeend', weaknessHTML);
+            //             testImmuneResist(resistances, immunities)
+            //         })
+            //         .catch((err) => {
+            //             console.log(err);
+            //         })
+            // }
+
+        }
+
+        something();
+
+
+
+
+
+        const evol = Promise.all([this.fetchJSON(`${speciesData.evolution_chain.url}`)]);
+
+        evol.then((evolveData) => {
+            const [{ chain }] = evolveData;
             const { evolves_to: evolve, species } = chain;
+
+            //check if object is returned and can be used for
+            //the following methods
 
             function isObjEmpty(obj) {
                 for (let prop in obj) {
@@ -52,44 +170,50 @@ class UI {
                 return true;
             }
 
-            function babyEvol(obj) {
+            //Get the pokeid of pre-evolution (if any).
+            //First we get the url and we split it to get the pokeId.
+
+            function babyEvol(evolution) {
                 let babyE = [];
                 let i = 0;
-                while (!isObjEmpty(obj[i])) {
-                    babyE.push(obj[i].species.url);
+                while (!isObjEmpty(evolution[i])) {
+                    babyE.push(evolution[i].species.url);
                     i++;
                 }
-
                 babyE = babyE.map((url) => {
                     return convertURLTOID(url);
                 })
-
-                console.log(babyE);
-
                 return babyE;
             }
 
-            function evol1to2(obj, baby, key) {
+            //Get the evolution from stage 1 to 2 and even to stage 3.
+            //The function returns the pokemon name or id of each stage found in an array.
+            function evol1to2(evolution, baby, key) {
                 let i = 0;
-                let object = { chain: [] };
-                while (!isObjEmpty(obj[i])) {
-                    let next = obj[i].species[key];
-                    if (!isObjEmpty(obj[i].evolves_to)) {
+                let pkmn = { chain: [] };
+                while (!isObjEmpty(evolution[i])) {
+                    //there is at least one evolution.
+                    let next = evolution[i].species[key];
+                    if (!isObjEmpty(evolution[i].evolves_to)) {
+                        //if true, pokemon has at least 2 evolutions.
                         let j = 0;
-                        while (!isObjEmpty(obj[i].evolves_to[j])) {
-                            let final = obj[i].evolves_to[j].species[key];;
-                            object.chain.push({ baby: baby[key], next, final })
+                        while (!isObjEmpty(evolution[i].evolves_to[j])) {
+                            let final = evolution[i].evolves_to[j].species[key];
+                            pkmn.chain.push({ baby: baby[key], next, final })
                             j++;
                         }
                     } else {
-                        object.chain.push({ baby: baby[key], next })
+                        pkmn.chain.push({ baby: baby[key], next })
                     }
                     i++;
                 }
-
-                console.log(object.chain)
-                return object.chain;
+                return pkmn.chain;
             }
+
+            //Very important function; used to determine the proper 
+            //sequence of the evolution chain. Some pokemon have branched 
+            //evolutions. Ex: A => b => (C or D)
+            //but at let's say at D, it would not make sense for C to show up in the chain since it is branched.
 
             var groupBy = function (xs, key) {
                 return xs.reduce(function (rv, x) {
@@ -98,6 +222,8 @@ class UI {
                 }, {});
             };
 
+            //Converts the url of the api call and returns the pokeid.
+            //Can take an array or an url.
             function convertURLTOID(url) {
                 let regex = /[/](\d)+[/]/;
 
@@ -113,9 +239,11 @@ class UI {
                 }
             }
 
+
             function getEvolution(pokeName, evolved, { species }) {
                 const secondStageName = evol1to2(evolved, species, "name");
                 const secondStageID = convertURLTOID(evol1to2(evolved, species, "url"));
+                console.log(secondStageName);
                 let evolHTML = ``;
                 const basic = babyEvol(evolved);
                 //Check for no evolutions, return the species name
@@ -126,11 +254,12 @@ class UI {
                     secondStageID.forEach((id) => {
                         for (let key in id) {
                             evolHTML += `<div class="part-1"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id[key]}.png" alt="">
-                                <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${secondStageName[0][key]}</p></div>`
+                            <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${secondStageName[0][key]}</p></div>`
                             //<div class="arr"><img src="./right-arrow.png" alt=""></div>`    
                         }
                     })
-                } else if (secondStageID.length > 1) { //poke 2nd or third stage has more than one branch.
+                } else if (secondStageID.length > 1) {
+                    //poke 2nd or third stage has more than one branch.
                     //We must differentiate between the branches by speces.name
                     if (pokeName == convertURLTOID(species.url) || (secondStageID[0]["next"] == pokeName && secondStageName[0]["final"])) {
                         let array = [];
@@ -144,21 +273,26 @@ class UI {
                             }
                         })
 
-                        array = Array.from(new Set(array.reduce((acc, curr) => {return acc.concat(curr)}, [])));
+                        //remove duplicates if any.
+                        array = Array.from(new Set(array.reduce((acc, curr) => { return acc.concat(curr) }, [])));
 
-                        array = [array.splice(0, array.length/2), array.splice(0, array.length)];
-                        console.log(array)
-                        
+                        array = [array.splice(0, array.length / 2), array.splice(0, array.length)];
+
                         array[0].forEach((val, index) => {
                             evolHTML += `<div class="part-1"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${val}.png" alt="">
-                                <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${array[1][index]}</p></div>`
+                            <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${array[1][index]}</p></div>`
                         })
 
                     } else {
+
+                        //Branched evolutions belong here.
+                        //Let middle = pokemon with branched evolutions at the first stage.
+                        //let final = pokemon with branched evolutions at the 2nd form.
                         let middle = groupBy(secondStageID, "next")[pokeName];
                         let final = groupBy(secondStageID, "final")[pokeName];
+
                         middle = middle || final;
-                        let index = secondStageID.findIndex((obj, index) => {
+                        let index = secondStageID.findIndex((obj) => {
                             if (obj.final == undefined) {
                                 return obj.next == middle[0].next;
                             } else {
@@ -169,19 +303,20 @@ class UI {
                         middle.forEach((id) => {
                             for (let key in id) {
                                 evolHTML += `<div class="part-1"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id[key]}.png" alt="">
-                                    <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${secondStageName[index][key]}</p>
-                                </div>`
-                                //<div class="arr"><img src="./right-arrow.png" alt=""></div>`    
+                                <p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${secondStageName[index][key]}</p>
+                            </div>`;
                             }
                         })
                     }
                 }
-                console.log(evolHTML)
                 return evolHTML;
             }
             const evolutionComplete = getEvolution(id, evolve, chain);
             this.evolve_container.insertAdjacentHTML('beforeend', evolutionComplete);
         })
+
+
+
 
         let numberedHTML = ``;
         //get the pokemon id
@@ -257,7 +392,7 @@ class UI {
                 abilityHTML += `<li class="list-inline-item">${ability.name},</li>`;
             }
         })
-        abilityHTML+="</ul>"
+        abilityHTML += "</ul>"
         this.abilitiesDOM.insertAdjacentHTML('beforeend', abilityHTML);
     }
 
@@ -270,14 +405,14 @@ class UI {
         this.weight.textContent = `${weight / 10}kg`;
         const locationData = dex[dex.length - 2] || dex[0];
         console.log(locationData["pokedex"]["name"]);
-        
-        if(locationData["pokedex"]["name"].indexOf("extended-") > -1 || locationData["pokedex"]["name"].indexOf("original-") > -1){
+
+        if (locationData["pokedex"]["name"].indexOf("extended-") > -1 || locationData["pokedex"]["name"].indexOf("original-") > -1) {
             let temp = ``;
             let index = 0;
-            if(locationData["pokedex"]["name"].indexOf("extended-") > -1){
+            if (locationData["pokedex"]["name"].indexOf("extended-") > -1) {
                 temp = "extended-";
                 index = locationData["pokedex"]["name"].indexOf("extended-");
-            }else{
+            } else {
                 index = locationData["pokedex"]["name"].indexOf("original-");
                 temp = "original-"
             }
@@ -348,34 +483,6 @@ class UI {
         return passed.reduce((acc, curr) => acc.concat(curr), []);
     }
 
-    getPokemonType({ types }) {
-        //     /**
-        //     * Get the pokemon's type.
-        //     * First sort the type by alphabetical order.
-        //     * Get the pokemon's image, name and type stored in HTML format.
-        //    */
-
-        const pokeType = [];
-        for (let { type } of types) {
-            pokeType.push(type.name);
-        }
-
-        pokeType.sort((a, b) => { return a - b });
-
-        let typeHTML = ``;
-
-        for (let i = 0; i < pokeType.length; i++) {
-            typeHTML += `<div class="d-flex flex-column padded-lr">
-                <img src="./types-url/${this.capitalize(pokeType[i])}.png" alt="${pokeType[i]}">
-                <p class="lead artwork-lead center pkmn-type">${pokeType[i]}</p>
-            </div>`
-        }
-
-        this.pkmnType.insertAdjacentHTML('beforeend', typeHTML);
-
-        return pokeType;
-    }
-
     getPokeStats(stats) {
         const attr = ['HP', 'ATK', 'DEF', 'SpA', 'SpD', 'Spe'];
         const pokeStats = [];
@@ -398,102 +505,6 @@ class UI {
         this.stat.insertAdjacentHTML('beforeend', statHTML);
     }
 
-    getPokeWeaknesses(passed, pokeType) {
-        this.getWeakOrEvol(passed, 0).then(({ results }) => {
-            let filtered = [];
-            filtered =
-                results.filter(({ name }) => {
-                    return pokeType.indexOf(name) > -1;
-                }).map((obj) => { return obj.url })
-
-            return (Promise.all(filtered.map((res) => {
-                return this.fetchJSON(res);
-            })))
-        })
-            .then((damage_relations) => {
-                let damage = damage_relations.map((res) => { return res.damage_relations })
-                let weakness = [];
-                let dmgFrom = [];
-                let immune = [];
-                damage.forEach((val) => {
-                    for (let i in val) {
-                        if (i.indexOf("double_damage_from") > -1) {
-                            weakness.push(val[i]);
-                        } else if (i.indexOf("half_damage_from") > -1) {
-                            dmgFrom.push(val[i]);
-                        } else if (i.indexOf("no_damage_from") > -1 && (val[i].length)) {
-                            immune.push(val[i]);
-                        }
-                    }
-                })
-
-                let defWeakness = this.reduceArray(dmgFrom.concat(immune));
-                defWeakness = Array.from(new Set(defWeakness.map(({ name }) => { return name })));
-                weakness = this.reduceArray(weakness);
-                weakness = Array.from(new Set(weakness.map(({ name }) => name)));
-                immune = this.reduceArray(immune);
-                immune = Array.from(new Set(immune.map(({ name }) => name)));
-
-                let resistances = defWeakness.filter((type) => immune.indexOf(type) < 0)
-                    .filter((res) => weakness.indexOf(res) < 0);
-                let immunities = defWeakness.filter((type) => immune.indexOf(type) > -1);
-
-                defWeakness = weakness.filter((test) => {
-                    return defWeakness.indexOf(test) < 0
-                })
-
-                const that = this;
-
-                function outputResults(array) {
-                    let resistancesHTML = ``;
-                    for (let resist of array) {
-                        resistancesHTML += `<div class="weakness-img">
-                        <img src="./types-url/${that.capitalize(resist)}.png" alt="${resist}">
-                            <p class="artwork-lead lead center">${resist}</p>
-                            </div>`
-                    }
-                    return resistancesHTML;
-                }
-
-                function testImmuneResist(resist, immune) {
-                    if (!resist.length) {
-                        let immunities = outputResults(immune);
-                        that.third_col.insertAdjacentHTML("beforeend", `<h3 id="weakness-h3">Immunities</h3>
-                        <div class="weakness-box center">
-                        <div class="immunity-img-box"></div>`);
-                        document.querySelector(".immunity-img-box").insertAdjacentHTML('beforeend', immunities);
-
-                    } else if (!immune.length) {
-                        let resistances = outputResults(resist);
-                        that.third_col.insertAdjacentHTML("beforeend", `<h3 id="weakness-h3">Resistances</h3>
-                        <div class="weakness-box center">
-                        <div class="resistance-img-box"></div>`)
-                        document.querySelector(".resistance-img-box").insertAdjacentHTML('beforeend', resistances);
-                    } else {
-                        const arr = [outputResults(resist), outputResults(immune)];
-                        that.third_col.insertAdjacentHTML("beforeend", `<h3 id="weakness-h3">Resistances</h3>
-                        <div class="weakness-box center">
-                        <div class="resistance-img-box"></div>`)
-                        document.querySelector(".resistance-img-box").insertAdjacentHTML('beforeend', arr[0]);
-                        that.third_col.insertAdjacentHTML("beforeend", `<h3 id="weakness-h3">Immunities</h3>
-                        <div class="weakness-box center">
-                        <div class="immunity-img-box"></div>`);
-                        document.querySelector(".immunity-img-box").insertAdjacentHTML('beforeend', arr[1]);
-                    }
-                }
-                let weaknessHTML = outputResults(defWeakness);
-                //let resistancesHTML = outputResults(resistances);
-                this.weaknessSection.insertAdjacentHTML('beforeend', weaknessHTML);
-                testImmuneResist(resistances, immunities)
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-    }
-
-    capitalize(str) {
-        return str.charAt(0).toUpperCase() + str.slice(1);
-    }
 
     clearUI() {
         this.pokeId.textContent = ``;
@@ -525,6 +536,63 @@ class UI {
             document.querySelector(string).parentElement.previousElementSibling.remove();
             document.querySelector(string).parentElement.remove();
         }
+    }
+
+    pkmnTWS() {
+
+        return [{ "name": "Normal", "no_dmg_to": ["Ghost"], "weaknesses": ["Rock", "Steel"], "strengths": [], "no_dmg_from": ["Ghost"], "weakTo": ["Fighting"], "resist": [] },
+
+        { "name": "Fire", "no_dmg_to": [], "weaknesses": ["Fire", "Water", "Rock", "Dragon"], "strengths": ["Grass", "Ice", "Bug", "Steel"], "weakTo": ["Ground", "Rock", "Water"], "resist": ["Bug", "Steel", "Fire", "Grass", "Ice"] },
+
+        { "name": "Water", "no_dmg_to": [], "weaknesses": ["Water", "Grass", "Dragon"], "strengths": ["Fire", "Ground", "Rock"], "weakTo": ["Grass", "Electric"], "resist": ["Steel", "Fire", "Water", "Ice"] },
+
+        {
+            "name": "Electric", "no_dmg_to": ["Ground"], "weaknesses": ["Electric", "Grass", "Dragon"], "strengths": ["Water", "Flying"], "weakTo": ["Ground"],
+            "resist": ["Flying", "Steel", "Electric"]
+        },
+
+        { "name": "Grass", "no_dmg_to": [], "weaknesses": ["Fire", "Grass", "Poison", "Flying", "Bug", "Dragon", "Steel"], "strengths": ["Water", "Ground", "Rock"], "weakTo": ["Flying", "Poison", "Bug", "Fire", "Ice"], "resist": ["Fighting", "Ground", "Bug", "Grass"] },
+
+        {
+            "name": "Ice", "no_dmg_to": [], "weaknesses": ["Fire", "Water", "Ice", "Steel"], "strengths": ["Grass", "Ground", "Flying", "Dragon"],
+            "weakTo": ["Fighting", "Rock", "Steel", "Fire"], "resist": ["Ice"]
+        },
+
+        {
+            "name": "Fighting", "no_dmg_to": ["Ghost"], "weaknesses": ["Poison", "Flying", "Psychic", "Bug", "Fairy"], "strengths": ["Normal", "Ice", "Rock",
+                "Dark", "Steel"], "weakTo": ["Flying", "Psychic", "Fairy"], "resist": ["Rock", "Bug", "Dark"]
+        },
+
+        { "name": "Poison", "no_dmg_to": ["Steel"], "weaknesses": ["Poison", "Ground", "Rock", "Ghost"], "strengths": ["Grass", "Fairy"], "weakTo": ["Ground", "Psychic"], "resist": ["Fighting, Poison, Grass, Fairy"] },
+
+        { "name": "Ground", "no_dmg_to": ["Flying"], "weaknesses": ["Grass", "Bug"], "strengths": ["Fire", "Electric", "Poison", "Rock", "Steel"], "no_dmg_from": ["Electric"], "weakTo": ["Water", "Grass", "Ice"], "resist": ["Poison", "Rock", "Electric"] },
+
+        {
+            "name": "Flying", "no_dmg_to": [], "weaknesses": ["Electric", "Rock", "Steel"], "strengths": ["Grass", "Fighting", "Bug"], "no_dmg_from": ["Ground"],
+            "weakTo": ["Rock", "Electric", "Ice"], "resist": ["Fighting", "Ground", "Bug", "Grass"]
+        },
+
+        {
+            "name": "Psychic", "no_dmg_to": ["Dark"], "weaknesses": ["Psychic", "Steel"], "strengths": ["Fighting", "Poison"], "weakTo": ["Bug", "Ghost", "Dark"],
+            "resist": ["Fighting", "Psychic"]
+        },
+
+        { "name": "Bug", "no_dmg_to": [], "weaknesses": ["Fire", "Fighting", "Poison", "Flying", "Ghost", "Steel", "Fairy"], "strengths": ["Grass", "Psychic", "Dark"], "weakTo": ["Flying, Rock, Fire"], "resist": ["Fighting", "Ground", "Grass"] },
+
+        { "name": "Rock", "no_dmg_to": [], "weaknesses": ["Fighting", "Ground", "Steel"], "strengths": ["Fire", "Ice", "Flying", "Bug"], "weakTo": ["Fighting", "Ground", "Steel", "Water", "Grass"], "resist": ["Normal", "Flying", "Poison", "Fire"] },
+
+        { "name": "Ghost", "no_dmg_to": ["Normal"], "weaknesses": ["Dark"], "strengths": ["Psychic", "Ghost"], "no_dmg_from": ["Normal"], "weakTo": ["Ghost", "Dark"], "resist": ["Fighting", "Poison", "Bug"] },
+
+        { "name": "Dragon", "no_dmg_to": ["Fairy"], "weaknesses": ["Steel"], "strengths": ["Dragon"], "weakTo": ["Dragon, Fairy"], "resist": ["Fire", "Water", "Grass", "Electric"] },
+
+        { "name": "Dark", "no_dmg_to": [], "weaknesses": ["Fighting", "Dark", "Fairy"], "strengths": ["Psychic", "Ghost"], "no_dmg_from": ["Psychic"], "weakTo": ["Fighting", "Bug", "Fairy"], "resist": ["Ghost", "Psychic", "Dark"] },
+
+        { "name": "Steel", "no_dmg_to": [], "weaknesses": ["Fire", "Water", "Electric", "Steel"], "strengths": ["Ice", "Rock", "Fairy"], "no_dmg_from": ["Poison"], "weakTo": ["Fighting, Ground, Fire"], "resist": ["Normal", "Flying", "Poison", "Rock", "Bug", "Steel", "Grass", 'Psychic', 'Ice', 'Dragon', 'Fairy'] },
+
+        {
+            "name": "Fairy", "no_dmg_to": [], "weaknesses": ["Fire", "Poison", "Steel"], "strengths": ["Fighting", "Dragon", "Dark"], "no_dmg_from": ["Dragon"], "weakTo": [
+                "Poison", "Steel"], "resist": ["Fighting", "Bug", "Dragon", "Dark"]
+        }]
     }
 
 
