@@ -1,7 +1,6 @@
 
 const interface = new UI();
-// const poke = new Pokedata(`${Math.floor(Math.random() * 151) + 1}`);
-const poke = new Pokedata(`34`);
+const poke = new Pokedata(`${Math.floor(Math.random() * 720) + 1}`);
 //const poke = new Pokedata(462);
 
 function hideShowBody(string) {
@@ -95,7 +94,7 @@ function clearInputs(input) {
 }
 
 function getPokemon() {
-  
+
     poke.fetchPokemon()
         .then(resolve => {
             Promise.all(resolve).then((obj) => {

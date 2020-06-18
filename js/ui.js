@@ -47,6 +47,7 @@ class UI {
 
             let typeHTML = ``;
             for (let i = 0; i < getTypes.length; i++) {
+                console.log(getTypes[i].name);
                 typeHTML += `<div class="d-flex flex-column padded-lr">
                 <img src="../types-url/${(getTypes[i].name)}.png" alt="${getTypes[i].name}">
                 <p class="lead artwork-lead center pkmn-type">${getTypes[i].name}</p>

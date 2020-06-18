@@ -72,6 +72,7 @@ body {
 .size-container {
    margin: auto;
    margin-left: 0;
+   transform: translateY(-50px);
 }
 
 .size-container>span {
@@ -584,6 +585,9 @@ body {
    }
    .weakness-img img {
       width: 2.7rem;
+   }
+   .size-container{
+      transform: translateY(0);
    }
 }
 
