@@ -11,7 +11,7 @@ Here's a few excerpts from his page and my attempt to reflect it loosely.
 
 # 
 
-![github-small](https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/0029f541007813.5797558db1be6.png)
 ![](sample/pikachu-m.png)
+![github-small](https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/0029f541007813.5797558db1be6.png)
 
 
