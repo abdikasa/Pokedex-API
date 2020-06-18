@@ -25,7 +25,6 @@ class UI {
 
 
     paintUI(pkmnData, speciesData) {
-        console.log(pkmnData, speciesData);
         const { id, name, abilities, height, weight, types, stats } = pkmnData;
         const { pokedex_numbers: dex, names, evolution_chain: evolChain } = speciesData;
         this.assignBG(id);
@@ -43,7 +42,6 @@ class UI {
                     return type.name.toLowerCase() == name.toLowerCase();
                 })
             })
-            console.log(getTypes);
 
             getTypes.sort((a, b) => { return a - b });
 
@@ -117,6 +115,7 @@ class UI {
             }
         }
 
+        //W = weakness, R = resistance and I = Immunities (if any)
         getPokemonWRI();
 
 
@@ -213,7 +212,6 @@ class UI {
             function getEvolution(pokeName, evolved, { species }) {
                 const secondStageName = evol1to2(evolved, species, "name");
                 const secondStageID = convertURLTOID(evol1to2(evolved, species, "url"));
-                console.log(secondStageName);
                 let evolHTML = ``;
                 const basic = babyEvol(evolved);
                 //Check for no evolutions, return the species name
@@ -234,7 +232,6 @@ class UI {
                     if (pokeName == convertURLTOID(species.url) || (secondStageID[0]["next"] == pokeName && secondStageName[0]["final"])) {
                         let array = [];
                         [...secondStageID, ...secondStageName].forEach((acc, index) => {
-                            console.log(acc, index)
                             array[index] = [];
                             for (let key in acc) {
                                 if (array[index].indexOf(acc[key]) < 0) {
@@ -295,25 +292,19 @@ class UI {
         //Check the length
         if ((String(id).length != 1) && (String(id).charAt(String(id).length - 1) != ("0")) &&
             (String(id).charAt(String(id).length - 1) != ("1"))) {
-            console.log("we out here", id);
-            console.log(`pokedex id, length = ${mined.toString().length}`)
-
             mined = mined - Number(mined.toString().charAt(String(mined).length - 1)) + 1;
 
             maxed = mined + 9;
 
         } else if (String(id).length != 1 && String(id).charAt(String(id).length - 1) === "0") {
-            console.log("last digit is 0")
             mined = mined - 10 + 1;
         } else if ((String(id).length != 1) && String(id).charAt(String(id).length - 1 === "1")) {
             maxed += 9;
         } else {
-            console.log("else option")
             mined = 1;
             maxed = 10;
         }
 
-        console.log(mined, maxed);
         //iterate through the buttons
         for (let i = mined; i < maxed + 1; i++) {
             if (i === Number(id)) {
@@ -374,7 +365,6 @@ class UI {
         this.height.textContent = '0.' + height + 'm';
         this.weight.textContent = `${weight / 10}kg`;
         const locationData = dex[dex.length - 2] || dex[0];
-        console.log(locationData["pokedex"]["name"]);
 
         if (locationData["pokedex"]["name"].indexOf("extended-") > -1 || locationData["pokedex"]["name"].indexOf("original-") > -1) {
             let temp = ``;
@@ -386,7 +376,6 @@ class UI {
                 index = locationData["pokedex"]["name"].indexOf("original-");
                 temp = "original-"
             }
-            console.log(index, locationData["pokedex"]["name"]);
             temp = locationData["pokedex"]["name"].split("").splice(9);
             locationData["pokedex"]["name"] = temp.join("");
         }
@@ -399,7 +388,7 @@ class UI {
 
         //Without this line, I would be "tainting" the canvas by loading from a cross origins domain.
         this.pkmImage.crossOrigin = "Anonymous";
-        this.pkmImage.src = `./test/${id}.png`;
+        this.pkmImage.src = `./pokemon/${id}.png`;
 
 
         //     //From Vibrant JS
@@ -417,13 +406,10 @@ class UI {
         checkImage(this.pkmImage.src).then(() => {
             var vibrant = new Vibrant(this.pkmImage);
             var swatches = vibrant.swatches();
-            console.log(swatches);
             try {
-                console.log("Attempting to chnage background color to defult")
                 document.body.style.backgroundColor = swatches["DarkVibrant"].getHex();
             }
             catch (err) {
-                console.log("Changed to a different color since default is undefined");
                 document.body.style.backgroundColor = swatches["Muted"].getHex();
             }
 
