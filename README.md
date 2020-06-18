@@ -2,7 +2,7 @@
 Reinforcing API concepts and web development concepts + PokeAPI + Bootstrap + Responsive
 
 # Inspiration
-I was only taught the bare basics of JavaScript during my second semester and fell in love. I like to make pretty websites but I need the design
+I was only taught the basics of JavaScript during my second semester and fell in love. I like to make pretty websites but I need the design
 created ahead of time. For this project, I explored more into JS, especially about APIs, promises, etc. Then I decided I've watched enough tutorials 
 and wanted to create a simple project to show my knowledge. A simple pokedex, just painting data from the API essentially, nothing too crazy.
 
