@@ -217,7 +217,7 @@ class UI {
                 //Check for no evolutions, return the species name
                 if (basic.length == 0) {
                     //print the image of the baby here.
-                    evolHTML += `<div class=pkmn-one-evol><div class="part-1"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokeName}.png" alt=""><p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${pokeName}</p></div></div>`
+                    evolHTML += `<div class=pkmn-one-evol><div class="part-1"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokeName}.png" alt=""><p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${pokeName}</p></div></div>`;        
                 } else if (secondStageID.length == 1) { //pokemon has a normal evo chain, no branches.
                     secondStageID.forEach((id) => {
                         for (let key in id) {
@@ -388,6 +388,7 @@ class UI {
 
         //Without this line, I would be "tainting" the canvas by loading from a cross origins domain.
         this.pkmImage.crossOrigin = "Anonymous";
+        //this.pkmImage.src = `./pokemon/pokemonwebp/${id}.png.webp`;
         this.pkmImage.src = `./pokemon/${id}.png`;
 
 
