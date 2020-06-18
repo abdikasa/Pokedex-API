@@ -390,7 +390,9 @@ class UI {
         }
         console.log(dexRegion);
         this.loc.textContent = `${dexRegion}`;
-        console.log(names)
+        let kanji = names.filter(({language}) => {return language.name == "ja"});
+        this.kanji.textContent = `${kanji[0].name}`
+
 
     }
 
