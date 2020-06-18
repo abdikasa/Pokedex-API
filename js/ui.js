@@ -27,6 +27,8 @@ class UI {
     paintUI(pkmnData, speciesData) {
         const { id, name, abilities, height, weight, types, stats } = pkmnData;
         const { pokedex_numbers: dex, names, evolution_chain: evolChain } = speciesData;
+        console.log(pkmnData);
+        console.log(speciesData);
         this.assignBG(id);
         this.assignNameID(id, name);
         this.getAbilities(abilities);
@@ -366,22 +368,26 @@ class UI {
 
         this.height.textContent = '0.' + height + 'm';
         this.weight.textContent = `${weight / 10}kg`;
-        const locationData = dex[dex.length - 2] || dex[0];
+        console.log(dex);
 
-        if (locationData["pokedex"]["name"].indexOf("extended-") > -1 || locationData["pokedex"]["name"].indexOf("original-") > -1) {
-            let temp = ``;
-            let index = 0;
-            if (locationData["pokedex"]["name"].indexOf("extended-") > -1) {
-                temp = "extended-";
-                index = locationData["pokedex"]["name"].indexOf("extended-");
-            } else {
-                index = locationData["pokedex"]["name"].indexOf("original-");
-                temp = "original-"
-            }
-            temp = locationData["pokedex"]["name"].split("").splice(9);
-            locationData["pokedex"]["name"] = temp.join("");
+        dex = dex[1].pokedex.name || dex[0].pokedex.name;
+        let regex = /\b(?:original-|-coastal|-mountain)\b/gi;
+        console.log(dex.match(regex))
+
+        if(dex.match(regex)){
+            let index = dex.indexOf(...dex.match(regex));
+            let found = dex.match(regex)[0];
+            switch(found){
+                case "original-":
+                    dex = dex.slice(found.length);
+                    break;
+                case "-coastal":
+                case "-mountain":
+                    dex = dex.slice(0,index);
+                    break;        
+            }  
         }
-        this.loc.textContent = `${locationData["pokedex"]["name"]}`;
+        this.loc.textContent = `${dex}`;
         const kanji = `${names[10]}` || `${names[9]}`;
         this.kanji.textContent = kanji["name"];
     }
