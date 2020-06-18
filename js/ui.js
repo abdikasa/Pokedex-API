@@ -221,7 +221,7 @@ class UI {
                 //Check for no evolutions, return the species name
                 if (basic.length == 0) {
                     //print the image of the baby here.
-                    evolHTML += `<div class=pkmn-one-evol><div class="part-1"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokeName}.png" alt=""><p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${pokeName}</p></div></div>`;        
+                    evolHTML += `<div class=pkmn-one-evol><div class="part-1"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokeName}.png" alt=""><p class="lead artwork-lead" style="font-size:1.1=em; font-weight:600;">${pokeName}</p></div></div>`;
                 } else if (secondStageID.length == 1) { //pokemon has a normal evo chain, no branches.
                     secondStageID.forEach((id) => {
                         for (let key in id) {
@@ -368,28 +368,30 @@ class UI {
 
         this.height.textContent = '0.' + height + 'm';
         this.weight.textContent = `${weight / 10}kg`;
-        console.log(dex);
 
-        dex = dex[1].pokedex.name || dex[0].pokedex.name;
-        let regex = /\b(?:original-|-coastal|-mountain)\b/gi;
-        console.log(dex.match(regex))
+        let dexRegion = dex[1].pokedex.name || dex[0].pokedex.name;
+        let regex = /\b(?:original-|-coastal|-mountain|-central)\b/gi;
 
-        if(dex.match(regex)){
-            let index = dex.indexOf(...dex.match(regex));
-            let found = dex.match(regex)[0];
-            switch(found){
+        if (dexRegion.match(regex)) {
+            let index = dexRegion.indexOf(...dexRegion.match(regex));
+            let found = dexRegion.match(regex)[0];
+            console.log(index);
+            console.log(found);
+            switch (found) {
                 case "original-":
-                    dex = dex.slice(found.length);
+                    dexRegion = dexRegion.slice(found.length);
                     break;
                 case "-coastal":
                 case "-mountain":
-                    dex = dex.slice(0,index);
-                    break;        
-            }  
+                case "-central":
+                    dexRegion = dexRegion.slice(0, index);
+                    break;
+            }
         }
-        this.loc.textContent = `${dex}`;
-        const kanji = `${names[10]}` || `${names[9]}`;
-        this.kanji.textContent = kanji["name"];
+        console.log(dexRegion);
+        this.loc.textContent = `${dexRegion}`;
+        console.log(names)
+
     }
 
     assignBG(id) {
