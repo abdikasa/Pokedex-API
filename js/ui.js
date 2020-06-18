@@ -106,8 +106,9 @@ class UI {
             function outputResults(array) {
                 let resistancesHTML = ``;
                 for (let resist of array) {
+                    console.log(resist);
                     resistancesHTML += `<div class="weakness-img">
-                                <img src="../types-url/${resist.toLowerCase()}.png" alt="${resist}">
+                                <img src="../types-url/${resist}.png" alt="${resist}">
                                     <p class="artwork-lead lead center">${resist}</p>
                                     </div>`
                 }
