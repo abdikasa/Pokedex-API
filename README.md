@@ -1,6 +1,8 @@
 # Pokedex-API
 Reinforcing API concepts and web development concepts + PokeAPI + Bootstrap + Responsive
 
+# Live Now! Check It Out [Pokemon Pokedex (720 Pokemon)](http://abdikasa.github.io/Pokedex-API)
+
 # Inspiration
 I was only taught the basics of JavaScript during my second semester and fell in love. I like to make pretty websites but I need the design
 created ahead of time. For this project, I explored more into JS, especially about APIs, promises, etc. Then I decided I've watched enough tutorials 
