@@ -37,7 +37,7 @@ class UI {
 
         const that = this;
 
-        function something() {
+        function getPokemonWRI() {
             let getTypes = types.map(({ type }) => {
                 return pokeType.find(({ name }) => {
                     return type.name.toLowerCase() == name.toLowerCase();
@@ -57,97 +57,67 @@ class UI {
 
             that.pkmnType.insertAdjacentHTML('beforeend', typeHTML);
 
+            //resist, no_dmg_to and weakTo
+            let pokeW, pokeR, pokeI;
 
-            let pokeS, pokeR, pokeI;
+            pokeR = mergeDupes(getTypes.map((pokemonType) => {
+                return pokemonType["resist"];
+            }));
 
-            pokeR = getTypes.map((pokemonType) => {
-                return pokemonType["strengths"];
+            pokeW = mergeDupes(getTypes.map((pokemonType) => { return pokemonType["weakTo"] }));
+
+            pokeI = mergeDupes(getTypes.map((pokemonType) => {
+                return pokemonType["no_dmg_from"];
+            })).filter((type) => { return type != undefined });
+
+            function mergeDupes(arr) {
+                return [...new Set([].concat(...arr))];
+            }
+
+            let tempWeakness = pokeW;
+
+            tempWeakness = tempWeakness.filter((item) => {
+                return pokeR.indexOf(item) < 0 && pokeI.indexOf(item) <= -1;
             })
 
+            pokeR = (mergeDupes(pokeR.concat(pokeW)).filter((pokeType) => {
+                return pokeW.indexOf(pokeType) <= -1;
+            })).sort();
 
-            //             let damage = damage_relations.map((res) => { return res.damage_relations })
-            //             let weakness = [];
-            //             let dmgFrom = [];
-            //             let immune = [];
-            //             damage.forEach((val) => {
-            //                 for (let i in val) {
-            //                     if (i.indexOf("double_damage_from") > -1) {
-            //                         weakness.push(val[i]);
-            //                     } else if (i.indexOf("half_damage_from") > -1) {
-            //                         dmgFrom.push(val[i]);
-            //                     } else if (i.indexOf("no_damage_from") > -1 && (val[i].length)) {
-            //                         immune.push(val[i]);
-            //                     }
-            //                 }
-            //             })
 
-            //             let defWeakness = this.reduceArray(dmgFrom.concat(immune));
-            //             defWeakness = Array.from(new Set(defWeakness.map(({ name }) => { return name })));
-            //             weakness = this.reduceArray(weakness);
-            //             weakness = Array.from(new Set(weakness.map(({ name }) => name)));
-            //             immune = this.reduceArray(immune);
-            //             immune = Array.from(new Set(immune.map(({ name }) => name)));
 
-            //             let resistances = defWeakness.filter((type) => immune.indexOf(type) < 0)
-            //                 .filter((res) => weakness.indexOf(res) < 0);
-            //             let immunities = defWeakness.filter((type) => immune.indexOf(type) > -1);
+            if (pokeR.length) {
+                that.third_col.insertAdjacentHTML("beforeend", `<h3 id="weakness-h3">Resistances</h3>
+                                    <div class="weakness-box center">
+                                    <div class="resistance-img-box"></div>`);
+                document.querySelector(".resistance-img-box").insertAdjacentHTML('beforeend', outputResults(pokeR));
+            }
 
-            //             defWeakness = weakness.filter((test) => {
-            //                 return defWeakness.indexOf(test) < 0
-            //             })
 
-            //             const that = this;
+            document.querySelector(".weakness-img-box").insertAdjacentHTML('beforeend',
+                outputResults(tempWeakness));
 
-            //             function outputResults(array) {
-            //                 let resistancesHTML = ``;
-            //                 for (let resist of array) {
-            //                     resistancesHTML += `<div class="weakness-img">
-            //                     <img src="./types-url/${that.capitalize(resist)}.png" alt="${resist}">
-            //                         <p class="artwork-lead lead center">${resist}</p>
-            //                         </div>`
-            //                 }
-            //                 return resistancesHTML;
-            //             }
+            if (pokeI.length) {
+                that.third_col.insertAdjacentHTML("beforeend", `<h3 id="weakness-h3">Immunities</h3>
+                    <div class="weakness-box center">
+                    <div class="immunity-img-box"></div>`);
+                document.querySelector(".immunity-img-box").insertAdjacentHTML('beforeend',
+                    outputResults(pokeI));
+            }
 
-            //             function testImmuneResist(resist, immune) {
-            //                 if (!resist.length) {
-            //                     let immunities = outputResults(immune);
-            //                     that.third_col.insertAdjacentHTML("beforeend", `<h3 id="weakness-h3">Immunities</h3>
-            //                     <div class="weakness-box center">
-            //                     <div class="immunity-img-box"></div>`);
-            //                     document.querySelector(".immunity-img-box").insertAdjacentHTML('beforeend', immunities);
-
-            //                 } else if (!immune.length) {
-            //                     let resistances = outputResults(resist);
-            //                     that.third_col.insertAdjacentHTML("beforeend", `<h3 id="weakness-h3">Resistances</h3>
-            //                     <div class="weakness-box center">
-            //                     <div class="resistance-img-box"></div>`)
-            //                     document.querySelector(".resistance-img-box").insertAdjacentHTML('beforeend', resistances);
-            //                 } else {
-            //                     const arr = [outputResults(resist), outputResults(immune)];
-            //                     that.third_col.insertAdjacentHTML("beforeend", `<h3 id="weakness-h3">Resistances</h3>
-            //                     <div class="weakness-box center">
-            //                     <div class="resistance-img-box"></div>`)
-            //                     document.querySelector(".resistance-img-box").insertAdjacentHTML('beforeend', arr[0]);
-            //                     that.third_col.insertAdjacentHTML("beforeend", `<h3 id="weakness-h3">Immunities</h3>
-            //                     <div class="weakness-box center">
-            //                     <div class="immunity-img-box"></div>`);
-            //                     document.querySelector(".immunity-img-box").insertAdjacentHTML('beforeend', arr[1]);
-            //                 }
-            //             }
-            //             let weaknessHTML = outputResults(defWeakness);
-            //             //let resistancesHTML = outputResults(resistances);
-            //             this.weaknessSection.insertAdjacentHTML('beforeend', weaknessHTML);
-            //             testImmuneResist(resistances, immunities)
-            //         })
-            //         .catch((err) => {
-            //             console.log(err);
-            //         })
-            // }
-
+            function outputResults(array) {
+                let resistancesHTML = ``;
+                for (let resist of array) {
+                    resistancesHTML += `<div class="weakness-img">
+                                <img src="./types-url/${resist.toLowerCase()}.png" alt="${resist}">
+                                    <p class="artwork-lead lead center">${resist}</p>
+                                    </div>`
+                }
+                return resistancesHTML;
+            }
         }
 
-        something();
+        getPokemonWRI();
 
 
 
@@ -551,7 +521,7 @@ class UI {
             "resist": ["Flying", "Steel", "Electric"]
         },
 
-        { "name": "Grass", "no_dmg_to": [], "weaknesses": ["Fire", "Grass", "Poison", "Flying", "Bug", "Dragon", "Steel"], "strengths": ["Water", "Ground", "Rock"], "weakTo": ["Flying", "Poison", "Bug", "Fire", "Ice"], "resist": ["Fighting", "Ground", "Bug", "Grass"] },
+        { "name": "Grass", "no_dmg_to": [], "weaknesses": ["Fire", "Grass", "Poison", "Flying", "Bug", "Dragon", "Steel"], "strengths": ["Water", "Ground", "Rock"], "weakTo": ["Flying", "Poison", "Bug", "Fire", "Ice"], "resist": ["Water", "Grass", "Electric", "Ground"] },
 
         {
             "name": "Ice", "no_dmg_to": [], "weaknesses": ["Fire", "Water", "Ice", "Steel"], "strengths": ["Grass", "Ground", "Flying", "Dragon"],
@@ -563,13 +533,13 @@ class UI {
                 "Dark", "Steel"], "weakTo": ["Flying", "Psychic", "Fairy"], "resist": ["Rock", "Bug", "Dark"]
         },
 
-        { "name": "Poison", "no_dmg_to": ["Steel"], "weaknesses": ["Poison", "Ground", "Rock", "Ghost"], "strengths": ["Grass", "Fairy"], "weakTo": ["Ground", "Psychic"], "resist": ["Fighting, Poison, Grass, Fairy"] },
+        { "name": "Poison", "no_dmg_to": ["Steel"], "weaknesses": ["Poison", "Ground", "Rock", "Ghost"], "strengths": ["Grass", "Fairy"], "weakTo": ["Ground", "Psychic"], "resist": ["Fighting", "Poison", "Grass", "Fairy", "Bug"] },
 
         { "name": "Ground", "no_dmg_to": ["Flying"], "weaknesses": ["Grass", "Bug"], "strengths": ["Fire", "Electric", "Poison", "Rock", "Steel"], "no_dmg_from": ["Electric"], "weakTo": ["Water", "Grass", "Ice"], "resist": ["Poison", "Rock", "Electric"] },
 
         {
             "name": "Flying", "no_dmg_to": [], "weaknesses": ["Electric", "Rock", "Steel"], "strengths": ["Grass", "Fighting", "Bug"], "no_dmg_from": ["Ground"],
-            "weakTo": ["Rock", "Electric", "Ice"], "resist": ["Fighting", "Ground", "Bug", "Grass"]
+            "weakTo": ["Rock", "Electric", "Ice"], "resist": ["Fighting", "Bug", "Grass"]
         },
 
         {
@@ -577,17 +547,17 @@ class UI {
             "resist": ["Fighting", "Psychic"]
         },
 
-        { "name": "Bug", "no_dmg_to": [], "weaknesses": ["Fire", "Fighting", "Poison", "Flying", "Ghost", "Steel", "Fairy"], "strengths": ["Grass", "Psychic", "Dark"], "weakTo": ["Flying, Rock, Fire"], "resist": ["Fighting", "Ground", "Grass"] },
+        { "name": "Bug", "no_dmg_to": [], "weaknesses": ["Fire", "Fighting", "Poison", "Flying", "Ghost", "Steel", "Fairy"], "strengths": ["Grass", "Psychic", "Dark"], "weakTo": ["Flying", "Rock", "Fire"], "resist": ["Fighting", "Ground", "Grass"] },
 
         { "name": "Rock", "no_dmg_to": [], "weaknesses": ["Fighting", "Ground", "Steel"], "strengths": ["Fire", "Ice", "Flying", "Bug"], "weakTo": ["Fighting", "Ground", "Steel", "Water", "Grass"], "resist": ["Normal", "Flying", "Poison", "Fire"] },
 
-        { "name": "Ghost", "no_dmg_to": ["Normal"], "weaknesses": ["Dark"], "strengths": ["Psychic", "Ghost"], "no_dmg_from": ["Normal"], "weakTo": ["Ghost", "Dark"], "resist": ["Fighting", "Poison", "Bug"] },
+        { "name": "Ghost", "no_dmg_to": ["Normal"], "weaknesses": ["Dark"], "strengths": ["Psychic", "Ghost"], "no_dmg_from": ["Normal", "Fighting"], "weakTo": ["Ghost", "Dark"], "resist": ["Poison", "Bug"] },
 
-        { "name": "Dragon", "no_dmg_to": ["Fairy"], "weaknesses": ["Steel"], "strengths": ["Dragon"], "weakTo": ["Dragon, Fairy"], "resist": ["Fire", "Water", "Grass", "Electric"] },
+        { "name": "Dragon", "no_dmg_to": ["Fairy"], "weaknesses": ["Steel"], "strengths": ["Dragon"], "weakTo": ["Dragon", "Fairy"], "resist": ["Fire", "Water", "Grass", "Electric"] },
 
-        { "name": "Dark", "no_dmg_to": [], "weaknesses": ["Fighting", "Dark", "Fairy"], "strengths": ["Psychic", "Ghost"], "no_dmg_from": ["Psychic"], "weakTo": ["Fighting", "Bug", "Fairy"], "resist": ["Ghost", "Psychic", "Dark"] },
+        { "name": "Dark", "no_dmg_to": [], "weaknesses": ["Fighting", "Dark", "Fairy"], "strengths": ["Psychic", "Ghost"], "no_dmg_from": ["Psychic"], "weakTo": ["Fighting", "Bug", "Fairy"], "resist": ["Ghost", "Dark"] },
 
-        { "name": "Steel", "no_dmg_to": [], "weaknesses": ["Fire", "Water", "Electric", "Steel"], "strengths": ["Ice", "Rock", "Fairy"], "no_dmg_from": ["Poison"], "weakTo": ["Fighting, Ground, Fire"], "resist": ["Normal", "Flying", "Poison", "Rock", "Bug", "Steel", "Grass", 'Psychic', 'Ice', 'Dragon', 'Fairy'] },
+        { "name": "Steel", "no_dmg_to": [], "weaknesses": ["Fire", "Water", "Electric", "Steel"], "strengths": ["Ice", "Rock", "Fairy"], "no_dmg_from": ["Poison"], "weakTo": ["Fighting", "Ground", "Fire"], "resist": ["Normal", "Flying", "Rock", "Bug", "Steel", "Grass", 'Psychic', 'Ice', 'Dragon', 'Fairy'] },
 
         {
             "name": "Fairy", "no_dmg_to": [], "weaknesses": ["Fire", "Poison", "Steel"], "strengths": ["Fighting", "Dragon", "Dark"], "no_dmg_from": ["Dragon"], "weakTo": [
